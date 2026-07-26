@@ -18,9 +18,12 @@
   --color-slate: #66707a; /* metadata, labels, captions */
 
   /**
-   * Bronze at 90%. Small text on a bronze fill cannot reach 4.5:1 with any
-   * colour in the palette — white on bronze is 3.87:1. Used only as a filled
-   * background behind small white text; never for text, rules or borders.
+   * NOT an eighth brand colour — the accessible variant of bronze, at 90%.
+   *
+   * Used only as a filled background behind white text, where bronze itself
+   * measures 3.87:1 and fails. It never appears as text, as a border, as a
+   * rule, or as an icon colour. Bronze remains the accent everywhere else.
+   * See docs/design-reference.md section 3.1.
    */
   --color-bronze-deep: #976c3b;
 
