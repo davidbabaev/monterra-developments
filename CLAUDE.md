@@ -19,6 +19,7 @@ Versions below are the ones actually installed — read from `package.json` / `p
 | Types | `@types/node` / `@types/react` / `@types/react-dom` | 20.19.43 / 19.2.17 / 19.2.3 |
 | Styling | `tailwindcss` (v4 CSS-first `@theme`, **no** `tailwind.config.js`) | 4.3.3 |
 | Styling | `@tailwindcss/postcss` | 4.3.3 |
+| Icons | `lucide-react` (icons only — not a component library) | 1.27.0 |
 | Lint | `eslint` / `eslint-config-next` | 9.39.5 / 16.2.12 |
 | Unit tests | `vitest` | 4.1.10 |
 | Unit tests | `@vitejs/plugin-react` | 6.0.4 |
@@ -63,14 +64,19 @@ monterra-developments/
 ├── app/                                 # App Router — routes, layouts, global CSS
 │   ├── favicon.ico
 │   ├── globals.css                      # Tailwind v4 entry; @theme tokens live here
-│   ├── layout.tsx
-│   └── page.tsx
+│   ├── layout.tsx                       # fonts (Manrope, Inter, Cormorant) + base metadata
+│   ├── page.tsx
+│   └── styleguide/                      # internal reference page, noindex
+│       ├── page.tsx
+│       └── _components/                 # styleguide-only, never imported elsewhere
 ├── components/
 │   ├── forms/                           # contact / inquiry form pieces
 │   ├── home/                            # homepage-only sections
-│   ├── layout/                          # header, footer, mobile nav, shell
-│   ├── project/                         # project card, gallery, status badge, detail blocks
-│   └── ui/                              # primitives built from @theme tokens
+│   ├── layout/                          # Container, Section (header/footer still to come)
+│   ├── project/                         # project card, gallery, detail blocks
+│   └── ui/                              # AmenityMarker Button Card CardMedia Eyebrow Icon
+│                                        # PullQuote SectionNumeral SplitHeading StatBlock
+│                                        # StatusBadge StoneSlab — all from @theme tokens
 ├── content/
 │   └── projects/                        # one folder per project, read at build time
 │       ├── monterra-ridge/              # index.mdx + hero.png, gallery/, plans/
@@ -79,6 +85,9 @@ monterra-developments/
 ├── docs/                                # master-build-order, design-reference, build-increments
 ├── lib/
 │   ├── content-error.ts                 # ContentValidationError + field-path formatting
+│   ├── contrast.ts                      # WCAG ratio maths, used by the styleguide and tests
+│   ├── cx.ts                            # class-name join helper
+│   ├── design-tokens.ts                 # palette mirror + the declared contrast pairs
 │   ├── project-loader.ts                # disk read, parse, validate, cache
 │   ├── project-media.ts                 # asset paths -> public URLs + intrinsic dimensions
 │   ├── projects.ts                      # query surface (all, by slug, featured, status, adjacent)
@@ -158,7 +167,10 @@ Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` wh
 - Never add an API route, database, CMS or authentication.
 - Never use an external placeholder image service. Use local solid-color placeholders at correct aspect ratios.
 - Never put white or slate text on the stone background — it fails contrast. Text on stone is navy or ink.
-- Never use bronze for text below 26px. Bronze on ivory is 3.4:1 and only clears WCAG at large sizes.
+- Never use bronze for text below 26px. Bronze on ivory measures 3.55:1 and only clears WCAG at large sizes.
+- Never put small text on a bronze *fill* — no palette colour reaches 4.5:1 on it. Use `bronze-deep`, which exists only for that case.
+- Never use stone to identify a control (a form input border). At 1.76:1 on ivory it is a decorative edge only; inputs take a navy border.
+- Every foreground/background pair the system renders is declared in `lib/design-tokens.ts` and asserted in `tests/unit/contrast.test.ts`. Add the pair there when you introduce one, or the audit is lying.
 - Never mark work complete because tests pass. Verify in a browser.
 
 ## 8 · Domain notes
