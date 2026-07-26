@@ -1,5 +1,5 @@
-import { loadAllProjects } from "./project-loader";
-import type { Project, ProjectStatus } from "./schema";
+import { loadAllProjects, type Project } from "./project-loader";
+import type { ProjectStatus } from "./schema";
 
 /**
  * Query surface over the project content. `order` controls sequence, not date —

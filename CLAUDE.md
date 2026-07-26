@@ -30,6 +30,7 @@ Versions below are the ones actually installed — read from `package.json` / `p
 | Content | `gray-matter` (frontmatter parsing at build time) | 4.0.3 |
 | Content | `next-mdx-remote` (MDX body rendering; not yet used) | 6.0.0 |
 | Validation | `zod` (v4 — content schemas, later the contact form) | 4.4.3 |
+| Content | `image-size` (intrinsic dimensions read at build time) | 2.0.2 |
 | Image encoding | `sharp` (dev only, placeholder generation; scripts approved via `allowScripts`) | 0.35.3 |
 | Runtime | Node.js | v24.18.0 (WSL2 Ubuntu) |
 | Bundler | Turbopack | bundled with Next 16.2.12 — the default, not a flag |
@@ -79,10 +80,12 @@ monterra-developments/
 ├── lib/
 │   ├── content-error.ts                 # ContentValidationError + field-path formatting
 │   ├── project-loader.ts                # disk read, parse, validate, cache
+│   ├── project-media.ts                 # asset paths -> public URLs + intrinsic dimensions
 │   ├── projects.ts                      # query surface (all, by slug, featured, status, adjacent)
 │   ├── schema.ts                        # Zod schemas; status-conditional validation
 │   └── site.ts                          # name, tagline, nav, [REPLACE] contact details
 ├── public/
+│   ├── projects/                        # GENERATED mirror of content assets — gitignored, never edit
 │   ├── logo/
 │   ├── file.svg                         # create-next-app leftovers, safe to delete
 │   ├── globe.svg
@@ -90,7 +93,8 @@ monterra-developments/
 │   ├── vercel.svg
 │   └── window.svg
 ├── scripts/
-│   └── generate-placeholders.mjs        # sharp: solid-color placeholder assets, run by hand
+│   ├── generate-placeholders.mjs        # sharp: solid-color placeholder assets, run by hand
+│   └── sync-content-assets.mjs          # mirrors content assets -> public/projects (predev/prebuild)
 ├── styles/                              # additional token/layer CSS if globals.css outgrows itself
 ├── tests/
 │   ├── e2e/

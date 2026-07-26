@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/sync-content-assets.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/sync-content-assets.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -13,6 +15,7 @@
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
+    "image-size": "^2.0.2",
     "next": "16.2.12",
     "next-mdx-remote": "^6.0.0",
     "react": "19.2.4",

@@ -2,47 +2,29 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { ContentValidationError, describeIssues } from "./content-error";
-import { projectFrontmatterSchema, type Project, type ProjectFrontmatter } from "./schema";
+import { resolveProjectMedia, type ResolvedProjectMedia } from "./project-media";
+import { projectFrontmatterSchema, type ProjectFrontmatter } from "./schema";
 
 /**
  * Reads `content/projects/<slug>/index.mdx` from disk at build time only.
  * There is no database and no request-time fetching.
  *
  * Asset `src` values in frontmatter are relative to the project's own folder,
- * so images stay colocated with the project that owns them.
+ * so images stay colocated with the project that owns them. The loader turns
+ * them into servable URLs carrying real pixel dimensions.
  */
 
 const CONTENT_DIRECTORY = path.join(process.cwd(), "content", "projects");
 const ENTRY_FILENAME = "index.mdx";
 
+/** A validated project: frontmatter, with media resolved, plus its MDX body. */
+export type Project = Omit<ProjectFrontmatter, "media"> & {
+  readonly media: ResolvedProjectMedia;
+  readonly body: string;
+};
+
 function toRepoRelative(absolutePath: string): string {
   return path.relative(process.cwd(), absolutePath).split(path.sep).join("/");
-}
-
-/** Every asset path a project references, relative to the project folder. */
-function referencedAssets(frontmatter: ProjectFrontmatter): string[] {
-  const { hero, gallery = [], floorPlans = [] } = frontmatter.media;
-  return [
-    hero.src,
-    ...gallery.map((image) => image.src),
-    ...floorPlans.flatMap((plan) => (plan.pdf ? [plan.image, plan.pdf] : [plan.image])),
-  ];
-}
-
-/** A referenced image that is not on disk would render broken. Fail the build instead. */
-function assertAssetsExist(
-  frontmatter: ProjectFrontmatter,
-  projectDirectory: string,
-  filePath: string,
-): void {
-  const missing = referencedAssets(frontmatter).filter(
-    (asset) => !existsSync(path.join(projectDirectory, asset)),
-  );
-  if (missing.length === 0) return;
-  throw new ContentValidationError(
-    filePath,
-    missing.map((asset) => `media: referenced asset "${asset}" does not exist on disk`),
-  );
 }
 
 function loadProject(directoryName: string): Project {
@@ -61,15 +43,21 @@ function loadProject(directoryName: string): Project {
     throw new ContentValidationError(filePath, describeIssues(result.error));
   }
 
-  if (result.data.slug !== directoryName) {
+  const { slug, media, ...rest } = result.data;
+
+  if (slug !== directoryName) {
     throw new ContentValidationError(filePath, [
-      `slug: "${result.data.slug}" does not match its folder name "${directoryName}"`,
+      `slug: "${slug}" does not match its folder name "${directoryName}"`,
     ]);
   }
 
-  assertAssetsExist(result.data, projectDirectory, filePath);
-
-  return { ...result.data, body: content };
+  return {
+    ...rest,
+    slug,
+    // Throws a ContentValidationError naming the field if an asset is missing.
+    media: resolveProjectMedia(media, { projectDirectory, filePath, slug }),
+    body: content,
+  };
 }
 
 /**

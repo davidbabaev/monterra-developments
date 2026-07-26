@@ -1,6 +1,8 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import matter from "gray-matter";
 import { describe, expect, it } from "vitest";
 import { projectFrontmatterSchema } from "@/lib/schema";
-import { getAllProjects } from "@/lib/projects";
 
 /**
  * Fixtures are built from a minimal valid `upcoming` project and widened per
@@ -31,14 +33,20 @@ function failedFields(input: unknown): string[] {
   return result.error.issues.map((issue) => issue.path.join("."));
 }
 
+const SEED_SLUGS = ["monterra-ridge", "monterra-bay", "the-larkin"] as const;
+
+/** Raw frontmatter as authored, before the loader resolves media paths. */
+function readSeedFrontmatter(slug: string): unknown {
+  const file = path.join(process.cwd(), "content", "projects", slug, "index.mdx");
+  return matter(readFileSync(file, "utf8")).data;
+}
+
 describe("projectFrontmatterSchema — seed content", () => {
-  it("accepts all three seed projects", () => {
-    const projects = getAllProjects();
-    expect(projects).toHaveLength(3);
-    for (const project of projects) {
-      // `body` is not part of the frontmatter schema and is stripped on parse.
-      expect(projectFrontmatterSchema.safeParse(project).success).toBe(true);
-    }
+  it.each(SEED_SLUGS)("accepts the %s frontmatter as authored on disk", (slug) => {
+    const result = projectFrontmatterSchema.safeParse(readSeedFrontmatter(slug));
+    expect(result.success ? [] : result.error.issues.map((issue) => issue.path.join("."))).toEqual(
+      [],
+    );
   });
 });
 
@@ -108,6 +116,18 @@ describe("projectFrontmatterSchema — field validation", () => {
         media: { hero: { src: "hero.png", alt: "" } },
       }),
     ).toContain("media.hero.alt");
+  });
+
+  it("rejects a floor plan with no alt", () => {
+    expect(
+      failedFields({
+        ...minimalUpcoming,
+        media: {
+          ...minimalUpcoming.media,
+          floorPlans: [{ label: "Plan A", image: "plans/plan-a.png" }],
+        },
+      }),
+    ).toContain("media.floorPlans.0.alt");
   });
 
   it("rejects an invalid status", () => {
