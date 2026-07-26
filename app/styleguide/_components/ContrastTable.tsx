@@ -54,7 +54,13 @@ export function ContrastTable() {
           {rows.map((row) => (
             <tr key={`${row.fg}-${row.bg}-${row.usage}`} className="border-b border-stone/60">
               <td className="py-3 pr-4">
+                {/*
+                  A colour specimen, not UI text: it deliberately renders pairs
+                  at sizes the rules forbid, which is the point of an audit
+                  table. tests/e2e/contrast-rules.spec.ts skips this attribute.
+                */}
                 <span
+                  data-contrast-sample="true"
                   className="inline-flex items-center rounded-sm px-3 py-2 font-display text-[15px] font-semibold"
                   style={{ backgroundColor: row.background, color: row.foreground }}
                 >

@@ -133,3 +133,12 @@ describe("SectionNumeral", () => {
     expect(numeral).toHaveClass("text-stone");
   });
 });
+
+describe("StatBlock unit floor", () => {
+  it("floors the unit at 26px so bronze never renders as small text", () => {
+    render(<StatBlock figure="79" unit="m²" label="Average size" />);
+    // 60% of the 40px mobile figure is 24px, under this project's bronze
+    // minimum. max() lifts only that case and holds for any figure size.
+    expect(screen.getByText("m²")).toHaveClass("text-[max(26px,0.6em)]");
+  });
+});

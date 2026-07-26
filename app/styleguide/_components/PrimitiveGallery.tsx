@@ -87,7 +87,7 @@ export function StatGallery() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <Label>On ivory — unit in bronze at 24px+, which is WCAG large text</Label>
+        <Label>On ivory — unit is 60% of the figure, floored at 26px so bronze stays legal</Label>
         <div className="grid grid-cols-2 gap-8 xl:grid-cols-4">
           <StatBlock figure="248" label="Units delivered" />
           <StatBlock figure="16" unit="yrs" label="In operation" />
