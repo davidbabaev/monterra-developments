@@ -17,6 +17,10 @@ const galleryImageSchema = imageSchema.extend({
 const floorPlanSchema = z.object({
   label: z.string().min(1),
   image: z.string().min(1),
+  // next/image requires alt on every image, and a floor plan drawing carries
+  // information a sighted reader gets for free. Authored, never derived from
+  // the label, so a missing one fails the build instead of inventing text.
+  alt: z.string().min(1),
   pdf: z.string().optional(),
 });
 
@@ -108,5 +112,13 @@ export const projectFrontmatterSchema = projectBaseSchema.superRefine((project, 
 export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>;
 
-/** A validated project plus its MDX body. */
-export type Project = ProjectFrontmatter & { readonly body: string };
+/**
+ * Frontmatter shapes as authored on disk. Asset fields still hold folder-relative
+ * paths here; `lib/project-media.ts` turns them into servable URLs with real
+ * pixel dimensions. `Project` itself is defined in `lib/project-loader.ts`,
+ * where those two halves meet.
+ */
+export type ImageFrontmatter = z.infer<typeof imageSchema>;
+export type GalleryImageFrontmatter = z.infer<typeof galleryImageSchema>;
+export type FloorPlanFrontmatter = z.infer<typeof floorPlanSchema>;
+export type ProjectMediaFrontmatter = ProjectFrontmatter["media"];

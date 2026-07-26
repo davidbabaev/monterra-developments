@@ -52,3 +52,6 @@ next-env.d.ts
 # python
 __pycache__/
 *.pyc
+
+# Generated: content assets mirrored into public/ by scripts/sync-content-assets.mjs
+/public/projects
