@@ -50,6 +50,32 @@ export function meetsRequirement(ratio: number, usage: ContrastUsage): boolean {
   return ratio >= CONTRAST_THRESHOLDS[usage];
 }
 
+/**
+ * The opaque colour that results from painting `foreground` at `alpha` over
+ * `background`.
+ *
+ * Translucent surfaces — the scrolled header at ivory/92, the hero subhead at
+ * ivory/88 — have to be measured as what the eye actually receives, not as the
+ * token they were written with.
+ */
+export function blendOver(foreground: string, alpha: number, background: string): string {
+  if (alpha < 0 || alpha > 1) throw new Error(`Alpha must be between 0 and 1, received ${alpha}`);
+
+  const channels = (hex: string) => {
+    const value = parseInt(hex.replace("#", ""), 16);
+    return [(value >> 16) & 0xff, (value >> 8) & 0xff, value & 0xff];
+  };
+
+  const [fr, fg, fb] = channels(foreground);
+  const [br, bg, bb] = channels(background);
+
+  const mix = (f: number, b: number) => Math.round(f * alpha + b * (1 - alpha));
+
+  return `#${[mix(fr, br), mix(fg, bg), mix(fb, bb)]
+    .map((channel) => channel.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
 /** Two decimals, the precision WCAG reporting conventionally uses. */
 export function formatRatio(ratio: number): string {
   return `${ratio.toFixed(2)}:1`;

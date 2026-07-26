@@ -7,6 +7,11 @@ import { cx } from "@/lib/cx";
  *
  * Icons are always paired with a text label, never used alone, so they are
  * aria-hidden by default and contribute nothing to the accessibility tree.
+ *
+ * Colour is inherited from the parent rather than defaulted here. A baked-in
+ * `text-navy` collides with any colour a caller passes — same specificity, so
+ * the stylesheet order decides, not the call site — which silently produced a
+ * navy icon on a navy overlay.
  */
 
 type IconProps = {
@@ -23,7 +28,7 @@ export function Icon({ icon: Glyph, size = 24, className }: IconProps) {
       strokeWidth={1.5}
       aria-hidden="true"
       focusable="false"
-      className={cx("shrink-0 text-navy", className)}
+      className={cx("shrink-0", className)}
     />
   );
 }

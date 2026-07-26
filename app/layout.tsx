@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Manrope } from "next/font/google";
+import { ContactBand } from "@/components/layout/ContactBand";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { SkipLink } from "@/components/layout/SkipLink";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -49,7 +53,18 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <SkipLink />
+        <Header />
+        {/* MobileNav marks this inert while the overlay is open. */}
+        <div id="site-content" className="flex flex-1 flex-col">
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <ContactBand />
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }
