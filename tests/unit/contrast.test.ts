@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   CONTRAST_THRESHOLDS,
+  blendOver,
   contrastRatio,
   formatRatio,
   meetsRequirement,
@@ -77,6 +78,32 @@ describe("the system's declared contrast pairs", () => {
       `${pair.fg} on ${pair.bg} measures ${formatRatio(ratio)}, below the ` +
         `${CONTRAST_THRESHOLDS[pair.usage]}:1 required for ${pair.usage}`,
     ).toBeGreaterThanOrEqual(CONTRAST_THRESHOLDS[pair.usage]);
+  });
+});
+
+/**
+ * Two surfaces in the shell are translucent, so the token they are written with
+ * is not the colour the eye receives. Both are measured as blended.
+ */
+describe("translucent surfaces in the layout shell", () => {
+  const navy = "#14263d";
+  const ivory = "#f7f5f0";
+
+  it("blends to the expected midpoint", () => {
+    expect(blendOver(ivory, 1, navy)).toBe(ivory);
+    expect(blendOver(ivory, 0, navy)).toBe(navy);
+    expect(() => blendOver(ivory, 1.5, navy)).toThrow(/between 0 and 1/);
+  });
+
+  it("the PageHero subhead at ivory/88 on the navy scrim clears 4.5:1", () => {
+    const subhead = blendOver(ivory, 0.88, navy);
+    expect(contrastRatio(subhead, navy)).toBeGreaterThanOrEqual(CONTRAST_THRESHOLDS.text);
+  });
+
+  it("navy nav labels clear 4.5:1 on the scrolled header at ivory/92 over navy", () => {
+    // Worst case: the header sits over the darkest thing it can scroll across.
+    const headerSurface = blendOver(ivory, 0.92, navy);
+    expect(contrastRatio(navy, headerSurface)).toBeGreaterThanOrEqual(CONTRAST_THRESHOLDS.text);
   });
 });
 

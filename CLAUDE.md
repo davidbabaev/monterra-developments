@@ -64,19 +64,24 @@ monterra-developments/
 ├── app/                                 # App Router — routes, layouts, global CSS
 │   ├── favicon.ico
 │   ├── globals.css                      # Tailwind v4 entry; @theme tokens live here
-│   ├── layout.tsx                       # fonts (Manrope, Inter, Cormorant) + base metadata
-│   ├── page.tsx
+│   ├── layout.tsx                       # fonts + SkipLink, Header, main#main, ContactBand, Footer
+│   ├── not-found.tsx                    # custom 404
+│   ├── page.tsx                         # Home — placeholder until increment 8
+│   ├── about|process|team|contact|privacy/   # placeholder pages, each opens with PageHero
+│   ├── projects/                        # listing placeholder + [slug] detail placeholder
 │   └── styleguide/                      # internal reference page, noindex
 │       ├── page.tsx
 │       └── _components/                 # styleguide-only, never imported elsewhere
 ├── components/
 │   ├── forms/                           # contact / inquiry form pieces
 │   ├── home/                            # homepage-only sections
-│   ├── layout/                          # Container, Section (header/footer still to come)
+│   ├── layout/                          # Breadcrumb ContactBand Container Footer Header
+│   │                                    # MobileNav NavLink PageHero Section SkipLink
+│   │                                    # useFocusTrap useScrolledPast
 │   ├── project/                         # project card, gallery, detail blocks
 │   └── ui/                              # AmenityMarker Button Card CardMedia Eyebrow Icon
 │                                        # PullQuote SectionNumeral SplitHeading StatBlock
-│                                        # StatusBadge StoneSlab — all from @theme tokens
+│                                        # StatusBadge StoneSlab Wordmark — from @theme tokens
 ├── content/
 │   └── projects/                        # one folder per project, read at build time
 │       ├── monterra-ridge/              # index.mdx + hero.png, gallery/, plans/
@@ -147,6 +152,7 @@ Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` wh
 - Copy is sentence case, active voice. Banned words: elevate, curated, bespoke, nestled, unparalleled, luxury living, seamless, world-class.
 - Placeholder content marked `[REPLACE]` so it is greppable.
 - Match the existing exemplar file before inventing a new pattern.
+- **Never override a component's own base utility through `className`.** Two unprefixed utilities from the same group (`hidden` vs `inline-flex`, `text-navy` vs `text-ivory`, `px-0` vs `px-5`) have equal specificity, so the winner is decided by stylesheet order, not by the order you wrote them. Wrap the component in an element that carries the class instead, or add a prop. A responsive variant like `lg:hidden` is sorted after base utilities and is safe.
 
 ## 6 · Architecture & patterns to respect
 

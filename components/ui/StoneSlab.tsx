@@ -8,6 +8,10 @@ import { cx } from "@/lib/cx";
  * enforce it for their own content.
  */
 
+/**
+ * Padding steps up with the viewport. A flat 48px inset is disproportionate at
+ * 320px, where it eats a third of the width and forces long strings to overflow.
+ */
 type SlabPadding = "sm" | "md" | "lg";
 
 type StoneSlabProps = {
@@ -17,9 +21,9 @@ type StoneSlabProps = {
 };
 
 const PADDING: Record<SlabPadding, string> = {
-  sm: "p-6",
-  md: "p-8",
-  lg: "p-12",
+  sm: "p-4 md:p-6",
+  md: "p-6 md:p-8",
+  lg: "p-6 md:p-8 xl:p-12",
 };
 
 export function StoneSlab({ padding = "md", className, children }: StoneSlabProps) {

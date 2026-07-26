@@ -145,7 +145,7 @@ export function SupportingGallery() {
             { icon: Mail, label: "Email" },
           ].map(({ icon, label }) => (
             <span key={label} className="flex items-center gap-3">
-              <Icon icon={icon} />
+              <Icon icon={icon} className="text-navy" />
               <span className="font-body text-[16px] text-ink">{label}</span>
             </span>
           ))}
