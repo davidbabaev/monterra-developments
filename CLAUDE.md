@@ -1,1 +1,181 @@
-@AGENTS.md
+# Monterra Developments — brief for Claude Code
+
+## 1 · Project overview
+
+Marketing website for Monterra Developments, a US real estate development company that develops, builds and sells apartments and houses. Audience: prospective buyers, investors, business partners. It presents completed, current and upcoming projects, the company story, the process, and the team. The single conversion goal is an inquiry submission.
+
+This is a brochure website, NOT a web application. No accounts, no payments, no dashboards, no booking, no marketplace, no search. If a task seems to need one of those, the task is wrong — stop and say so.
+
+## 2 · Tech stack + versions
+
+Versions below are the ones actually installed — read from `package.json` / `package-lock.json` on 2026-07-26. Update this section when a version changes.
+
+| Concern | Package | Version |
+| --- | --- | --- |
+| Framework | `next` (App Router, fully static) | 16.2.12 |
+| UI runtime | `react` | 19.2.4 |
+| UI runtime | `react-dom` | 19.2.4 |
+| Language | `typescript` (strict) | 5.9.3 |
+| Types | `@types/node` / `@types/react` / `@types/react-dom` | 20.19.43 / 19.2.17 / 19.2.3 |
+| Styling | `tailwindcss` (v4 CSS-first `@theme`, **no** `tailwind.config.js`) | 4.3.3 |
+| Styling | `@tailwindcss/postcss` | 4.3.3 |
+| Lint | `eslint` / `eslint-config-next` | 9.39.5 / 16.2.12 |
+| Unit tests | `vitest` | 4.1.10 |
+| Unit tests | `@vitejs/plugin-react` | 6.0.4 |
+| Unit tests | `jsdom` | 29.1.1 |
+| Unit tests | `@testing-library/react` | 16.3.2 |
+| Unit tests | `@testing-library/jest-dom` | 7.0.0 |
+| Unit tests | `@testing-library/user-event` | 14.6.1 |
+| E2E tests | `@playwright/test` (mobile 390x844, desktop 1280x800) | 1.62.0 |
+| Image encoding | `sharp` (install scripts approved via `allowScripts`) | 0.34.5 |
+| Runtime | Node.js | v24.18.0 (WSL2 Ubuntu) |
+| Bundler | Turbopack | bundled with Next 16.2.12 — the default, not a flag |
+| Hosting | Vercel | — |
+
+**Planned, not yet installed** — add these when the increment that needs them lands, and update the table with the real resolved version at that time. Do not guess a version number here:
+
+- `gray-matter` + `next-mdx-remote` — MDX content loading at build time.
+- `zod` + `react-hook-form` (+ `@hookform/resolvers`) — schema validation and the contact form.
+
+### Next 16 specifics that bite
+
+- Turbopack is the default bundler. There is no `--turbopack` flag in `create-next-app` any more; opting out means `--rspack`.
+- Route params are async — `params` and `searchParams` are Promises and must be awaited.
+- `middleware.ts` is now `proxy.ts`. We do not use it, and must not add it.
+- Caching is opt-in, not opt-out. Everything here is prerendered at build time anyway.
+- `next lint` was removed. Lint is a standalone `eslint` script and is **not** run by `next build` — run `npm run lint` separately.
+
+## 3 · Project structure
+
+The real tree on disk right now. Folder names map to the words used in prompts.
+
+```
+monterra-developments/
+├── .claude/
+│   ├── hooks/
+│   │   ├── block-secret-commits.py      # PreToolUse: refuses commits carrying secrets
+│   │   └── run-checks-before-commit.py  # PreToolUse: tsc + lint + vitest before a commit
+│   ├── settings.json                    # wires both hooks (committed)
+│   └── settings.local.json              # personal permissions (gitignored)
+├── app/                                 # App Router — routes, layouts, global CSS
+│   ├── favicon.ico
+│   ├── globals.css                      # Tailwind v4 entry; @theme tokens live here
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── forms/                           # contact / inquiry form pieces
+│   ├── home/                            # homepage-only sections
+│   ├── layout/                          # header, footer, mobile nav, shell
+│   ├── project/                         # project card, gallery, status badge, detail blocks
+│   └── ui/                              # primitives built from @theme tokens
+├── content/
+│   └── projects/                        # one MDX file per project, read at build time
+├── docs/                                # master-build-order, design-reference, build-increments
+├── lib/                                 # content loading, Zod schemas, pure helpers
+├── public/
+│   ├── logo/
+│   ├── file.svg                         # create-next-app leftovers, safe to delete
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── styles/                              # additional token/layer CSS if globals.css outgrows itself
+├── tests/
+│   ├── e2e/
+│   │   └── smoke.spec.ts                # asserts / returns 200 on both viewports
+│   └── unit/
+│       └── smoke.test.ts
+├── CLAUDE.md                            # this file
+├── README.md
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── package-lock.json
+├── playwright.config.ts                 # projects: mobile 390x844, desktop 1280x800
+├── postcss.config.mjs
+├── tsconfig.json                        # strict, alias @/* -> ./*
+├── vitest.config.mts                    # jsdom, includes tests/unit/**
+└── vitest.setup.ts                      # jest-dom matchers + auto cleanup
+```
+
+Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` when the first real file lands.
+
+## 4 · Commands
+
+| Command | Does |
+| --- | --- |
+| `npm run dev` | Dev server (Turbopack). Use `http://localhost:3000`, not `127.0.0.1` — the HMR socket is origin-checked. |
+| `npm run build` | Production build. Must pass with zero TypeScript errors. |
+| `npm test` | Vitest, single run. |
+| `npm run test:e2e` | Playwright at 390x844 and 1280x800. Builds and serves first. |
+| `npm run lint` | ESLint. Separate from `build` — both must be clean. |
+
+## 5 · Conventions
+
+- Server Components by default. `"use client"` only for: mobile nav, status filter, lightbox, stat counter, contact form. Nowhere else.
+- One component per file, named to match the file, single responsibility.
+- Types inferred from Zod schemas via `z.infer`, never hand-written in parallel.
+- Tailwind utilities only. No CSS modules, no styled-components.
+- All color and type comes from `@theme` tokens. Never write a raw hex in a component.
+- Copy is sentence case, active voice. Banned words: elevate, curated, bespoke, nestled, unparalleled, luxury living, seamless, world-class.
+- Placeholder content marked `[REPLACE]` so it is greppable.
+- Match the existing exemplar file before inventing a new pattern.
+
+## 6 · Architecture & patterns to respect
+
+**Code style — IMPORTANT!!! : ALL code MUST follow the SOLID design principles. Never write code that violates them.**
+
+- The site is fully static. Every route prerendered. No API routes, no request-time fetching, no `proxy.ts`.
+- Content lives on disk as MDX, read at build time only. No database, no CMS.
+- Zod validates all content at build time. Invalid frontmatter FAILS THE BUILD naming the file and field. Never render a partially-valid project, never fall back to a default, never silently skip a bad file.
+- Optional content renders nothing — no empty heading, no "TBA", no placeholder row.
+
+## 7 · Guardrails — do NOT do these (IMPORTANT!!!)
+
+- Never commit directly to `main`. Work on `ai/<type>-<short-description>`.
+- **NEVER run a command requiring `sudo`.** You cannot answer a password prompt and it hangs forever. If a step needs sudo, stop and tell me the exact command.
+- Never touch `.env` files.
+- Never install a UI component library (shadcn, MUI, Chakra, DaisyUI). Build from tokens.
+- Never add a dependency outside the stack without saying why in the commit message.
+- Never add an API route, database, CMS or authentication.
+- Never use an external placeholder image service. Use local solid-color placeholders at correct aspect ratios.
+- Never put white or slate text on the stone background — it fails contrast. Text on stone is navy or ink.
+- Never use bronze for text below 26px. Bronze on ivory is 3.4:1 and only clears WCAG at large sizes.
+- Never mark work complete because tests pass. Verify in a browser.
+
+## 8 · Domain notes
+
+- A **project** is a real estate development, not a listing and not a unit for sale. Status is exactly one of: `completed`, `current`, `upcoming`.
+- Status drives required data:
+  - `completed` — requires a completion date and a gallery of 3+ images.
+  - `current` — requires a completion date.
+  - `upcoming` — requires only hero image, summary, city/state, and one property type.
+
+  An upcoming project with almost no data is NORMAL and must look deliberate, never broken.
+- `order` controls display sequence, not date. Sorting by completion fails — upcoming projects have none.
+- `featured` selects projects for the homepage.
+- **Property type** is the kind of home (Townhomes, Condominiums, Duplexes). It is not a filter. The only filter is status.
+- An **inquiry** is the contact form submission. It has no destination yet and is stubbed in one file.
+
+## 9 · Token discipline
+
+Keep files small, modular, single-responsibility. Components under ~150 lines; split beyond that.
+
+## Version control — ALWAYS
+
+Before ANY change, create and check out: `ai/<type>-<short-description>`
+Types: `feat`, `fix`, `chore`, `refactor`, `test`. Never commit to `main`. Clear imperative commit messages.
+
+## Definition of done — every task
+
+1. Write tests for new code.
+2. Run the full unit suite and make it pass BEFORE committing.
+3. Run the dev server and verify in a browser at 390px and 1280px.
+4. Confirm each state is reachable: empty, loading, error, success.
+5. `npm run build` passes with zero TypeScript and zero ESLint errors.
+
+"Tests pass" is not done. Observed behavior is done.
+
+## Ambiguity
+
+Resolve in this order: `docs/master-build-order.md`, `docs/design-reference.md`, `docs/build-increments.md`, then the convention already in this codebase. Only if all four are silent, decide and continue and record it in the commit message. Do not stop to ask.

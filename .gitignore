@@ -48,3 +48,7 @@ next-env.d.ts
 /test-results/
 /blob-report/
 /playwright/.cache/
+
+# python
+__pycache__/
+*.pyc
