@@ -15,6 +15,8 @@ type ButtonProps = {
   readonly href?: string;
   readonly type?: "button" | "submit";
   readonly disabled?: boolean;
+  /** Ignored when `href` is set — that renders a link, not a button. */
+  readonly onClick?: () => void;
   readonly className?: string;
   readonly children: React.ReactNode;
 };
@@ -40,6 +42,7 @@ export function Button({
   href,
   type = "button",
   disabled = false,
+  onClick,
   className,
   children,
 }: ButtonProps) {
@@ -68,7 +71,7 @@ export function Button({
   }
 
   return (
-    <button type={type} disabled={disabled} className={classes}>
+    <button type={type} disabled={disabled} onClick={onClick} className={classes}>
       {content}
     </button>
   );
