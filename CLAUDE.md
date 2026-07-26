@@ -78,10 +78,11 @@ monterra-developments/
 │   ├── layout/                          # Breadcrumb ContactBand Container Footer Header
 │   │                                    # MobileNav NavLink PageHero Section SkipLink
 │   │                                    # useFocusTrap useScrolledPast
-│   ├── project/                         # project card, gallery, detail blocks
+│   ├── project/                         # ProjectCard ProjectGrid ProjectsBrowser
+│   │                                    # ProjectsEmptyState StatusFilter projectCardData
 │   └── ui/                              # AmenityMarker Button Card CardMedia Eyebrow Icon
 │                                        # PullQuote SectionNumeral SplitHeading StatBlock
-│                                        # StatusBadge StoneSlab Wordmark — from @theme tokens
+│                                        # Logo StatusBadge StoneSlab — from @theme tokens
 ├── content/
 │   └── projects/                        # one folder per project, read at build time
 │       ├── monterra-ridge/              # index.mdx + hero.png, gallery/, plans/
