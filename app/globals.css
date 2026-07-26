@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * Design tokens. This file is the single source of truth for the palette —
+ * lib/design-tokens.ts mirrors these values for the styleguide's contrast
+ * table, and a unit test fails if the two ever drift apart.
+ *
+ * Never write a raw hex in a component. Everything comes from here.
+ */
+@theme {
+  /* Color */
+  --color-navy: #14263d; /* headings, footer, primary buttons */
+  --color-stone: #c8b9a3; /* slabs, borders, section backgrounds */
+  --color-bronze: #a87842; /* lede words, active states, rules */
+  --color-ivory: #f7f5f0; /* page background */
+  --color-surface: #ffffff; /* cards */
+  --color-ink: #252a30; /* body text */
+  --color-slate: #66707a; /* metadata, labels, captions */
+
+  /**
+   * Bronze at 90%. Small text on a bronze fill cannot reach 4.5:1 with any
+   * colour in the palette — white on bronze is 3.87:1. Used only as a filled
+   * background behind small white text; never for text, rules or borders.
+   */
+  --color-bronze-deep: #976c3b;
+
+  /* Radius — architectural restraint, not soft */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  /* Vertical rhythm */
+  --space-section-mobile: 64px;
+  --space-section-tablet: 88px;
+  --space-section-desktop: 120px;
+
+  /* Offset compositions */
+  --overlap-offset: 40px;
+
+  /* The only shadow in the system, and only on card hover */
+  --shadow-card-hover: 0 2px 8px rgba(20, 38, 61, 0.08);
 }
 
+/**
+ * `inline` so the utilities emit `var(--font-manrope)` rather than resolving at
+ * build time — next/font defines those variables on the <html> element.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-editorial: var(--font-cormorant);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+@media (width >= 768px) {
+  body {
+    font-size: 17px;
+  }
 }
