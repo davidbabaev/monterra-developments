@@ -27,15 +27,17 @@ Versions below are the ones actually installed — read from `package.json` / `p
 | Unit tests | `@testing-library/jest-dom` | 7.0.0 |
 | Unit tests | `@testing-library/user-event` | 14.6.1 |
 | E2E tests | `@playwright/test` (mobile 390x844, desktop 1280x800) | 1.62.0 |
-| Image encoding | `sharp` (install scripts approved via `allowScripts`) | 0.34.5 |
+| Content | `gray-matter` (frontmatter parsing at build time) | 4.0.3 |
+| Content | `next-mdx-remote` (MDX body rendering; not yet used) | 6.0.0 |
+| Validation | `zod` (v4 — content schemas, later the contact form) | 4.4.3 |
+| Image encoding | `sharp` (dev only, placeholder generation; scripts approved via `allowScripts`) | 0.35.3 |
 | Runtime | Node.js | v24.18.0 (WSL2 Ubuntu) |
 | Bundler | Turbopack | bundled with Next 16.2.12 — the default, not a flag |
 | Hosting | Vercel | — |
 
 **Planned, not yet installed** — add these when the increment that needs them lands, and update the table with the real resolved version at that time. Do not guess a version number here:
 
-- `gray-matter` + `next-mdx-remote` — MDX content loading at build time.
-- `zod` + `react-hook-form` (+ `@hookform/resolvers`) — schema validation and the contact form.
+- `react-hook-form` (+ `@hookform/resolvers`) — the contact form.
 
 ### Next 16 specifics that bite
 
@@ -69,9 +71,17 @@ monterra-developments/
 │   ├── project/                         # project card, gallery, status badge, detail blocks
 │   └── ui/                              # primitives built from @theme tokens
 ├── content/
-│   └── projects/                        # one MDX file per project, read at build time
+│   └── projects/                        # one folder per project, read at build time
+│       ├── monterra-ridge/              # index.mdx + hero.png, gallery/, plans/
+│       ├── monterra-bay/                # index.mdx + hero.png (deliberately sparse)
+│       └── the-larkin/                  # index.mdx + hero.png, gallery/
 ├── docs/                                # master-build-order, design-reference, build-increments
-├── lib/                                 # content loading, Zod schemas, pure helpers
+├── lib/
+│   ├── content-error.ts                 # ContentValidationError + field-path formatting
+│   ├── project-loader.ts                # disk read, parse, validate, cache
+│   ├── projects.ts                      # query surface (all, by slug, featured, status, adjacent)
+│   ├── schema.ts                        # Zod schemas; status-conditional validation
+│   └── site.ts                          # name, tagline, nav, [REPLACE] contact details
 ├── public/
 │   ├── logo/
 │   ├── file.svg                         # create-next-app leftovers, safe to delete
@@ -79,11 +89,15 @@ monterra-developments/
 │   ├── next.svg
 │   ├── vercel.svg
 │   └── window.svg
+├── scripts/
+│   └── generate-placeholders.mjs        # sharp: solid-color placeholder assets, run by hand
 ├── styles/                              # additional token/layer CSS if globals.css outgrows itself
 ├── tests/
 │   ├── e2e/
 │   │   └── smoke.spec.ts                # asserts / returns 200 on both viewports
 │   └── unit/
+│       ├── projects.test.ts             # loader + query behaviour
+│       ├── schema.test.ts               # schema accept/reject cases
 │       └── smoke.test.ts
 ├── CLAUDE.md                            # this file
 ├── README.md

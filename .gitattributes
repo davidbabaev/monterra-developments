@@ -1,0 +1,12 @@
+# Binary assets must never be line-ending normalized. The placeholder PDFs are
+# plain-latin1 with no NUL bytes, so git guesses "text" and would rewrite CRLF
+# into them on checkout — corrupting the byte offsets in their xref tables.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
