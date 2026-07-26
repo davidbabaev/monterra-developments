@@ -78,7 +78,42 @@ test.describe("styleguide", () => {
     expect(outline.style).not.toBe("none");
   });
 
-  test("SplitHeading puts both halves on one baseline", async ({ page }) => {
+  test("SplitHeading aligns the cap heights of its two faces", async ({ page }) => {
+    await page.goto("/styleguide");
+
+    const measured = await page.evaluate(async () => {
+      await document.fonts.ready;
+      const heading = document.querySelector("h1");
+      if (heading === null) throw new Error("no h1 on the page");
+      const lede = heading.querySelector("span");
+      if (lede === null) throw new Error("no lede span in the h1");
+
+      const ctx = document.createElement("canvas").getContext("2d");
+      if (ctx === null) throw new Error("no 2d context");
+
+      // Cap height is the ascent of a flat-topped capital at the rendered size.
+      const capHeight = (style: CSSStyleDeclaration) => {
+        ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        return ctx.measureText("H").actualBoundingBoxAscent;
+      };
+
+      return {
+        rest: capHeight(getComputedStyle(heading)),
+        lede: capHeight(getComputedStyle(lede)),
+        restFamily: getComputedStyle(heading).fontFamily,
+        ledeFamily: getComputedStyle(lede).fontFamily,
+      };
+    });
+
+    expect(measured.restFamily).toContain("Manrope");
+    expect(measured.ledeFamily).toContain("Cormorant Garamond");
+
+    // Same optical size is the whole point of the 1.18em compensation. One
+    // device pixel of slack absorbs rasterisation rounding.
+    expect(Math.abs(measured.lede - measured.rest)).toBeLessThanOrEqual(1);
+  });
+
+  test("SplitHeading keeps both halves on one line box", async ({ page }) => {
     await page.goto("/styleguide");
     const heading = page.getByRole("heading", { level: 1, name: "Design system" });
     const lede = heading.locator("span").first();
@@ -87,8 +122,12 @@ test.describe("styleguide", () => {
     expect(ledeBox).not.toBeNull();
     expect(headingBox).not.toBeNull();
 
-    // The lede is set 1.08em, so its box is taller than the Manrope text but
-    // must sit within the same line box rather than shifting the baseline.
-    expect(ledeBox!.y).toBeGreaterThanOrEqual(headingBox!.y - 2);
+    // The failure this guards against is the lede wrapping onto a line of its
+    // own. Its midpoint sitting inside the heading's vertical extent proves it
+    // did not — without being brittle about the sub-pixel descender overhang
+    // that a 1.18em serif legitimately produces.
+    const ledeMidpoint = ledeBox!.y + ledeBox!.height / 2;
+    expect(ledeMidpoint).toBeGreaterThan(headingBox!.y);
+    expect(ledeMidpoint).toBeLessThan(headingBox!.y + headingBox!.height);
   });
 });
