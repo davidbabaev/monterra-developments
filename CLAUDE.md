@@ -160,6 +160,7 @@ Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` wh
 ## 7 · Guardrails — do NOT do these (IMPORTANT!!!)
 
 - Never commit directly to `main`. Work on `ai/<type>-<short-description>`.
+- **NEVER use `--no-verify`, `--no-gpg-sign`, or any flag that bypasses a git hook**, for any reason, including a message-only amend. The hooks are the safety net that makes `bypassPermissions` acceptable. If a commit is blocked, fix the cause. If a message is wrong, leave it wrong and tell me.
 - **NEVER run a command requiring `sudo`.** You cannot answer a password prompt and it hangs forever. If a step needs sudo, stop and tell me the exact command.
 - Never touch `.env` files.
 - Never install a UI component library (shadcn, MUI, Chakra, DaisyUI). Build from tokens.
