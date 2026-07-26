@@ -172,6 +172,20 @@ Dark, four zones: brand block (logo, one-line description) · two nav columns ·
 
 Full-bleed elements: home hero, inner-page hero, contact band, footer, and any section that takes a stone background.
 
+### 3.1 Bronze-deep — the accessible variant, not a new colour
+
+`--color-bronze-deep` `#976C3B` is **not an eighth brand colour.** It is the accessible variant of bronze, used **only as a filled background behind white text**, where bronze itself measures 3.87:1 and fails.
+
+It never appears as text, as a border, as a rule, or as an icon colour. **Bronze remains the accent everywhere else.**
+
+| | Bronze `#A87842` | Bronze-deep `#976C3B` |
+|---|---|---|
+| Text | Never below 26px | Never |
+| Border / rule / icon | Yes | Never |
+| Filled background behind white text | Never — 3.87:1 | Yes — 4.64:1 |
+
+The only current use is the `current` StatusBadge. Anything else that needs small white text on a bronze fill uses it too; anything that does not, uses bronze.
+
 ---
 
 ## 4 · Revised type scale

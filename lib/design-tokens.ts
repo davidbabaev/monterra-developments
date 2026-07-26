@@ -23,13 +23,17 @@ export const BRAND_COLORS: readonly BrandColor[] = [
   { name: "slate", variable: "--color-slate", hex: "#66707a", role: "Metadata, labels, captions" },
 ];
 
-/** Not part of the seven-colour brand palette — see the note in globals.css. */
+/**
+ * The accessible variant of bronze, not an eighth brand colour. Filled
+ * backgrounds behind white text only — never text, border, rule or icon.
+ * See docs/design-reference.md section 3.1.
+ */
 export const DERIVED_COLORS: readonly BrandColor[] = [
   {
     name: "bronze-deep",
     variable: "--color-bronze-deep",
     hex: "#976c3b",
-    role: "Filled badge background behind small white text",
+    role: "Accessible variant of bronze. Filled background behind white text only.",
   },
 ];
 

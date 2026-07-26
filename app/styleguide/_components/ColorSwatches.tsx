@@ -31,7 +31,7 @@ export function ColorSwatches() {
       </div>
       <div>
         <p className="font-body text-[13px] font-medium uppercase tracking-[0.04em] text-slate">
-          Derived — not part of the brand palette
+          Accessible variant of bronze — not an eighth brand colour
         </p>
         <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {DERIVED_COLORS.map((color) => (
