@@ -6,7 +6,7 @@ import { Menu } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Wordmark } from "@/components/ui/Wordmark";
+import { Logo } from "@/components/ui/Logo";
 import { Container } from "./Container";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
@@ -56,8 +56,10 @@ export function Header() {
             href="/"
             className="inline-flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
           >
-            <Wordmark variant="monogram" className="lg:hidden" />
-            <Wordmark />
+            {/* The lockup is illegible below ~40px, so small screens get the
+                mark alone rather than a shrunken wordmark. */}
+            <Logo shape="monogram" className="h-9 w-auto lg:hidden" decorative />
+            <Logo className="hidden h-10 w-auto lg:block xl:h-11" decorative />
             <span className="sr-only">Home</span>
           </Link>
 

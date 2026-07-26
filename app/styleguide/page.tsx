@@ -4,6 +4,7 @@ import { Section } from "@/components/layout/Section";
 import { SplitHeading } from "@/components/ui/SplitHeading";
 import { ColorSwatches } from "./_components/ColorSwatches";
 import { ContrastTable } from "./_components/ContrastTable";
+import { LogoGallery } from "./_components/LogoGallery";
 import {
   ButtonGallery,
   CardGallery,
@@ -43,6 +44,15 @@ export default function StyleguidePage() {
           note="Seven brand colours. Nothing outside this set appears in a component."
         >
           <ColorSwatches />
+        </StyleguideSection>
+
+        <StyleguideSection
+          eyebrow="Foundations"
+          lede="The"
+          rest="logo"
+          note="[REPLACE] Auto-traced from the supplied artwork and optimised, not redrawn. The geometry still carries tracer artefacts; a clean vector redraw is owed before launch."
+        >
+          <LogoGallery />
         </StyleguideSection>
 
         <StyleguideSection

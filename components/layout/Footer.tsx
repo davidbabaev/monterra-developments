@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "./Container";
-import { Wordmark } from "@/components/ui/Wordmark";
+import { Logo } from "@/components/ui/Logo";
 import { PROJECT_STATUSES } from "@/lib/schema";
 import { siteConfig } from "@/lib/site";
 
@@ -44,7 +44,7 @@ export function Footer() {
       <Container>
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-4 xl:gap-8">
           <div className="order-2 xl:order-1">
-            <Wordmark tone="dark" />
+            <Logo tone="dark" className="h-10 w-auto" />
             {/*
               Not bronze: at 20px this is below the 24px large-text threshold,
               where bronze on navy measures 3.95:1 and fails. Not Cormorant
