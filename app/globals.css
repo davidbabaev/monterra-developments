@@ -27,6 +27,17 @@
    */
   --color-bronze-deep: #976c3b;
 
+  /**
+   * A functional colour, not a brand one, and the only one on the site: nothing
+   * in the palette reads as "this went wrong", and a form that cannot say so is
+   * a form that loses what a reader typed.
+   *
+   * Used for validation messages and the submission error banner, on ivory
+   * (6.91:1) and on white (7.53:1). It never carries meaning alone — every place
+   * it appears is paired with an icon and with words.
+   */
+  --color-error: #9b2c2c;
+
   /* Radius — architectural restraint, not soft */
   --radius-sm: 2px;
   --radius-md: 4px;

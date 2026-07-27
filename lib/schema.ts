@@ -122,3 +122,32 @@ export type ImageFrontmatter = z.infer<typeof imageSchema>;
 export type GalleryImageFrontmatter = z.infer<typeof galleryImageSchema>;
 export type FloorPlanFrontmatter = z.infer<typeof floorPlanSchema>;
 export type ProjectMediaFrontmatter = ProjectFrontmatter["media"];
+
+/**
+ * The contact form. One schema, used by the form's resolver in the browser and
+ * again by lib/submitInquiry.ts before anything is sent, so the rules cannot
+ * drift between the two.
+ *
+ * Messages are written to be read by the person who tripped them: they say what
+ * to do, not what the validator thinks.
+ */
+
+/** The option shown when the enquiry is not about a specific development. */
+export const GENERAL_ENQUIRY = "general" as const;
+
+export const inquirySchema = z.object({
+  name: z.string().trim().min(2, "Enter your full name."),
+  email: z.email("Enter an email address we can reply to, like name@example.com."),
+  // Optional, and an empty string is what an untouched input actually sends.
+  phone: z
+    .string()
+    .trim()
+    .max(32, "That phone number looks too long.")
+    .optional()
+    .or(z.literal("")),
+  /** A project slug, or GENERAL_ENQUIRY. Validated against the real list by the form. */
+  project: z.string().min(1),
+  message: z.string().trim().min(10, "Tell us a little more — at least a sentence."),
+});
+
+export type Inquiry = z.infer<typeof inquirySchema>;

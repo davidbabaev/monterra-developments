@@ -1,14 +1,30 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/layout/PageHero";
+import { Suspense } from "react";
+import { ContactDetails } from "@/components/forms/ContactDetails";
+import { ContactForm, type ProjectOption } from "@/components/forms/ContactForm";
+import { PreselectedContactForm } from "@/components/forms/PreselectedContactForm";
 import { Container } from "@/components/layout/Container";
+import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/layout/Section";
+import { getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "[REPLACE] Contact page description, replaced when real copy lands.",
+  description:
+    "[REPLACE] Tell Monterra Developments what you are looking for — a home, an investment or a site — and we reply within two business days.",
 };
 
+/**
+ * The form takes 60% of the width from 1024px and the details 40%. Below that
+ * they stack with the form first: it is what the page is for, and a reader who
+ * arrived from a project's call to action came intending to use it.
+ */
 export default function ContactPage() {
+  const projects: readonly ProjectOption[] = getAllProjects().map((project) => ({
+    value: project.slug,
+    label: project.title,
+  }));
+
   return (
     <>
       <PageHero
@@ -18,13 +34,19 @@ export default function ContactPage() {
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Contact" }]}
       />
       <Section>
-        <Container>
-          <h2 className="font-display text-[26px] font-semibold text-navy xl:text-[38px]">
-            [REPLACE] Contact
-          </h2>
-          <p className="mt-4 max-w-[68ch] font-body text-[16px] text-ink xl:text-[17px]">
-            [REPLACE] This page is a placeholder. Its content lands in a later increment.
-          </p>
+        <Container className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
+          <div>
+            {/*
+              useSearchParams opts a route out of static prerendering unless it
+              sits behind a Suspense boundary. The fallback is the same form with
+              the full option list and nothing preselected — what it shows before
+              hydration anyway, so there is no flash of a different layout.
+            */}
+            <Suspense fallback={<ContactForm projects={projects} />}>
+              <PreselectedContactForm projects={projects} />
+            </Suspense>
+          </div>
+          <ContactDetails />
         </Container>
       </Section>
     </>

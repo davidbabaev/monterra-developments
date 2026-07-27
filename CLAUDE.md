@@ -30,7 +30,9 @@ Versions below are the ones actually installed — read from `package.json` / `p
 | E2E tests | `@playwright/test` (mobile 390x844, desktop 1280x800) | 1.62.0 |
 | Content | `gray-matter` (frontmatter parsing at build time) | 4.0.3 |
 | Content | `next-mdx-remote` (MDX body rendering; not yet used) | 6.0.0 |
-| Validation | `zod` (v4 — content schemas, later the contact form) | 4.4.3 |
+| Validation | `zod` (v4 — content schemas and the contact form) | 4.4.3 |
+| Forms | `react-hook-form` (contact form state and validation) | 7.83.0 |
+| Forms | `@hookform/resolvers` (the Zod resolver) | 5.5.7 |
 | Content | `image-size` (intrinsic dimensions read at build time) | 2.0.2 |
 | Image encoding | `sharp` (dev only, placeholder generation; scripts approved via `allowScripts`) | 0.35.3 |
 | Runtime | Node.js | v24.18.0 (WSL2 Ubuntu) |
@@ -39,7 +41,7 @@ Versions below are the ones actually installed — read from `package.json` / `p
 
 **Planned, not yet installed** — add these when the increment that needs them lands, and update the table with the real resolved version at that time. Do not guess a version number here:
 
-- `react-hook-form` (+ `@hookform/resolvers`) — the contact form.
+- Nothing outstanding. Every package the remaining increments need is installed.
 
 ### Next 16 specifics that bite
 
