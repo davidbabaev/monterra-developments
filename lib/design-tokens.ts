@@ -35,6 +35,12 @@ export const DERIVED_COLORS: readonly BrandColor[] = [
     hex: "#976c3b",
     role: "Accessible variant of bronze. Filled background behind white text only.",
   },
+  {
+    name: "error",
+    variable: "--color-error",
+    hex: "#9b2c2c",
+    role: "Functional, not brand. Validation messages and the submission error banner.",
+  },
 ];
 
 export type ContrastPair = {
@@ -87,6 +93,9 @@ const PAIR_SPECS: readonly PairSpec[] = [
    */
   ["stone", "ivory", "decorative", "Card border — the content identifies the card, not the edge"],
   ["navy", "ivory", "nonText", "Form input borders — stone is too faint to identify a control"],
+  ["error", "ivory", "text", "Field validation messages and the submission error banner"],
+  ["error", "surface", "text", "Validation message inside a white panel"],
+  ["error", "ivory", "nonText", "The border of an invalid field, and the banner's rule"],
   ["stone", "ivory", "decorative", "SectionNumeral — aria-hidden, never the only cue"],
   ["bronze", "stone", "decorative", "PullQuote attribution rule — aria-hidden"],
 ];
