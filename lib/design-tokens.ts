@@ -78,6 +78,7 @@ const PAIR_SPECS: readonly PairSpec[] = [
   ["bronze", "navy", "largeText", "SplitHeading lede on a dark scrim"],
   ["bronze", "ivory", "nonText", "Focus rings, hairline rules, AmenityMarker"],
   ["bronze", "navy", "nonText", "Primary button arrow"],
+  ["bronze", "surface", "nonText", "Card call-to-action arrow, prev/next direction arrow"],
   /**
    * Stone is 1.76:1 on ivory, so it can only ever be a decorative edge. A card
    * is identified by its content and its hover state, not by its border, so

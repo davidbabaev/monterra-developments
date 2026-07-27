@@ -22,6 +22,15 @@ const STONE = { r: 0xc8, g: 0xb9, b: 0xa3 };
 const HERO = { width: 1920, height: 1080 };
 const GALLERY = { width: 1200, height: 800 };
 const FLOOR_PLAN = { width: 1600, height: 1200 };
+const STATIC_MAP = { width: 1200, height: 675 };
+
+/**
+ * The static map on a project's location block. One shared asset rather than one
+ * per project: it is not project content — there is no frontmatter field for it —
+ * and a real per-project map render replaces it later. Lives in public/ because
+ * nothing mirrors it out of content/.
+ */
+const STATIC_MAP_PATH = path.join(REPO_ROOT, "public", "map", "static-map-placeholder.png");
 
 /** Alternating so a gallery reads as distinct images rather than one repeated block. */
 const galleryColor = (index) => (index % 2 === 0 ? STONE : NAVY);
@@ -111,6 +120,8 @@ async function main() {
       written.push(await writePdf(path.join(root, "plans", `${plan}.pdf`), label));
     }
   }
+
+  written.push(await writeSolidPng(STATIC_MAP_PATH, STATIC_MAP, STONE));
 
   console.log(written.map((line) => `  ${line}`).join("\n"));
   console.log(`\n${written.length} placeholder assets written.`);

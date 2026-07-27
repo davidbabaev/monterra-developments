@@ -24,8 +24,10 @@ test.describe("routing", () => {
 
   test("a known project slug renders the shell", async ({ page }) => {
     await page.goto("/projects/monterra-ridge");
+    // The last crumb is the project's title now that the page renders real
+    // content; it was the raw slug while the route was a placeholder.
     await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText(
-      "monterra-ridge",
+      "Monterra Ridge",
     );
   });
 });

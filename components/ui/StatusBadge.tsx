@@ -1,4 +1,5 @@
 import type { ProjectStatus } from "@/lib/schema";
+import { STATUS_LABEL } from "@/lib/project-status";
 import { cx } from "@/lib/cx";
 
 /**
@@ -21,12 +22,6 @@ const SURFACE: Record<ProjectStatus, string> = {
   upcoming: "bg-stone text-navy",
 };
 
-const LABEL: Record<ProjectStatus, string> = {
-  completed: "Completed",
-  current: "Current",
-  upcoming: "Upcoming",
-};
-
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
@@ -37,7 +32,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className,
       )}
     >
-      {LABEL[status]}
+      {STATUS_LABEL[status]}
     </span>
   );
 }
