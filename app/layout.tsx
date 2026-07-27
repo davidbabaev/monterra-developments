@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Manrope } from "next/font/google";
 import { ContactBand } from "@/components/layout/ContactBand";
+import { ContactBandSlot } from "@/components/layout/ContactBandSlot";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SkipLink } from "@/components/layout/SkipLink";
@@ -61,7 +62,9 @@ export default function RootLayout({
           <main id="main" className="flex-1">
             {children}
           </main>
-          <ContactBand />
+          <ContactBandSlot>
+            <ContactBand />
+          </ContactBandSlot>
           <Footer />
         </div>
       </body>
