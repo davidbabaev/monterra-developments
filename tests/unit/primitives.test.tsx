@@ -130,7 +130,7 @@ describe("SectionNumeral", () => {
     const { container } = render(<SectionNumeral value="01" />);
     const numeral = container.firstElementChild;
     expect(numeral).toHaveAttribute("aria-hidden", "true");
-    expect(numeral).toHaveClass("text-stone");
+    expect(numeral).toHaveClass("text-slate");
   });
 });
 

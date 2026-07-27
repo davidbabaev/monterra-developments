@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { Suspense } from "react";
 import { Container } from "@/components/layout/Container";
 import { PageHero } from "@/components/layout/PageHero";
@@ -8,11 +9,7 @@ import { ProjectsBrowser } from "@/components/project/ProjectsBrowser";
 import { toCardData } from "@/components/project/projectCardData";
 import { getAllProjects } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description:
-    "[REPLACE] Completed, current and upcoming developments from Monterra Developments, across Texas, Florida and Colorado.",
-};
+export const metadata: Metadata = buildMetadata("/projects");
 
 export default function ProjectsPage() {
   const projects = getAllProjects().map(toCardData);
@@ -31,6 +28,14 @@ export default function ProjectsPage() {
             [REPLACE] Every development we have delivered, have under construction, or have
             announced. Filter by stage to narrow the list.
           </p>
+
+          {/*
+            The cards are h3s, so without this the outline jumps from the page
+            title straight to a project name. Visually hidden because the design
+            has no heading here — the filter and the grid speak for themselves —
+            but a screen reader gets a level to navigate by rather than a gap.
+          */}
+          <h2 className="sr-only">All developments</h2>
 
           {/*
             useSearchParams opts a route out of static prerendering unless it

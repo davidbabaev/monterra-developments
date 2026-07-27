@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/sync-content-assets.mjs",
+    "predev": "node scripts/check-image-sizes.mjs && node scripts/sync-content-assets.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/sync-content-assets.mjs",
+    "prebuild": "node scripts/check-image-sizes.mjs && node scripts/sync-content-assets.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -26,6 +26,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.62.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^7.0.0",

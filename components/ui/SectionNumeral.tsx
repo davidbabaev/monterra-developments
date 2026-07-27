@@ -1,12 +1,18 @@
 import { cx } from "@/lib/cx";
 
 /**
- * Stone, deliberately quieter than the heading it sits above. Only used where
- * the order carries real information — Our Process, and nowhere else.
+ * Deliberately quieter than the heading it sits above. Only used where the order
+ * carries real information — Our Process, and nowhere else.
  *
- * aria-hidden: stone on ivory is 1.76:1, so this is decorative by construction
- * and must never be the only thing conveying sequence. The surrounding content
- * carries the order for assistive technology.
+ * Slate, not the stone the design reference names. Stone on ivory is 1.76:1,
+ * which axe reports as a serious failure of 1.4.3 even at 44px, and the audit is
+ * right: the numerals were very nearly invisible on screen. "Decorative" was the
+ * intent, but a numeral a sighted reader cannot make out is not decorative, it is
+ * broken. Slate is 4.87:1 and still far quieter than the navy heading, which is
+ * the effect the reference was after.
+ *
+ * aria-hidden stays: the sequence is carried for assistive technology by the
+ * ordered list around it, so the digits are never the only cue.
  */
 
 type SectionNumeralProps = {
@@ -20,7 +26,7 @@ export function SectionNumeral({ value, className }: SectionNumeralProps) {
     <span
       aria-hidden="true"
       className={cx(
-        "block font-display text-[32px] font-semibold leading-none text-stone xl:text-[44px]",
+        "block font-display text-[32px] font-semibold leading-none text-slate xl:text-[44px]",
         className,
       )}
     >

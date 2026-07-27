@@ -32,8 +32,8 @@ describe("Hero", () => {
     const image = container.querySelector("img");
 
     expect(image).not.toHaveAttribute("loading", "lazy");
-    expect(image).toHaveAttribute("width", "2752");
-    expect(image).toHaveAttribute("height", "1536");
+    expect(image).toHaveAttribute("width", "2560");
+    expect(image).toHaveAttribute("height", "1429");
   });
 
   it("offers exactly two calls to action, both readable on a dark scrim", () => {
@@ -162,7 +162,7 @@ describe("ProcessPreview", () => {
     render(<ProcessPreview />);
     const numeral = screen.getByText("01");
 
-    expect(numeral).toHaveClass("text-stone");
+    expect(numeral).toHaveClass("text-slate");
     expect(numeral).toHaveAttribute("aria-hidden", "true");
   });
 

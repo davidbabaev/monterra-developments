@@ -6,6 +6,10 @@ import { CtaBand } from "@/components/layout/CtaBand";
 import { StatsBand } from "@/components/ui/StatsBand";
 import { toCardData } from "@/components/project/projectCardData";
 import { getFeaturedProjects } from "@/lib/projects";
+import { buildMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = buildMetadata("/");
 
 /**
  * Six sections, in this order, and no seventh. The reference this site is drawn

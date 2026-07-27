@@ -96,7 +96,12 @@ const PAIR_SPECS: readonly PairSpec[] = [
   ["error", "ivory", "text", "Field validation messages and the submission error banner"],
   ["error", "surface", "text", "Validation message inside a white panel"],
   ["error", "ivory", "nonText", "The border of an invalid field, and the banner's rule"],
-  ["stone", "ivory", "decorative", "SectionNumeral — aria-hidden, never the only cue"],
+  /**
+   * The numerals were stone here, on the reading that aria-hidden made them
+   * decorative. An axe scan disagreed — 1.76:1 is a serious 1.4.3 failure at any
+   * size, and on screen they were nearly invisible — so they are slate now.
+   */
+  ["slate", "ivory", "largeText", "SectionNumeral — quieter than the heading, still legible"],
   ["bronze", "stone", "decorative", "PullQuote attribution rule — aria-hidden"],
 ];
 

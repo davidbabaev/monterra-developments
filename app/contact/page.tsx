@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { Suspense } from "react";
 import { ContactDetails } from "@/components/forms/ContactDetails";
 import { ContactForm, type ProjectOption } from "@/components/forms/ContactForm";
@@ -8,11 +9,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/layout/Section";
 import { getAllProjects } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "[REPLACE] Tell Monterra Developments what you are looking for — a home, an investment or a site — and we reply within two business days.",
-};
+export const metadata: Metadata = buildMetadata("/contact");
 
 /**
  * The form takes 60% of the width from 1024px and the details 40%. Below that

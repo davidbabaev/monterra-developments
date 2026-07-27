@@ -34,14 +34,13 @@ const STATIC_MAP_PATH = path.join(REPO_ROOT, "public", "map", "static-map-placeh
 
 /**
  * The homepage's own photography, which belongs to no project and so has no
- * folder under content/. The hero is the LCP element, so it is a real file with
- * real dimensions rather than a coloured div: the layout it reserves has to be
- * the layout the photograph will need.
+ * folder under content/.
+ *
+ * The hero is no longer here: it is a real photograph now, at
+ * public/home/home-hero.webp, and regenerating a placeholder over it would be a
+ * regression rather than a reset.
  */
-const HOME_IMAGES = [
-  { file: "hero-placeholder.png", size: { width: 1920, height: 1080 } },
-  { file: "positioning-placeholder.png", size: { width: 1200, height: 900 } },
-];
+const HOME_IMAGES = [{ file: "positioning-placeholder.png", size: { width: 1200, height: 900 } }];
 
 /**
  * Photography for the pages that belong to no project: the About story, the five

@@ -5,6 +5,9 @@ import { ContactBandSlot } from "@/components/layout/ContactBandSlot";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SkipLink } from "@/components/layout/SkipLink";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { SITE_URL } from "@/lib/seo";
+import { organizationSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -36,7 +39,13 @@ const cormorant = Cormorant_Garamond({
   preload: true,
 });
 
+/**
+ * metadataBase is what makes every relative canonical, Open Graph URL and OG
+ * image absolute. Without it Next warns and emits relative URLs, which crawlers
+ * and link-preview services cannot resolve.
+ */
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
@@ -55,6 +64,9 @@ export default function RootLayout({
       className={`${manrope.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* One Organization block for the whole site, in the layout so it is on
+            every page without being repeated in any of them. */}
+        <JsonLd data={organizationSchema()} />
         <SkipLink />
         <Header />
         {/* MobileNav marks this inert while the overlay is open. */}

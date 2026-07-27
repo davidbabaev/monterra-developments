@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/layout/Section";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "[REPLACE] How Monterra Developments handles the information you send us through this website.",
-};
+export const metadata: Metadata = buildMetadata("/privacy");
 
 /**
  * A single prose column at the 68ch measure. No CTA band and no offset
