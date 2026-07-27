@@ -1,21 +1,31 @@
-import { Container } from "@/components/layout/Container";
-import { Section } from "@/components/layout/Section";
-import { SplitHeading } from "@/components/ui/SplitHeading";
+import { ClosingCta } from "@/components/home/ClosingCta";
+import { FeaturedProjects } from "@/components/home/FeaturedProjects";
+import { Hero } from "@/components/home/Hero";
+import { Positioning } from "@/components/home/Positioning";
+import { ProcessPreview } from "@/components/home/ProcessPreview";
+import { StatsBand } from "@/components/home/StatsBand";
+import { toCardData } from "@/components/project/projectCardData";
+import { getFeaturedProjects } from "@/lib/projects";
 
 /**
- * Home is the one route that does not use PageHero — it gets its own tall
- * photographic hero in increment 8. This is a placeholder until then.
+ * Six sections, in this order, and no seventh. The reference this site is drawn
+ * from runs to nine and the message thins out; the cut is the point.
+ *
+ * Home is the one route with no PageHero — it gets the tall photographic hero
+ * instead.
  */
 
 export default function HomePage() {
+  const featured = getFeaturedProjects().map(toCardData);
+
   return (
-    <Section>
-      <Container>
-        <SplitHeading as="h1" lede="Building" rest="communities" />
-        <p className="mt-4 max-w-[68ch] font-body text-[18px] leading-[1.6] text-slate xl:text-[20px]">
-          [REPLACE] Home page content lands in a later increment.
-        </p>
-      </Container>
-    </Section>
+    <>
+      <Hero />
+      <Positioning />
+      <FeaturedProjects projects={featured} />
+      <StatsBand />
+      <ProcessPreview />
+      <ClosingCta />
+    </>
   );
 }

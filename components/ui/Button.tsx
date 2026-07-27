@@ -8,7 +8,7 @@ import { cx } from "@/lib/cx";
  * Renders an anchor when `href` is present, otherwise a button.
  */
 
-type ButtonVariant = "primary" | "secondary" | "text" | "onDark";
+type ButtonVariant = "primary" | "secondary" | "text" | "onDark" | "onDarkOutline";
 
 type ButtonProps = {
   readonly variant?: ButtonVariant;
@@ -43,10 +43,12 @@ type VariantStyle = {
  * which fails the 4.5:1 required of a small link. The hover cue is a bronze
  * underline instead — bronze is permitted as a rule, and the label stays navy.
  *
- * `onDark` is the primary button's counterpart on a navy band, where a navy
- * fill would be invisible. It takes bronze-deep, the only fill that carries
- * white text at 4.64:1, and its arrow goes white too — bronze on bronze-deep
- * is 1.2:1 and would disappear.
+ * `onDark` and `onDarkOutline` are the primary and secondary pair for a navy
+ * band or a scrimmed photograph, where a navy fill and a navy outline both
+ * disappear. `onDark` takes bronze-deep, the only fill that carries white text
+ * at 4.64:1, and its arrow goes white too — bronze on bronze-deep is 1.2:1.
+ * `onDarkOutline` inverts the secondary: an ivory edge and label at 13:1, going
+ * to an ivory fill with a navy label on hover.
  */
 const VARIANT: Record<ButtonVariant, VariantStyle> = {
   primary: { classes: "min-w-11 bg-navy px-6 text-ivory hover:bg-navy", arrow: "bronze" },
@@ -56,6 +58,10 @@ const VARIANT: Record<ButtonVariant, VariantStyle> = {
   },
   text: { classes: "px-1 text-navy border-b border-transparent hover:border-bronze", arrow: null },
   onDark: { classes: "min-w-11 bg-bronze-deep px-6 text-surface", arrow: "surface" },
+  onDarkOutline: {
+    classes: "min-w-11 border border-ivory px-6 text-ivory hover:bg-ivory hover:text-navy",
+    arrow: null,
+  },
 };
 
 const ARROW_COLOR = {

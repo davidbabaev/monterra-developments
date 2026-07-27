@@ -32,6 +32,17 @@ const STATIC_MAP = { width: 1200, height: 675 };
  */
 const STATIC_MAP_PATH = path.join(REPO_ROOT, "public", "map", "static-map-placeholder.png");
 
+/**
+ * The homepage's own photography, which belongs to no project and so has no
+ * folder under content/. The hero is the LCP element, so it is a real file with
+ * real dimensions rather than a coloured div: the layout it reserves has to be
+ * the layout the photograph will need.
+ */
+const HOME_IMAGES = [
+  { file: "hero-placeholder.png", size: { width: 1920, height: 1080 } },
+  { file: "positioning-placeholder.png", size: { width: 1200, height: 900 } },
+];
+
 /** Alternating so a gallery reads as distinct images rather than one repeated block. */
 const galleryColor = (index) => (index % 2 === 0 ? STONE : NAVY);
 
@@ -122,6 +133,11 @@ async function main() {
   }
 
   written.push(await writeSolidPng(STATIC_MAP_PATH, STATIC_MAP, STONE));
+
+  for (const image of HOME_IMAGES) {
+    const target = path.join(REPO_ROOT, "public", "home", image.file);
+    written.push(await writeSolidPng(target, image.size, NAVY));
+  }
 
   console.log(written.map((line) => `  ${line}`).join("\n"));
   console.log(`\n${written.length} placeholder assets written.`);
