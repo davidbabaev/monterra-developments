@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SplitHeading } from "@/components/ui/SplitHeading";
@@ -15,10 +16,7 @@ import { StyleguideSection } from "./_components/StyleguideSection";
 import { TypeScaleTable } from "./_components/TypeScaleTable";
 
 /** Internal reference page. Not for the public site, and excluded from search. */
-export const metadata: Metadata = {
-  title: "Styleguide",
-  robots: { index: false, follow: false },
-};
+export const metadata: Metadata = buildMetadata("/styleguide");
 
 export default function StyleguidePage() {
   return (

@@ -29,10 +29,10 @@ export function Hero() {
   return (
     <section className="relative flex h-[78vh] items-center xl:h-[88vh]">
       <Image
-        src="/home/home-hero.png"
+        src="/home/home-hero.webp"
         alt="A city avenue on a clear morning, mid-rise apartment buildings with ground-floor shops either side and people on the sidewalk"
-        width={2752}
-        height={1536}
+        width={2560}
+        height={1429}
         priority
         sizes="100vw"
         className="absolute inset-0 h-full w-full object-cover"

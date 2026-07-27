@@ -39,6 +39,11 @@ const LINK =
 export function ContactDetails() {
   return (
     <div className="flex flex-col gap-8">
+      {/* Office, Phone, Email and Hours are h3s. Without a level above them the
+          outline steps from the page title to an h3; hidden, because the column
+          reads as what it is without a label. */}
+      <h2 className="sr-only">Other ways to reach us</h2>
+
       <ul className="flex flex-col gap-6">
         {DETAILS.map((detail) => (
           <li key={detail.heading} className="flex min-w-0 gap-4">

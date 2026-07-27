@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { CtaBand } from "@/components/layout/CtaBand";
 import { PageHero } from "@/components/layout/PageHero";
 import { ProcessStages } from "@/components/process/ProcessStages";
 
-export const metadata: Metadata = {
-  title: "Our Process",
-  description:
-    "[REPLACE] How Monterra Developments buys land, draws a plan, gets it permitted, builds it with its own crews and hands it over.",
-};
+export const metadata: Metadata = buildMetadata("/process");
 
 export default function ProcessPage() {
   return (

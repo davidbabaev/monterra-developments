@@ -126,7 +126,9 @@ describe("the completed project with an SEO override", () => {
     expect(larkin?.seo?.title).toBe(
       "The Larkin - Denver Highlands Condominiums | Monterra Developments",
     );
-    expect(larkin?.seo?.description).toContain("32-unit condominium development");
+    // The wording is asserted for length and uniqueness in tests/unit/seo.test.ts;
+    // here it only has to be present and about this project.
+    expect(larkin?.seo?.description).toContain("Denver");
     expect(larkin?.media.gallery).toHaveLength(4);
   });
 });

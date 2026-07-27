@@ -13,8 +13,12 @@ import { ProjectNav, type ProjectNavItem } from "@/components/project/ProjectNav
 import { SpecTable } from "@/components/project/SpecTable";
 import { StatusTracker } from "@/components/project/StatusTracker";
 import { toCardData } from "@/components/project/projectCardData";
+import { JsonLd } from "@/components/seo/JsonLd";
 import type { Project } from "@/lib/project-loader";
 import { getAdjacentProjects, getAllProjects, getProjectBySlug } from "@/lib/projects";
+import { projectDescription } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
+import { projectSchema } from "@/lib/structured-data";
 
 /**
  * Section order is fixed. Every section below the overview is optional except the
@@ -40,13 +44,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (project === null) return {};
 
-  const { seo, title, summary } = project;
+  const { seo, title } = project;
+  const path = `/projects/${slug}`;
+  const description = projectDescription(project);
 
   return {
     // `absolute` when authored: the override already carries the site name and
     // the root template would append it a second time.
     title: seo?.title === undefined ? title : { absolute: seo.title },
-    description: seo?.description ?? summary,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      siteName: siteConfig.name,
+      url: path,
+      title: seo?.title ?? `${title} | ${siteConfig.name}`,
+      description,
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -64,8 +79,12 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { title, status, location, specs, amenities, media, body } = project;
   const { prev, next } = getAdjacentProjects(slug);
 
+  /** Null for a project with no coordinates, which emits no block at all. */
+  const schema = projectSchema(project);
+
   return (
     <>
+      {schema !== null && <JsonLd data={schema} />}
       <ProjectHero
         title={title}
         status={status}

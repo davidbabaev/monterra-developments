@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import { CompanyStory } from "@/components/about/CompanyStory";
 import { ValuesGrid } from "@/components/about/ValuesGrid";
 import { Container } from "@/components/layout/Container";
@@ -8,11 +9,7 @@ import { Section } from "@/components/layout/Section";
 import { PullQuote } from "@/components/ui/PullQuote";
 import { StatsBand } from "@/components/ui/StatsBand";
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "[REPLACE] Monterra Developments has bought, designed and built townhomes, condominiums and duplexes across Texas, Florida and Colorado since 2008.",
-};
+export const metadata: Metadata = buildMetadata("/about");
 
 /**
  * Story, values, one quote, the statistics the homepage already shows, and the
