@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { AmenityList } from "@/components/project/AmenityList";
 import { FloorPlanList } from "@/components/project/FloorPlanList";
-import { GallerySlot } from "@/components/project/GallerySlot";
 import { LocationBlock } from "@/components/project/LocationBlock";
 import { ProjectNav } from "@/components/project/ProjectNav";
 import { SpecTable } from "@/components/project/SpecTable";
@@ -98,17 +97,7 @@ describe("AmenityList", () => {
   });
 });
 
-describe("GallerySlot", () => {
-  it("holds the slot open when the project has images", () => {
-    render(<GallerySlot imageCount={4} />);
-    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Project gallery");
-  });
-
-  it("renders nothing when the project has no gallery", () => {
-    const { container } = render(<GallerySlot imageCount={0} />);
-    expect(container).toBeEmptyDOMElement();
-  });
-});
+/** The gallery has its own file: tests/unit/gallery.test.tsx. */
 
 describe("FloorPlanList", () => {
   const withPdf: ResolvedFloorPlan = {

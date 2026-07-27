@@ -4,7 +4,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { AmenityList } from "@/components/project/AmenityList";
 import { FloorPlanList } from "@/components/project/FloorPlanList";
-import { GallerySlot } from "@/components/project/GallerySlot";
+import { Gallery } from "@/components/project/Gallery";
 import { InquiryCta } from "@/components/project/InquiryCta";
 import { LocationBlock } from "@/components/project/LocationBlock";
 import { ProjectBody } from "@/components/project/ProjectBody";
@@ -96,7 +96,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
           <LocationBlock title={title} location={location} />
           <AmenityList amenities={amenities} />
-          <GallerySlot imageCount={media.gallery?.length ?? 0} />
+          <Gallery images={media.gallery} />
           <FloorPlanList plans={media.floorPlans} />
           <StatusTracker status={status} title={title} />
         </Container>
