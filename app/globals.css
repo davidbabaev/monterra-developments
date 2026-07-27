@@ -70,6 +70,28 @@
 }
 
 /**
+ * Section rhythm between neighbours.
+ *
+ * Every Section carries 64/88/120px on both edges, so two of them in a row add
+ * up to double that — 240px of nothing between two ivory sections on a desktop,
+ * which reads as a missing block rather than as breathing room. Where the
+ * background does not change, the second section drops its top padding and the
+ * pair reads as one interval.
+ *
+ * Where the background does change, both keep their padding: the colour edge is
+ * the break, and it needs room on both sides of it to land.
+ *
+ * Written as a sibling rule rather than a prop because a section cannot know
+ * what precedes it, and threading that by hand would go stale the first time
+ * two sections were reordered. One pair per surface, since CSS cannot ask
+ * whether two siblings happen to carry the same attribute value.
+ */
+[data-section-surface="page"] + [data-section-surface="page"],
+[data-section-surface="navy"] + [data-section-surface="navy"] {
+  padding-top: 0;
+}
+
+/**
  * The lightbox's entrance. Applied only under `motion-safe`, so with reduced
  * motion the viewer is simply present — instant, and fully functional.
  */

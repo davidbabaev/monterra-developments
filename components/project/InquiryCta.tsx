@@ -18,7 +18,7 @@ type InquiryCtaProps = {
 
 export function InquiryCta({ title, slug }: InquiryCtaProps) {
   return (
-    <Section className="bg-navy">
+    <Section surface="navy">
       <Container className="flex flex-col items-start gap-8 xl:flex-row xl:items-center xl:justify-between">
         <SplitHeading as="h2" lede="Interested" rest={`in ${title}?`} variant="dark" />
         <Button variant="onDark" href={`/contact?project=${slug}`}>

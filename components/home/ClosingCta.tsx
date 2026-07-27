@@ -12,7 +12,7 @@ import { SplitHeading } from "@/components/ui/SplitHeading";
 
 export function ClosingCta() {
   return (
-    <Section className="bg-navy">
+    <Section surface="navy">
       <Container className="flex flex-col items-start gap-8 xl:flex-row xl:items-center xl:justify-between">
         <div>
           <SplitHeading as="h2" lede="Tell us" rest="what you are looking for" variant="dark" />
