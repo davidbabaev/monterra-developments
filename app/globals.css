@@ -81,6 +81,17 @@
 }
 
 /**
+ * "The device can hover", which is not the same question as ":hover".
+ *
+ * Tailwind's own `hover:` already guards itself with this media query, so a
+ * hover style never sticks on a touch screen. What it cannot express is the
+ * inverse: a *resting* style that should only exist where hovering is possible.
+ * The team portraits need exactly that — greyscale at rest, colour on hover, and
+ * colour permanently on a phone, where the hover half can never fire.
+ */
+@custom-variant can-hover (@media (hover: hover));
+
+/**
  * Section rhythm between neighbours.
  *
  * Every Section carries 64/88/120px on both edges, so two of them in a row add

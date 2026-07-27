@@ -1,11 +1,11 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { ClosingCta } from "@/components/home/ClosingCta";
+import { CtaBand } from "@/components/layout/CtaBand";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { Hero } from "@/components/home/Hero";
 import { Positioning } from "@/components/home/Positioning";
 import { ProcessPreview } from "@/components/home/ProcessPreview";
-import { StatsBand } from "@/components/home/StatsBand";
+import { StatsBand } from "@/components/ui/StatsBand";
 import { toCardData } from "@/components/project/projectCardData";
 import { getFeaturedProjects } from "@/lib/projects";
 
@@ -32,8 +32,8 @@ describe("Hero", () => {
     const image = container.querySelector("img");
 
     expect(image).not.toHaveAttribute("loading", "lazy");
-    expect(image).toHaveAttribute("width", "1920");
-    expect(image).toHaveAttribute("height", "1080");
+    expect(image).toHaveAttribute("width", "2752");
+    expect(image).toHaveAttribute("height", "1536");
   });
 
   it("offers exactly two calls to action, both readable on a dark scrim", () => {
@@ -172,9 +172,11 @@ describe("ProcessPreview", () => {
   });
 });
 
-describe("ClosingCta", () => {
-  it("closes with one button to the single conversion", () => {
-    const { container } = render(<ClosingCta />);
+describe("CtaBand", () => {
+  it("closes a page with one button to the single conversion", () => {
+    const { container } = render(
+      <CtaBand lede="Tell us" rest="what you are looking for" body="[REPLACE] Body copy." />,
+    );
     const band = container.firstElementChild;
 
     expect(band).toHaveClass("bg-navy");
@@ -182,5 +184,17 @@ describe("ClosingCta", () => {
       "href",
       "/contact",
     );
+  });
+
+  it("takes its copy from props, so three pages do not share one sentence", () => {
+    render(<CtaBand lede="Bring us" rest="a site" ctaLabel="Talk to us" ctaHref="/contact" />);
+
+    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Bring us a site");
+    expect(screen.getByRole("link", { name: /talk to us/i })).toBeInTheDocument();
+  });
+
+  it("renders no body paragraph when none is given", () => {
+    const { container } = render(<CtaBand lede="Work" rest="with us" />);
+    expect(container.querySelectorAll("p")).toHaveLength(0);
   });
 });

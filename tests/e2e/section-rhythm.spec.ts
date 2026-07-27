@@ -39,7 +39,7 @@ test.describe("section rhythm", () => {
       page,
     }) => {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto("/");
+      await page.goto("/", { waitUntil: "domcontentloaded" });
 
       const found = await sections(page);
       const full = paddingFor(width);
@@ -62,7 +62,7 @@ test.describe("section rhythm", () => {
 
     test(`a project detail page keeps every interval at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto("/projects/monterra-ridge");
+      await page.goto("/projects/monterra-ridge", { waitUntil: "domcontentloaded" });
 
       const found = await sections(page);
       const full = paddingFor(width);
@@ -76,25 +76,52 @@ test.describe("section rhythm", () => {
       }
     });
 
-    for (const path of ["/projects", "/about"]) {
-      test(`${path} keeps its single section intact at ${width}px`, async ({ page }) => {
-        await page.setViewportSize({ width, height: 900 });
-        await page.goto(path);
+    test(`a page with one section keeps both its edges at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/projects", { waitUntil: "domcontentloaded" });
 
-        const found = await sections(page);
-        const full = paddingFor(width);
+      const found = await sections(page);
+      const full = paddingFor(width);
 
-        expect(found).toHaveLength(1);
-        expect(found[0]?.paddingTop).toBe(full);
-        expect(found[0]?.paddingBottom).toBe(full);
-      });
-    }
+      expect(found).toHaveLength(1);
+      expect(found[0]?.paddingTop).toBe(full);
+      expect(found[0]?.paddingBottom).toBe(full);
+    });
+
+    test(`about collapses its ivory run and keeps the colour break at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/about", { waitUntil: "domcontentloaded" });
+
+      const found = await sections(page);
+      const full = paddingFor(width);
+
+      // Story, values, quote, stats, then the navy band.
+      expect(found).toHaveLength(5);
+
+      // The first follows the hero, which declares no surface, so it keeps its
+      // interval; the three ivory sections after it collapse; the band does not.
+      expect(found[0]).toEqual({ surface: "page", paddingTop: full, paddingBottom: full });
+      for (const section of found.slice(1, 4)) {
+        expect(section).toEqual({ surface: "page", paddingTop: 0, paddingBottom: full });
+      }
+      expect(found[4]).toEqual({ surface: "navy", paddingTop: full, paddingBottom: full });
+    });
 
     test(`no page scrolls horizontally after the change at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
 
-      for (const path of ["/", "/projects", "/projects/monterra-ridge", "/about"]) {
-        await page.goto(path);
+      for (const path of [
+        "/",
+        "/projects",
+        "/projects/monterra-ridge",
+        "/about",
+        "/process",
+        "/team",
+        "/privacy",
+      ]) {
+        await page.goto(path, { waitUntil: "domcontentloaded" });
         const overflow = await page.evaluate(
           () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
         );
@@ -105,7 +132,7 @@ test.describe("section rhythm", () => {
 
   test("the measured gap between two ivory sections is one interval, not two", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const gap = await page.evaluate(() => {
       const found = [...document.querySelectorAll('main [data-section-surface="page"]')];

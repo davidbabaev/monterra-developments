@@ -1,9 +1,9 @@
-import { ClosingCta } from "@/components/home/ClosingCta";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { Hero } from "@/components/home/Hero";
 import { Positioning } from "@/components/home/Positioning";
 import { ProcessPreview } from "@/components/home/ProcessPreview";
-import { StatsBand } from "@/components/home/StatsBand";
+import { CtaBand } from "@/components/layout/CtaBand";
+import { StatsBand } from "@/components/ui/StatsBand";
 import { toCardData } from "@/components/project/projectCardData";
 import { getFeaturedProjects } from "@/lib/projects";
 
@@ -25,7 +25,11 @@ export default function HomePage() {
       <FeaturedProjects projects={featured} />
       <StatsBand />
       <ProcessPreview />
-      <ClosingCta />
+      <CtaBand
+        lede="Tell us"
+        rest="what you are looking for"
+        body="[REPLACE] Whether you are buying, investing or bringing us a site, we reply within two business days."
+      />
     </>
   );
 }

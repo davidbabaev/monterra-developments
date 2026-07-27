@@ -49,7 +49,7 @@ test("the hero image is eager, not lazy, and preloaded", async ({ page }) => {
   await page.goto("/");
 
   const image = page.locator("main section").first().locator("img");
-  await expect(image).toHaveAttribute("src", /hero-placeholder/);
+  await expect(image).toHaveAttribute("src", /home-hero/);
 
   // No loading attribute at all is eager; "lazy" is the failure being guarded.
   expect(await image.getAttribute("loading")).not.toBe("lazy");
@@ -58,7 +58,7 @@ test("the hero image is eager, not lazy, and preloaded", async ({ page }) => {
   // attribute on the element, so that is what proves it here.
   const preload = page.locator('link[rel="preload"][as="image"]');
   await expect(preload).toHaveCount(1);
-  await expect(preload).toHaveAttribute("imagesrcset", /hero-placeholder/);
+  await expect(preload).toHaveAttribute("imagesrcset", /home-hero/);
 });
 
 test("no horizontal scroll from 320 to 1920", async ({ page }) => {
