@@ -1,32 +1,31 @@
 import type { Metadata } from "next";
+import { CtaBand } from "@/components/layout/CtaBand";
 import { PageHero } from "@/components/layout/PageHero";
-import { Container } from "@/components/layout/Container";
-import { Section } from "@/components/layout/Section";
+import { ProcessStages } from "@/components/process/ProcessStages";
 
 export const metadata: Metadata = {
   title: "Our Process",
-  description: "[REPLACE] Our Process page description, replaced when real copy lands.",
+  description:
+    "[REPLACE] How Monterra Developments buys land, draws a plan, gets it permitted, builds it with its own crews and hands it over.",
 };
 
 export default function ProcessPage() {
   return (
     <>
       <PageHero
-        lede="Our"
-        rest="process"
-        subhead="[REPLACE] How a Monterra development gets built, start to finish."
+        lede="How"
+        rest="we build"
+        subhead="[REPLACE] Five stages, in the order they actually happen."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Our Process" }]}
       />
-      <Section>
-        <Container>
-          <h2 className="font-display text-[26px] font-semibold text-navy xl:text-[38px]">
-            [REPLACE] Our Process
-          </h2>
-          <p className="mt-4 max-w-[68ch] font-body text-[16px] text-ink xl:text-[17px]">
-            [REPLACE] This page is a placeholder. Its content lands in a later increment.
-          </p>
-        </Container>
-      </Section>
+
+      <ProcessStages />
+
+      <CtaBand
+        lede="Bring us"
+        rest="a site"
+        body="[REPLACE] If you have land you think we should look at, we will walk it with you."
+      />
     </>
   );
 }

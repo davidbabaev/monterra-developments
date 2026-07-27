@@ -181,7 +181,9 @@ test.describe("contact band and footer", () => {
 
     const band = page.getByRole("heading", { name: "Office" }).locator("..").locator("..");
     const bandBox = await band.boundingBox();
-    const footerBox = await page.locator("footer").boundingBox();
+    // By role, not by tag: a PullQuote attribution is also a <footer>, and only
+    // the page footer carries the contentinfo role.
+    const footerBox = await page.getByRole("contentinfo").boundingBox();
     expect(bandBox).not.toBeNull();
     expect(footerBox).not.toBeNull();
     expect(bandBottom).toBeGreaterThanOrEqual(0);
@@ -192,7 +194,7 @@ test.describe("contact band and footer", () => {
 
   test("status links deep-link into the filtered listing", async ({ page }) => {
     await page.goto("/");
-    const footer = page.locator("footer");
+    const footer = page.getByRole("contentinfo");
     for (const status of ["completed", "current", "upcoming"]) {
       await expect(
         footer.locator(`a[href="/projects?status=${status}"]`),
@@ -202,9 +204,10 @@ test.describe("contact band and footer", () => {
 
   test("phone and email are real tel: and mailto: links", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator('footer a[href^="tel:"]')).toHaveCount(1);
-    await expect(page.locator('footer a[href^="mailto:"]')).toHaveCount(1);
-    const tel = await page.locator('footer a[href^="tel:"]').getAttribute("href");
+    const footer = page.getByRole("contentinfo");
+    await expect(footer.locator('a[href^="tel:"]')).toHaveCount(1);
+    await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(1);
+    const tel = await footer.locator('a[href^="tel:"]').getAttribute("href");
     expect(tel).not.toContain("REPLACE");
   });
 });

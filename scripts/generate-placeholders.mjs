@@ -43,6 +43,34 @@ const HOME_IMAGES = [
   { file: "positioning-placeholder.png", size: { width: 1200, height: 900 } },
 ];
 
+/**
+ * Photography for the pages that belong to no project: the About story, the five
+ * stages of Our Process, and the team portraits at the 4:5 the grid expects.
+ * Same rule as everywhere else — a solid colour at the right aspect ratio, never
+ * a broken image and never a third-party placeholder service.
+ */
+const FEATURE = { width: 1200, height: 900 };
+const PORTRAIT = { width: 800, height: 1000 };
+
+const PAGE_IMAGES = [
+  { dir: "about", file: "story-placeholder.png", size: FEATURE, color: NAVY },
+  ...["01", "02", "03", "04", "05"].map((numeral) => ({
+    dir: "process",
+    file: `stage-${numeral}-placeholder.png`,
+    size: FEATURE,
+    // Navy, not alternating: these sit on the stone slab of an offset
+    // composition, and a stone placeholder on a stone slab hides the offset that
+    // is the whole point of the layout.
+    color: NAVY,
+  })),
+  ...["01", "02", "03", "04"].map((numeral) => ({
+    dir: "team",
+    file: `portrait-${numeral}-placeholder.png`,
+    size: PORTRAIT,
+    color: NAVY,
+  })),
+];
+
 /** Alternating so a gallery reads as distinct images rather than one repeated block. */
 const galleryColor = (index) => (index % 2 === 0 ? STONE : NAVY);
 
@@ -137,6 +165,11 @@ async function main() {
   for (const image of HOME_IMAGES) {
     const target = path.join(REPO_ROOT, "public", "home", image.file);
     written.push(await writeSolidPng(target, image.size, NAVY));
+  }
+
+  for (const image of PAGE_IMAGES) {
+    const target = path.join(REPO_ROOT, "public", image.dir, image.file);
+    written.push(await writeSolidPng(target, image.size, image.color));
   }
 
   console.log(written.map((line) => `  ${line}`).join("\n"));

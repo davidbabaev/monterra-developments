@@ -3,6 +3,9 @@ import type { ZodError } from "zod";
 /**
  * Thrown when a content file on disk is not valid. Never caught by the loader —
  * invalid content must fail the build, naming the file and the offending field.
+ *
+ * Shared by every content type on disk: the projects under content/projects and
+ * the team in content/team.json.
  */
 export class ContentValidationError extends Error {
   constructor(
@@ -10,7 +13,7 @@ export class ContentValidationError extends Error {
     readonly problems: readonly string[],
   ) {
     super(
-      `Invalid project content in ${filePath}\n` +
+      `Invalid content in ${filePath}\n` +
         problems.map((problem) => `  - ${problem}`).join("\n"),
     );
     this.name = "ContentValidationError";

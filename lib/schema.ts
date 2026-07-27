@@ -124,6 +124,31 @@ export type FloorPlanFrontmatter = z.infer<typeof floorPlanSchema>;
 export type ProjectMediaFrontmatter = ProjectFrontmatter["media"];
 
 /**
+ * The team, from content/team.json.
+ *
+ * Same contract as the projects: a file that fails this validation fails the
+ * build, naming the file and the field. A member is never rendered half-valid
+ * and never silently skipped.
+ */
+
+const teamMemberSchema = z.object({
+  name: z.string().min(1),
+  role: z.string().min(1),
+  bio: z.string().min(1),
+  photo: z.object({
+    /** A path under public/, checked against the filesystem by lib/team.ts. */
+    src: z.string().min(1),
+    alt: z.string().min(1),
+  }),
+  /** Optional, and its absence renders nothing rather than a dead icon. */
+  linkedin: z.url("must be a full URL, like https://www.linkedin.com/in/name").optional(),
+});
+
+export const teamSchema = z.array(teamMemberSchema).min(1);
+
+export type TeamMemberContent = z.infer<typeof teamMemberSchema>;
+
+/**
  * The contact form. One schema, used by the form's resolver in the browser and
  * again by lib/submitInquiry.ts before anything is sent, so the rules cannot
  * drift between the two.

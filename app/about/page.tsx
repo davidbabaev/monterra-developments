@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/layout/PageHero";
+import { CompanyStory } from "@/components/about/CompanyStory";
+import { ValuesGrid } from "@/components/about/ValuesGrid";
 import { Container } from "@/components/layout/Container";
+import { CtaBand } from "@/components/layout/CtaBand";
+import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/layout/Section";
+import { PullQuote } from "@/components/ui/PullQuote";
+import { StatsBand } from "@/components/ui/StatsBand";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "[REPLACE] About page description, replaced when real copy lands.",
+  description:
+    "[REPLACE] Monterra Developments has bought, designed and built townhomes, condominiums and duplexes across Texas, Florida and Colorado since 2008.",
 };
 
+/**
+ * Story, values, one quote, the statistics the homepage already shows, and the
+ * closing band. Every part of it is a component that existed before this page.
+ */
 export default function AboutPage() {
   return (
     <>
@@ -17,16 +27,27 @@ export default function AboutPage() {
         subhead="[REPLACE] Who we are and how we got here."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
+
+      <CompanyStory />
+      <ValuesGrid />
+
       <Section>
         <Container>
-          <h2 className="font-display text-[26px] font-semibold text-navy xl:text-[38px]">
-            [REPLACE] About
-          </h2>
-          <p className="mt-4 max-w-[68ch] font-body text-[16px] text-ink xl:text-[17px]">
-            [REPLACE] This page is a placeholder. Its content lands in a later increment.
-          </p>
+          <PullQuote
+            quote="[REPLACE] We are not in the business of selling houses. We are in the business of finishing streets that people want to live on."
+            attribution="[REPLACE] Elena Marsh, Founder"
+            className="max-w-[68ch]"
+          />
         </Container>
       </Section>
+
+      <StatsBand />
+
+      <CtaBand
+        lede="Come and"
+        rest="see one"
+        body="[REPLACE] We will walk you round a site under construction and show you what a finished one looks like."
+      />
     </>
   );
 }
