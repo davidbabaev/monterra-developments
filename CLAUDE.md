@@ -199,6 +199,35 @@ Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` wh
 
 Keep files small, modular, single-responsibility. Components under ~150 lines; split beyond that.
 
+## 10 · Working efficiently — IMPORTANT
+
+Context is the budget. Spend it on the work, not on noise.
+
+DO
+- Search before reading. Use grep/glob to find the relevant lines, then read only that file — or only the line range you need. Never read a file "to see what's in it".
+- Read a file once per session. If you already read it, use what you have.
+- Silence noisy commands. `npm run lint --silent`. Pipe long output through `tail -30`. Never print a full test log when it passed.
+- Batch independent tool calls into a single turn instead of one per turn.
+- Trust CLAUDE.md and the docs/ specs. Never re-read them to confirm something they already state.
+- Report back in short bullets: what changed, what was verified, what failed. Facts, not prose.
+- When a task is done, say so and stop. No summary of the summary.
+
+DO NOT
+- Never read node_modules/, .next/, package-lock.json, coverage/, build output, or binary files.
+- Never echo the contents of a file you just wrote back into the conversation. Name the path instead.
+- Never restate the plan before executing it. Execute, then report.
+- Never re-explain the stack, the conventions or the domain — they are in this file.
+- Never paste a diff into the response. The commit holds it.
+
+QUALITY FLOOR — never cut these to save tokens
+- Always read a file fully before editing it.
+- Always run the unit tests before committing.
+- Always verify in a real browser at 390px and 1280px.
+- Always implement every state in the spec: empty, loading, error, success.
+- If saving context would mean guessing at a spec, read the spec instead.
+
+If context runs low mid-task, finish the current file, commit it, and tell me to run /clear — do not degrade the work to fit.
+
 ## Version control — ALWAYS
 
 Before ANY change, create and check out: `ai/<type>-<short-description>`
