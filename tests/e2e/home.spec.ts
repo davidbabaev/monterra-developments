@@ -9,11 +9,11 @@ import { expect, test, type Page } from "@playwright/test";
 
 const figures = (page: Page) => page.locator("main p.font-display.text-\\[40px\\]");
 
-/** The first stat, "units delivered", whose final value is 1,240. */
+/** The first stat, "homes delivered", whose final value is 340. */
 const firstFigure = (page: Page) => figures(page).first();
 
 async function scrollToStats(page: Page) {
-  await page.getByText("Units delivered").scrollIntoViewIfNeeded();
+  await page.getByText("Homes delivered").scrollIntoViewIfNeeded();
 }
 
 test("renders six sections and exactly one h1", async ({ page }) => {
@@ -156,16 +156,16 @@ test("the stats count up once and do not replay", async ({ page }) => {
   await expect(firstFigure(page)).toHaveText("0");
 
   await scrollToStats(page);
-  await expect(firstFigure(page)).toHaveText("1,240", { timeout: 4000 });
+  await expect(firstFigure(page)).toHaveText("340", { timeout: 4000 });
 
   // Away and back: the final value stays put rather than restarting at zero.
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(400);
-  await expect(firstFigure(page)).toHaveText("1,240");
+  await expect(firstFigure(page)).toHaveText("340");
 
   await scrollToStats(page);
   await page.waitForTimeout(400);
-  await expect(firstFigure(page)).toHaveText("1,240");
+  await expect(firstFigure(page)).toHaveText("340");
 });
 
 test("with reduced motion the stats are final immediately and never animate", async ({ page }) => {
@@ -180,11 +180,11 @@ test("with reduced motion the stats are final immediately and never animate", as
   );
 
   // Never zeroed, even while off screen.
-  await expect(firstFigure(page)).toHaveText("1,240");
+  await expect(firstFigure(page)).toHaveText("340");
 
   await scrollToStats(page);
   await page.waitForTimeout(600);
-  await expect(firstFigure(page)).toHaveText("1,240");
+  await expect(firstFigure(page)).toHaveText("340");
 
   const running = await page.evaluate(
     () => document.getAnimations().filter((animation) => animation.playState === "running").length,

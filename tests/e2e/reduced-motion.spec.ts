@@ -35,14 +35,14 @@ test("the statistics do not count up", async ({ page }) => {
 
   // The figure is the paragraph beside its label, not simply the first
   // font-display paragraph on the page — that is the section eyebrow.
-  const figure = page.getByText("Units delivered").locator("..").locator("p").first();
-  await expect(figure).toHaveText("1,240");
+  const figure = page.getByText("Homes delivered").locator("..").locator("p").first();
+  await expect(figure).toHaveText("340");
 
-  await page.getByText("Units delivered").scrollIntoViewIfNeeded();
+  await page.getByText("Homes delivered").scrollIntoViewIfNeeded();
   await page.waitForTimeout(800);
 
   // Final value from the first frame, and never a frame of animation.
-  await expect(figure).toHaveText("1,240");
+  await expect(figure).toHaveText("340");
   expect(await runningAnimations(page)).toBe(0);
 });
 

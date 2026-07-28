@@ -30,8 +30,10 @@ export default function HomePage() {
       <StatsBand />
       <ProcessPreview />
       <CtaBand
-        lede="Tell us"
-        rest="what you are looking for"
+        lede="Let's"
+        rest="talk about what you're planning"
+        // [REPLACE] No approved copy for this line yet — the heading above it is
+        // approved, the body is not.
         body="[REPLACE] Whether you are buying, investing or bringing us a site, we reply within two business days."
       />
     </>

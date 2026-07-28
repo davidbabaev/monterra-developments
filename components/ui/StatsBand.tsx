@@ -22,12 +22,21 @@ type Stat = {
   readonly label: string;
 };
 
-/** [REPLACE] Every figure here is a placeholder. */
+/**
+ * Approved figures.
+ *
+ * They have to stay consistent with the rest of the site: three markets matches
+ * Austin, Tampa and Denver in the hero, and nine projects completed is what the
+ * three selected projects are a selection from. Changing one of these without
+ * the others makes the homepage contradict itself.
+ *
+ * This band renders on /about as well as here, so these are the figures on both.
+ */
 const STATS: readonly Stat[] = [
-  { value: 1240, label: "Units delivered" },
-  { value: 18, unit: "yrs", label: "Years in operation" },
+  { value: 340, label: "Homes delivered" },
+  { value: 12, label: "Years building" },
   { value: 3, label: "Markets" },
-  { value: 26, label: "Projects completed" },
+  { value: 9, label: "Projects completed" },
 ];
 
 const TARGETS = STATS.map((stat) => stat.value);

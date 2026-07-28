@@ -19,25 +19,23 @@ type Step = {
   readonly description: string;
 };
 
-/** [REPLACE] Placeholder copy; the full five stages live on /process. */
+/** Approved copy. The full five stages live on /process. */
 const STEPS: readonly Step[] = [
   {
     numeral: "01",
-    title: "We buy the land",
-    description:
-      "[REPLACE] We look for sites near work and transit, and we close on them ourselves rather than optioning them.",
+    title: "Find the site",
+    description: "We walk every block before we buy. Most sites we look at, we pass on.",
   },
   {
     numeral: "02",
-    title: "We draw the plan",
-    description:
-      "[REPLACE] Our architects design around how a street is used, then we cost every drawing before a permit is filed.",
+    title: "Design for the block",
+    description: "The building answers to its street first, and to the pro forma second.",
   },
   {
     numeral: "03",
-    title: "We build it",
+    title: "Build and deliver",
     description:
-      "[REPLACE] Our own crews frame, finish and hand over, so the person who answers for a defect is the person who built it.",
+      "Same team from permit to closing. No handoff to a subcontractor we have never worked with.",
   },
 ];
 

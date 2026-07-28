@@ -58,7 +58,7 @@ test("about reuses the quote, the stats band and the closing band", async ({ pag
   await page.goto("/about");
 
   await expect(page.getByRole("blockquote")).toHaveCount(1);
-  await expect(page.getByText("Units delivered")).toBeVisible();
+  await expect(page.getByText("Homes delivered")).toBeVisible();
   await expect(page.getByRole("link", { name: /contact us/i }).last()).toHaveAttribute(
     "href",
     "/contact",

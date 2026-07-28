@@ -19,8 +19,8 @@ export function Positioning() {
         }}
       >
         <p className="font-editorial text-[26px] font-light leading-[1.3] text-navy xl:text-[38px]">
-          [REPLACE] We buy the site, draw the plan, pour the slab and hand over the keys. Owning
-          every step is how a street ends up worth living on.
+          We build in places we would live ourselves. That constraint has cost us deals, and it is
+          why our buildings still look right ten years on.
         </p>
       </OffsetFeature>
     </Section>

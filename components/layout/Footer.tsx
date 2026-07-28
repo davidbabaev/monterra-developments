@@ -119,8 +119,21 @@ export function Footer() {
 
         <div className="mt-12 border-t border-stone pt-6 pb-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            {/*
+              The disclaimer sits with the copyright rather than in a banner. The
+              site has a working contact form and a brand plausible enough to be
+              taken for a real developer, so saying so once, permanently, on every
+              page is the honest minimum — but it is a footnote, not a warning, and
+              it is not styled as one.
+            */}
             <p className="font-body text-[13px] text-stone">
               © {year} {siteConfig.name}
+              <span className="block sm:inline">
+                <span aria-hidden="true" className="hidden sm:inline">
+                  {" · "}
+                </span>
+                A concept project. Monterra Developments is not a real company.
+              </span>
             </p>
             <Link
               href={siteConfig.legal.href}
