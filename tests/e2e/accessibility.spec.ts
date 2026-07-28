@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { openAndWaitFor } from "./support/interactions";
+import { openAndWaitFor, waitForAnimations } from "./support/interactions";
 
 /**
  * The launch gate: zero critical and zero serious violations on every page, and
@@ -33,6 +33,10 @@ type Severity = "critical" | "serious" | "moderate" | "minor";
 const EMPTY: Record<Severity, number> = { critical: 0, serious: 0, moderate: 0, minor: 0 };
 
 async function scan(page: Page, label: string) {
+  // Colour contrast is measured off rendered pixels, so nothing may still be
+  // fading in when axe looks. See waitForAnimations.
+  await waitForAnimations(page);
+
   const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
 
   const counts = { ...EMPTY };

@@ -49,7 +49,7 @@ const PAGES = {
   "/about": {
     title: "About",
     description:
-      "Monterra has bought, designed and built homes since 2008, with its own crews and no outside investors. How the company works, and what it holds itself to.",
+      "Monterra has bought, designed and built homes since 2014, with its own crews and no outside investors. How the company works, and what it holds itself to.",
   },
   "/process": {
     title: "Our Process",

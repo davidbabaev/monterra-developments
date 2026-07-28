@@ -113,21 +113,40 @@ test("only the process page carries numerals", async ({ page }) => {
   }
 });
 
+/**
+ * Both card paths render, derived from the seed rather than hardcoded.
+ *
+ * This used to assert "4 members, 3 links" and broke the moment the seed moved
+ * to two with and two without — a content change failing a layout test tells
+ * nobody anything. What matters is that a member with a linkedin field gets an
+ * anchor and a member without one gets no anchor and no orphaned icon.
+ */
 test("the team grid shows a link only for the members who have one", async ({ page }) => {
   await page.goto("/team");
 
-  const members = page.locator("ul[aria-label=\"Team\"] > li");
-  await expect(members).toHaveCount(4);
+  const members = page.locator('ul[aria-label="Team"] > li');
+  const total = await members.count();
+  expect(total).toBeGreaterThan(1);
 
-  // The seed deliberately leaves one member without a linkedin field.
-  const links = page.locator("ul[aria-label=\"Team\"] > li a");
-  await expect(links).toHaveCount(3);
-  await expect(links.first()).toHaveAccessibleName(/on LinkedIn/);
+  const withLink: number[] = [];
+  const withoutLink: number[] = [];
 
-  // No icon and no gap: the member without one renders no anchor and no svg.
-  const lastMember = members.nth(3);
-  await expect(lastMember.locator("a")).toHaveCount(0);
-  await expect(lastMember.locator("svg")).toHaveCount(0);
+  for (let index = 0; index < total; index += 1) {
+    const anchors = await members.nth(index).locator("a").count();
+    (anchors > 0 ? withLink : withoutLink).push(index);
+  }
+
+  // Both paths have to be exercised by the seed, or one of them ships untested.
+  expect(withLink.length, "no member has a linkedin link").toBeGreaterThan(0);
+  expect(withoutLink.length, "every member has a linkedin link").toBeGreaterThan(0);
+
+  const linked = members.nth(withLink[0]!);
+  await expect(linked.locator("a")).toHaveAccessibleName(/on LinkedIn/);
+
+  // No anchor and no orphaned icon on a member without one.
+  const unlinked = members.nth(withoutLink[0]!);
+  await expect(unlinked.locator("a")).toHaveCount(0);
+  await expect(unlinked.locator("svg")).toHaveCount(0);
 });
 
 test.describe("team portraits on a touch device", () => {
@@ -165,6 +184,12 @@ test("privacy is a single prose column at the 68ch measure", async ({ page }) =>
   const column = page.locator("main .max-w-\\[68ch\\]");
   await expect(column).toHaveCount(1);
 
-  await expect(page.locator("main").getByRole("heading", { level: 2 })).toHaveCount(5);
-  await expect(page.getByText(/not a privacy policy/i)).toBeVisible();
+  // A clause count, not the clause count — the policy is allowed to grow.
+  const clauses = page.locator("main").getByRole("heading", { level: 2 });
+  expect(await clauses.count()).toBeGreaterThanOrEqual(5);
+
+  // The page has to keep saying it is a concept and that nothing is processed.
+  // This is the one page where a visitor decides whether to trust the form.
+  await expect(page.getByText(/concept project and not a real company/i)).toBeVisible();
+  await expect(page.getByText(/nothing you type into it is sent, stored or processed/i)).toBeVisible();
 });

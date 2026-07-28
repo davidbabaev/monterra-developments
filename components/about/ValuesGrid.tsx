@@ -17,31 +17,38 @@ type Value = {
   readonly description: string;
 };
 
-/** [REPLACE] Placeholder copy throughout. */
+/**
+ * Approved copy.
+ *
+ * The brief numbered these 01 to 04. They are not numbered here, for the reason
+ * in the note above: this is a set, not a sequence, and Our Process is the only
+ * page where the order carries information. The numbers read as the brief's own
+ * enumeration rather than as copy.
+ */
 const VALUES: readonly Value[] = [
   {
-    eyebrow: "Ownership",
-    title: "We carry the risk",
+    eyebrow: "Site first",
+    title: "We walk it before we buy it",
     description:
-      "[REPLACE] We buy our sites outright rather than optioning them, so a project that gets hard is our problem to solve rather than someone else's to walk away from.",
+      "Most sites we look at, we pass on. The ones we buy, we have stood on at seven in the morning and again at six at night.",
   },
   {
-    eyebrow: "Craft",
-    title: "Our own crews build it",
+    eyebrow: "Built to last",
+    title: "Fifty-year decisions, not five-year ones",
     description:
-      "[REPLACE] The people who frame a house are the people who answer for it afterwards. Nothing is subcontracted out to the lowest number on a page.",
+      "We spend money where it does not show — envelope, drainage, structure. Buyers notice in year ten.",
   },
   {
-    eyebrow: "Place",
-    title: "We design for the street",
+    eyebrow: "One team",
+    title: "Same people, permit to closing",
     description:
-      "[REPLACE] A home is only as good as the walk to it. We plan the shared ground first and fit the buildings around what it needs.",
+      "No handoff to a subcontractor we have not worked with before. Continuity is a quality control system.",
   },
   {
-    eyebrow: "Plain dealing",
-    title: "We quote what it costs",
+    eyebrow: "Straight answers",
+    title: "We tell you what is wrong with it",
     description:
-      "[REPLACE] Prices, dates and specifications are written down before a contract is signed, and we tell you early when something moves.",
+      "Every site has a problem. We would rather name ours than have a buyer find it.",
   },
 ];
 
