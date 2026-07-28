@@ -16,12 +16,9 @@ import { SplitHeading } from "@/components/ui/SplitHeading";
  */
 
 /**
- * [REPLACE] Copy is placeholder, and the headline claims something about
- * building rather than selling. The marker lives here rather than inside the
- * lockup: a visible "[REPLACE]" between the Cormorant lede and the Manrope
- * remainder would break the two-tone heading the whole site is built on. Every
- * other heading in the codebase follows the same rule, with the marker on the
- * prose beneath.
+ * Approved copy. The headline claims something about building rather than
+ * selling, which is the line the whole page is arranged around — the unit tests
+ * assert both halves of that.
  */
 const HEADLINE = { lede: "We build", rest: "streets that still work in fifty years" };
 
@@ -44,8 +41,7 @@ export function Hero() {
         <SplitHeading as="h1" lede={HEADLINE.lede} rest={HEADLINE.rest} variant="dark" />
 
         <p className="mt-5 max-w-[52ch] font-body text-[18px] leading-[1.6] text-ivory/88 xl:text-[20px]">
-          [REPLACE] We develop, build and sell townhomes, condominiums and duplexes across Texas,
-          Florida and Colorado.
+          We develop townhomes, condominiums and duplexes in Austin, Tampa and Denver.
         </p>
 
         {/*

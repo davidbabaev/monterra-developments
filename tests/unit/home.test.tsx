@@ -59,7 +59,7 @@ describe("Hero", () => {
 describe("Positioning", () => {
   it("sets the statement in the editorial face, the page's one such moment", () => {
     render(<Positioning />);
-    const statement = screen.getByText(/we buy the site/i);
+    const statement = screen.getByText(/we build in places we would live ourselves/i);
     expect(statement).toHaveClass("font-editorial");
   });
 
@@ -124,17 +124,30 @@ describe("StatsBand", () => {
   it("renders four figures at their final values without a browser to animate", () => {
     render(<StatsBand />);
 
-    expect(screen.getByText("1,240")).toBeInTheDocument();
-    expect(screen.getByText("18")).toBeInTheDocument();
+    expect(screen.getByText("340")).toBeInTheDocument();
+    expect(screen.getByText("12")).toBeInTheDocument();
     expect(screen.getByText("3")).toBeInTheDocument();
-    expect(screen.getByText("26")).toBeInTheDocument();
+    expect(screen.getByText("9")).toBeInTheDocument();
   });
 
-  it("darkens the unit and label, which fail contrast on stone", () => {
+  it("darkens the label, which fails contrast on stone", () => {
+    render(<StatsBand />);
+    // No stat carries a unit now that "yrs" has gone; the unit's own contrast on
+    // stone is covered by the styleguide's "m²" specimen in contrast-rules.spec.
+    expect(screen.getByText("Homes delivered")).toHaveClass("text-ink");
+  });
+
+  /**
+   * The figures are a set, not four independent numbers. Three markets is the
+   * three cities named in the hero, and nine completed is what the selected
+   * projects are selected from — so a change to one that skips the others makes
+   * the page contradict itself.
+   */
+  it("keeps the figures consistent with what the rest of the page claims", () => {
     render(<StatsBand />);
 
-    expect(screen.getByText("yrs")).toHaveClass("text-navy");
-    expect(screen.getByText("Units delivered")).toHaveClass("text-ink");
+    expect(screen.getByText("Markets").previousSibling).toHaveTextContent("3");
+    expect(screen.getByText("Projects completed").previousSibling).toHaveTextContent("9");
   });
 
   it("rules between figures rather than around them, and only from 768px", () => {

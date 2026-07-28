@@ -1,7 +1,22 @@
 # Outstanding content
 
 Every placeholder still in the site, grouped by file, with what each one needs and
-who can supply it. Written 2026-07-29 at the close of increment 11.
+who can supply it. Written 2026-07-29 at the close of increment 11; the homepage
+was signed off on 2026-07-29 and its entries are struck through below.
+
+**The homepage is done.** Hero subhead, positioning statement, featured-work
+heading, all four statistics, the three process steps and the closing heading are
+approved copy and no longer carry a marker. Two things on that page are still
+outstanding and are listed in their sections: the closing CTA's body paragraph,
+for which no copy was supplied, and the positioning image's alt text, which waits
+on the real photograph.
+
+**The site now says it is not a real company.** The footer bottom bar carries "A
+concept project. Monterra Developments is not a real company." on every page. It
+is there because the site has a working contact form and a brand plausible enough
+to be mistaken for a live developer. If this ever becomes a real client site, that
+line is the first thing to remove — and everything else in this document has to be
+done before it goes.
 
 **How to read the "who" column**
 
@@ -29,7 +44,7 @@ These are wrong in public, not merely unfinished.
 | `lib/site.ts` — `contact.address` | The real street and locality. Until they land, the `PostalAddress` is omitted from the Organization JSON-LD rather than published with a marker in it. | Client |
 | `app/privacy/page.tsx` — 13 markers | A real privacy policy. The page currently says in its own body that it is not one. This needs a lawyer, not a copywriter, and it is a legal requirement before the site accepts a single inquiry. | Client |
 | `content/team.json` — 16 markers | Four real people: name, role, two-line bio, portrait and LinkedIn URL each. Invented colleagues on a live site are a serious problem, not a cosmetic one. | Client |
-| `components/ui/StatsBand.tsx` — 4 figures | Units delivered, years in operation, markets, projects completed. Currently 1,240 / 18 / 3 / 26 — all invented. A wrong number in 40px bronze is the most quotable thing on the homepage. | Client |
+| ~~`components/ui/StatsBand.tsx` — 4 figures~~ | **Done 2026-07-29.** 340 homes delivered, 12 years building, 3 markets, 9 projects completed. They are a set, not four independent numbers: three markets is the three cities named in the hero, and nine completed is what the three selected projects are a selection from. Changing one without the others makes the page contradict itself, and a unit test now pins the two that tie to other copy. **This band also renders on `/about`,** so these are the figures on both pages. | — |
 
 ---
 
@@ -46,16 +61,17 @@ These are wrong in public, not merely unfinished.
 
 ## Copy — pages and sections
 
-All of it is plausible brand-appropriate English written to hold the layout. None
-of it is approved, and several lines make specific claims about how the company
-operates that need checking before they ship.
+Everything below the homepage rows is plausible brand-appropriate English written
+to hold the layout. None of that is approved, and several lines make specific
+claims about how the company operates that need checking before they ship.
 
 | File | What it needs | Who |
 | --- | --- | --- |
-| `app/page.tsx` (1) | Home CTA band body. | Client → you |
-| `components/home/Hero.tsx` (1) | The hero subhead. Names Texas, Florida and Colorado — true of the three seeded projects, needs to stay true. | Client → you |
-| `components/home/Positioning.tsx` (2) | Positioning paragraph and its image alt. | Client → you |
-| `components/home/ProcessPreview.tsx` (3) | Three stage summaries. Must stay consistent with the five on `/process`. | Client → you |
+| `app/page.tsx` (1) | **Home CTA band body — still outstanding.** The heading above it was approved ("Let's talk about what you're planning"); no copy was supplied for the paragraph, so the marker stays. | Client → you |
+| ~~`components/home/Hero.tsx`~~ | **Done 2026-07-29.** Headline kept as written; subhead now names Austin, Tampa and Denver, which are the three cities the seeded projects are in and the three the statistics count as markets. | — |
+| `components/home/Positioning.tsx` (1) | **Statement done 2026-07-29.** The image alt is still outstanding and waits on the real photograph. | Client |
+| ~~`components/home/ProcessPreview.tsx`~~ | **Done 2026-07-29.** Find the site / Design for the block / Build and deliver. Still has to stay consistent with the five stages on `/process`, which are not yet approved — if those change, check these against them. | — |
+| ~~`components/home/FeaturedProjects.tsx`~~ | **Done 2026-07-29.** Heading is now "Selected work". Note it repeats the eyebrow above it word for word, which was specified deliberately; if that reads as a mistake later, the heading is the one to change. | — |
 | `app/about/page.tsx` (4) | Page subhead, the pull-quote, its attribution, CTA body. The quote is attributed to a named founder who does not exist yet. | Client |
 | `components/about/CompanyStory.tsx` (3) | Two story paragraphs and an image alt. States the company started in 2008 with one duplex — a factual claim. | Client |
 | `components/about/ValuesGrid.tsx` (4) | Four value statements. Each makes an operational claim (sites bought outright, nothing subcontracted) that is either true or should not be said. | Client |
@@ -106,7 +122,7 @@ them before launch. Check this list by hand.
 | `lib/site.ts` — `contact.email.href`, `contact.phone.href` | The `mailto:` and `tel:` targets are clean so the links function, but the address and number behind them are invented. |
 | `lib/site.ts` — `socials[].href` | LinkedIn and Instagram URLs are marked, but confirm the accounts exist before the marker comes off. Omitted from JSON-LD while marked. |
 | `content/team.json` — `linkedin` | Three of the four are `example-<name>` URLs and resolve to nothing. Unmarked. |
-| `lib/seo.ts` — the eight page descriptions | Clean of markers by design, because a marker would be published into search results and eat 10 of the 160 characters. **They are still unapproved copy** and make claims — "since 2008", "its own crews and no outside investors", "no outside investors" — that need the same sign-off as everything above. |
+| `lib/seo.ts` — the eight page descriptions | Clean of markers by design, because a marker would be published into search results and eat 10 of the 160 characters. **They are still unapproved copy** and make claims — "since 2008", "its own crews and no outside investors" — that need the same sign-off as everything above. **The `/` description is now the only unapproved string on an otherwise finished homepage**, and it says "across Texas, Florida and Colorado" where the hero says "Austin, Tampa and Denver" — the same three places at different granularity, so consistent today, but they have to move together. |
 | `content/projects/*/index.mdx` — `seo.description` | Same as above: clean, deliberately unmarked, unapproved, and each states unit counts and dates as fact. |
 | `lib/site.ts` — `description` | Fixed in this increment and now real copy, not a placeholder. Listed only so nobody re-marks it. |
 
@@ -114,10 +130,14 @@ them before launch. Check this list by hand.
 
 ## Not content, tracked here so it is not lost
 
-- **`region` best-practice finding (axe).** Nine of ten routes report
+- ~~**`region` best-practice finding (axe).**~~ **Fixed 2026-07-29.** The band is
+  now an `aside` labelled "Contact details", and the rule is clear on all ten
+  routes. Kept below for the record.
+
+  Nine of ten routes reported
   "All page content should be contained by landmarks", three nodes each. The nodes
   are the `ContactBand` list items; the band sits between `</main>` and `<Footer>`
-  in `app/layout.tsx` and so is inside no landmark. `/contact` is clean because the
+  in `app/layout.tsx` and so was inside no landmark. `/contact` was clean because the
   band is suppressed there. It is a best-practice rule, not a WCAG failure — the
-  suite reports it and does not assert on it. The fix is one wrapping element with
-  an accessible name; it has not been applied, pending a decision.
+  suite reports it and does not assert on it. The fix was one wrapping element with
+  an accessible name.

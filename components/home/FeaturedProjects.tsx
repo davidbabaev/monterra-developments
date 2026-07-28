@@ -36,7 +36,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
     <Section>
       <Container>
         <Eyebrow>Selected work</Eyebrow>
-        <SplitHeading as="h2" lede="Recent" rest="developments" className="mt-3" />
+        <SplitHeading as="h2" lede="Selected" rest="work" className="mt-3" />
 
         {/* No `priority` on these: the hero image is the LCP element and this
             section starts below the fold, so competing for the same first bytes
