@@ -16,9 +16,15 @@ const ROUTES_WITH_BAND = [
   "/styleguide",
 ];
 
-/** The band's own headings, which the footer does not repeat. */
+/**
+ * By landmark role, not by tag or position.
+ *
+ * This used to be `#site-content > div`, which stopped matching the moment the
+ * band became an `aside` — and every assertion using it was `toHaveCount(0)`, so
+ * it would have kept passing while testing nothing.
+ */
 const band = (page: import("@playwright/test").Page) =>
-  page.locator("#site-content > div").filter({ hasText: "Office" }).first();
+  page.getByRole("complementary", { name: "Contact details" });
 
 for (const route of ROUTES_WITH_BAND) {
   test(`the contact band is present on ${route}`, async ({ page }) => {
@@ -27,6 +33,11 @@ for (const route of ROUTES_WITH_BAND) {
     const office = page.getByRole("heading", { level: 2, name: "Office" });
     await expect(office).toHaveCount(1);
     await expect(office).toBeVisible();
+
+    // The landmark itself, which is how the band is reached by landmark
+    // navigation rather than by scrolling to the bottom of the page.
+    await expect(band(page)).toHaveCount(1);
+    await expect(band(page)).toBeVisible();
   });
 }
 

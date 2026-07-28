@@ -152,25 +152,30 @@ test("every control is reachable by keyboard with a visible bronze ring", async 
   expect(reached.some((seen) => seen.includes("send message"))).toBe(true);
 });
 
-test("input borders clear the 3:1 required of a control boundary", async ({ page }) => {
-  await page.goto("/contact");
-
-  const measured = await nameField(page).evaluate((element) => {
-    /**
-     * The nearest ancestor that actually paints, which is what the border has to
-     * separate the field from.
-     *
-     * Reading `document.body` directly is what this used to do, and it is not
-     * safe: a background that is not painted computes to `rgba(0, 0, 0, 0)` or,
-     * intermittently, to the keyword `transparent`. Neither is the colour behind
-     * the control, and the keyword is not a colour at all — under a full parallel
-     * run it reached the parser about one time in twenty and threw. The walk is
-     * the same one tests/e2e/contrast-rules.spec.ts uses.
-     */
-    const backgroundBehind = (start: Element): string => {
+/**
+ * Measures the field's border against whatever is painted behind it.
+ *
+ * `getComputedStyle` returns "" for every property on an element whose document
+ * has no view — which is what a node becomes the instant it is detached. The
+ * form is a client component, so during hydration the node a locator has already
+ * resolved can be replaced between resolution and evaluation. That is the whole
+ * of the flake: not a colour this could not parse, but no colour at all.
+ *
+ * Returning null rather than throwing lets the caller retry. The value being
+ * measured is a static CSS fact, so retrying cannot turn a real failure into a
+ * pass — it only waits for a node that is still in the document.
+ */
+async function measureBorder(page: Page) {
+  return nameField(page).evaluate((element) => {
+    // The nearest ancestor that actually paints, which is what the border has to
+    // separate the field from. Reading document.body directly is not safe: an
+    // unpainted background computes to rgba(0, 0, 0, 0), which is not the colour
+    // behind anything. The walk is the one contrast-rules.spec.ts uses.
+    const backgroundBehind = (start: Element): string | null => {
       let node: Element | null = start.parentElement;
       while (node !== null) {
         const background = getComputedStyle(node).backgroundColor;
+        if (background === "") return null;
         if (background !== "rgba(0, 0, 0, 0)" && background !== "transparent") return background;
         node = node.parentElement;
       }
@@ -178,36 +183,63 @@ test("input borders clear the 3:1 required of a control boundary", async ({ page
       return "rgb(255, 255, 255)";
     };
 
-    return {
-      border: getComputedStyle(element).borderTopColor,
-      background: backgroundBehind(element),
-    };
+    const border = getComputedStyle(element).borderTopColor;
+    if (border === "") return null;
+
+    const background = backgroundBehind(element);
+    return background === null ? null : { border, background };
   });
+}
+
+test("input borders clear the 3:1 required of a control boundary", async ({ page }) => {
+  await page.goto("/contact");
+  await expect(nameField(page)).toBeVisible();
+
+  let measured: { border: string; background: string } | null = null;
+
+  await expect(async () => {
+    measured = await measureBorder(page);
+    expect(measured, "the field was detached mid-measurement").not.toBeNull();
+  }).toPass({ timeout: 5_000 });
+
+  const { border, background } = measured!;
 
   // Computed here rather than in the browser so a failure names both colours.
-  const ratio = contrastRatio(measured.border, measured.background);
+  const ratio = contrastRatio(border, background);
 
-  expect(ratio, `border ${measured.border} on ${measured.background}`).toBeGreaterThanOrEqual(3);
+  expect(ratio, `border ${border} on ${background}`).toBeGreaterThanOrEqual(3);
   // Navy, not stone: stone would measure 1.76 and fail.
-  expect(measured.border).toBe("rgb(20, 38, 61)");
+  expect(border).toBe("rgb(20, 38, 61)");
 });
 
 test("the layout is two columns from 1024px and form-first below", async ({ page }) => {
   await page.goto("/contact");
 
-  const formBox = await page.locator("form").boundingBox();
+  const form = page.locator("form");
   // Scoped to main: the contact band above the footer also has an Office heading.
-  const detailsBox = await page
-    .locator("main")
-    .getByRole("heading", { name: "Office" })
-    .boundingBox();
+  const details = page.locator("main").getByRole("heading", { name: "Office" });
+
+  await expect(form).toBeVisible();
+  await expect(details).toBeVisible();
+
   const isWide = (page.viewportSize()?.width ?? 0) >= 1024;
 
-  if (isWide) {
-    expect(detailsBox!.x).toBeGreaterThan(formBox!.x + formBox!.width - 1);
-  } else {
-    expect(detailsBox!.y).toBeGreaterThan(formBox!.y);
-  }
+  // Retried, because boundingBox reads live layout. Under a full parallel run the
+  // first read can land before the grid has settled, and the two boxes then still
+  // overlap. The relationship being asserted is static once layout is done, so a
+  // retry waits for the real answer rather than accepting a convenient one.
+  await expect(async () => {
+    const formBox = await form.boundingBox();
+    const detailsBox = await details.boundingBox();
+    expect(formBox, "the form had no box").not.toBeNull();
+    expect(detailsBox, "the details heading had no box").not.toBeNull();
+
+    if (isWide) {
+      expect(detailsBox!.x).toBeGreaterThan(formBox!.x + formBox!.width - 1);
+    } else {
+      expect(detailsBox!.y).toBeGreaterThan(formBox!.y);
+    }
+  }).toPass({ timeout: 5_000 });
 
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

@@ -176,17 +176,18 @@ test.describe("PageHero breadcrumb slab", () => {
 test.describe("contact band and footer", () => {
   test("the band overlaps the footer on desktop only", async ({ page }) => {
     await page.goto("/about");
-    const bandBottom =
-      (await page.locator("#site-content > div").first().boundingBox())?.y ?? 0;
 
-    const band = page.getByRole("heading", { name: "Office" }).locator("..").locator("..");
+    // The band's own landmark. Selecting it by tag and position — it used to be
+    // `#site-content > div` — silently matched nothing once it became an aside.
+    const band = page.getByRole("complementary", { name: "Contact details" });
+    await expect(band).toHaveCount(1);
+
     const bandBox = await band.boundingBox();
     // By role, not by tag: a PullQuote attribution is also a <footer>, and only
     // the page footer carries the contentinfo role.
     const footerBox = await page.getByRole("contentinfo").boundingBox();
     expect(bandBox).not.toBeNull();
     expect(footerBox).not.toBeNull();
-    expect(bandBottom).toBeGreaterThanOrEqual(0);
 
     const overlaps = bandBox!.y + bandBox!.height > footerBox!.y;
     expect(overlaps).toBe(!isMobile(page));
