@@ -11,25 +11,29 @@ import { openAndWaitFor } from "./support/interactions";
  * axe itself does not class as an accessibility failure buys nothing.
  */
 
+/** Every indexable route. The styleguide is internal and noindex, so it is out. */
 const PAGES = [
   "/",
   "/projects",
   "/projects/monterra-ridge",
   "/projects/monterra-bay",
+  "/projects/the-larkin",
   "/contact",
   "/team",
   "/about",
   "/process",
+  "/privacy",
 ] as const;
+
+/** The WCAG A and AA tags — the ones that block a launch. */
+const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 type Severity = "critical" | "serious" | "moderate" | "minor";
 
 const EMPTY: Record<Severity, number> = { critical: 0, serious: 0, moderate: 0, minor: 0 };
 
 async function scan(page: Page, label: string) {
-  const results = await new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-    .analyze();
+  const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
 
   const counts = { ...EMPTY };
   for (const violation of results.violations) {
@@ -68,9 +72,7 @@ for (const path of PAGES) {
  * title to an h3 before this was checked.
  */
 test("no page skips a heading level", async ({ page }) => {
-  const routes = [...PAGES, "/projects/the-larkin", "/privacy"];
-
-  for (const route of routes) {
+  for (const route of PAGES) {
     await page.goto(route, { waitUntil: "domcontentloaded" });
 
     const levels = await page.evaluate(() =>
@@ -87,6 +89,45 @@ test("no page skips a heading level", async ({ page }) => {
 
     expect(skips, `${route} skips a heading level`).toEqual([]);
   }
+});
+
+/**
+ * Best-practice rules, reported and never asserted.
+ *
+ * These are axe's own recommendations rather than WCAG failures — landmark
+ * structure, region coverage, heading semantics. They are worth knowing about,
+ * and worth a considered decision, but a rule that is not an accessibility
+ * failure must not be able to fail a build or quietly drive a code change to
+ * satisfy it. Anything this prints goes in the report for a human to rule on.
+ */
+test("best-practice rules, for information only", async ({ page }) => {
+  const findings: string[] = [];
+
+  for (const path of PAGES) {
+    await page.goto(path, { waitUntil: "domcontentloaded" });
+
+    const results = await new AxeBuilder({ page })
+      .withTags(["best-practice"])
+      .analyze();
+
+    for (const violation of results.violations) {
+      // The selectors, not just the count — a finding nobody can locate is a
+      // finding nobody will rule on.
+      const targets = violation.nodes.map((node) => node.target.join(" ")).join(", ");
+      findings.push(
+        `${path} — ${violation.id} (${violation.impact}, ${violation.nodes.length} node(s)): ${violation.help}\n      nodes: ${targets}`,
+      );
+    }
+  }
+
+  console.log(
+    findings.length === 0
+      ? "[axe best-practice] no findings across all routes"
+      : `[axe best-practice] ${findings.length} finding(s):\n  ${findings.join("\n  ")}`,
+  );
+
+  // Deliberately no assertion. See the note above.
+  expect(true).toBe(true);
 });
 
 test("axe: the lightbox, open", async ({ page }) => {
