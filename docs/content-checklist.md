@@ -4,12 +4,19 @@ Every placeholder still in the site, grouped by file, with what each one needs a
 who can supply it. Written 2026-07-29 at the close of increment 11; the homepage
 was signed off on 2026-07-29 and its entries are struck through below.
 
-**The homepage is done.** Hero subhead, positioning statement, featured-work
-heading, all four statistics, the three process steps and the closing heading are
-approved copy and no longer carry a marker. Two things on that page are still
-outstanding and are listed in their sections: the closing CTA's body paragraph,
-for which no copy was supplied, and the positioning image's alt text, which waits
-on the real photograph.
+**Home, About, Our Process, Team and Privacy are done.** Every word of body copy
+on those five routes is approved and unmarked. What remains on them is artwork,
+two page-hero subheads and two CTA bodies that were never briefed, all listed in
+their sections below.
+
+**Still to write: the three project narratives** — `content/projects/*/index.mdx`.
+That is the last batch of prose on the site.
+
+**The dates and figures are a single interlocking set.** 2014, twelve years, 340
+homes, three markets, nine completed. They appear in the statistics band, the
+About hero, the company story and the `/about` meta description. A unit test pins
+the two that tie to other copy, but the rest are held together only by this note —
+if one moves, they all move.
 
 **The site now says it is not a real company.** The footer bottom bar carries "A
 concept project. Monterra Developments is not a real company." on every page. It
@@ -42,8 +49,8 @@ These are wrong in public, not merely unfinished.
 | `lib/seo.ts` — `SITE_URL` | The production domain. Every canonical URL, every OG image URL and the sitemap resolve against it, so a wrong value here mislabels the whole site. Currently `https://www.monterradevelopments.com`. | Client |
 | `lib/site.ts` — `contact.email`, `contact.phone` | The real inbox and number. These are where every inquiry lands; the current ones are invented and go nowhere. | Client |
 | `lib/site.ts` — `contact.address` | The real street and locality. Until they land, the `PostalAddress` is omitted from the Organization JSON-LD rather than published with a marker in it. | Client |
-| `app/privacy/page.tsx` — 13 markers | A real privacy policy. The page currently says in its own body that it is not one. This needs a lawyer, not a copywriter, and it is a legal requirement before the site accepts a single inquiry. | Client |
-| `content/team.json` — 16 markers | Four real people: name, role, two-line bio, portrait and LinkedIn URL each. Invented colleagues on a live site are a serious problem, not a cosmetic one. | Client |
+| ~~`app/privacy/page.tsx` — 13 markers~~ | **Written 2026-07-29.** Six clauses in plain English covering what the form collects, why, retention, cookies and analytics, who else sees it, and how to ask for deletion. It opens by saying the site is a concept project and that the form has no destination, so nothing is processed — which is true today. **If this ever becomes a live site, a qualified person must review it**, and the opening paragraph has to be replaced rather than deleted. | You → a lawyer, if it goes live |
+| ~~`content/team.json` — 16 markers~~ | **Written 2026-07-29.** Four invented people with names, roles and bios: Elena Marsh, Priya Raman, Daniel Okonjo, Marcus Bell. Two carry a LinkedIn URL and two do not, so both card paths render. **They are not real people**, the LinkedIn URLs are `example-*` and resolve to nothing, and the portraits are still placeholders. Elena Marsh is also the attribution on the About pull-quote — the two must not drift apart. | Client, if it goes live |
 | ~~`components/ui/StatsBand.tsx` — 4 figures~~ | **Done 2026-07-29.** 340 homes delivered, 12 years building, 3 markets, 9 projects completed. They are a set, not four independent numbers: three markets is the three cities named in the hero, and nine completed is what the three selected projects are a selection from. Changing one without the others makes the page contradict itself, and a unit test now pins the two that tie to other copy. **This band also renders on `/about`,** so these are the figures on both pages. | — |
 
 ---
@@ -67,15 +74,15 @@ claims about how the company operates that need checking before they ship.
 
 | File | What it needs | Who |
 | --- | --- | --- |
-| `app/page.tsx` (1) | **Home CTA band body — still outstanding.** The heading above it was approved ("Let's talk about what you're planning"); no copy was supplied for the paragraph, so the marker stays. | Client → you |
+| ~~`app/page.tsx`~~ | **Done 2026-07-29.** Closing heading and body both approved. | — |
 | ~~`components/home/Hero.tsx`~~ | **Done 2026-07-29.** Headline kept as written; subhead now names Austin, Tampa and Denver, which are the three cities the seeded projects are in and the three the statistics count as markets. | — |
 | `components/home/Positioning.tsx` (1) | **Statement done 2026-07-29.** The image alt is still outstanding and waits on the real photograph. | Client |
-| ~~`components/home/ProcessPreview.tsx`~~ | **Done 2026-07-29.** Find the site / Design for the block / Build and deliver. Still has to stay consistent with the five stages on `/process`, which are not yet approved — if those change, check these against them. | — |
-| ~~`components/home/FeaturedProjects.tsx`~~ | **Done 2026-07-29.** Heading is now "Selected work". Note it repeats the eyebrow above it word for word, which was specified deliberately; if that reads as a mistake later, the heading is the one to change. | — |
-| `app/about/page.tsx` (4) | Page subhead, the pull-quote, its attribution, CTA body. The quote is attributed to a named founder who does not exist yet. | Client |
-| `components/about/CompanyStory.tsx` (3) | Two story paragraphs and an image alt. States the company started in 2008 with one duplex — a factual claim. | Client |
-| `components/about/ValuesGrid.tsx` (4) | Four value statements. Each makes an operational claim (sites bought outright, nothing subcontracted) that is either true or should not be said. | Client |
-| `components/process/ProcessStages.tsx` (6) | Five stage bodies and the stage image alt. The two-year warranty in stage five is a contractual claim. | Client |
+| ~~`components/home/ProcessPreview.tsx`~~ | **Done 2026-07-29.** Find the site / Design for the block / Build and deliver. The first three stages on `/process` now use the same words in the same order — if one side changes, change the other. | — |
+| ~~`components/home/FeaturedProjects.tsx`~~ | **Done 2026-07-29.** Eyebrow "Recent work" over heading "Selected work" — two labels, one hierarchy. | — |
+| `app/about/page.tsx` (1) | **Hero, pull-quote and attribution done 2026-07-29.** Only the CTA band body is still outstanding; no copy was briefed for it. | Client → you |
+| ~~`components/about/CompanyStory.tsx`~~ (1 alt) | **Done 2026-07-29.** Three paragraphs. States the company began in 2014 and has delivered 340 homes — both are load-bearing against the statistics band. The image alt is still outstanding. | — |
+| ~~`components/about/ValuesGrid.tsx`~~ | **Done 2026-07-29.** Site first / Built to last / One team / Straight answers. **Not numbered**, though the brief listed them 01–04: this is a set, not a sequence, and Our Process is the only page where order carries information. Say so if you want the numerals. | — |
+| ~~`components/process/ProcessStages.tsx`~~ (1 alt) | **Done 2026-07-29.** Five stages with their outcome lines. Stage 04's title is the single word "Build", which the two-tone lockup cannot split, so it renders as the bronze lede alone — the only heading on the site that does not split. The stage image alts are still outstanding. **The two-year structural warranty in stage 05 is a contractual claim.** | — |
 | `app/process/page.tsx` (2) | Page subhead and CTA body. | Client → you |
 | `app/team/page.tsx` (2) | Page subhead and CTA body. | Client → you |
 | `app/projects/page.tsx` (2) | Page subhead and intro paragraph. | Client → you |
@@ -121,8 +128,10 @@ them before launch. Check this list by hand.
 | --- | --- |
 | `lib/site.ts` — `contact.email.href`, `contact.phone.href` | The `mailto:` and `tel:` targets are clean so the links function, but the address and number behind them are invented. |
 | `lib/site.ts` — `socials[].href` | LinkedIn and Instagram URLs are marked, but confirm the accounts exist before the marker comes off. Omitted from JSON-LD while marked. |
-| `content/team.json` — `linkedin` | Three of the four are `example-<name>` URLs and resolve to nothing. Unmarked. |
-| `lib/seo.ts` — the eight page descriptions | Clean of markers by design, because a marker would be published into search results and eat 10 of the 160 characters. **They are still unapproved copy** and make claims — "since 2008", "its own crews and no outside investors" — that need the same sign-off as everything above. **The `/` description is now the only unapproved string on an otherwise finished homepage**, and it says "across Texas, Florida and Colorado" where the hero says "Austin, Tampa and Denver" — the same three places at different granularity, so consistent today, but they have to move together. |
+| `content/team.json` — `linkedin` | Two of the four are `example-<name>` URLs and resolve to nothing. Unmarked, and they are live external links on a public page. |
+| `content/team.json` — the four people | Names, roles and bios are written and unmarked, but **these are invented people**. On a concept project that is fine and the footer says so; on a live site every one of them has to be replaced with someone real. |
+| `app/privacy/page.tsx` — the policy | Unmarked and readable, but it describes what *would* happen rather than what does, because nothing is wired up. Its first paragraph is what makes that honest. |
+| `lib/seo.ts` — the eight page descriptions | Clean of markers by design, because a marker would be published into search results and eat 10 of the 160 characters. **They are still unapproved copy.** The `/about` one was corrected from 2008 to 2014 on 2026-07-29 — it had begun contradicting the company story on the same page. The `/` one says "across Texas, Florida and Colorado" where the hero says "Austin, Tampa and Denver": the same three places at different granularity, consistent today, but they move together. |
 | `content/projects/*/index.mdx` — `seo.description` | Same as above: clean, deliberately unmarked, unapproved, and each states unit counts and dates as fact. |
 | `lib/site.ts` — `description` | Fixed in this increment and now real copy, not a placeholder. Listed only so nobody re-marks it. |
 

@@ -19,9 +19,9 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        lede="About"
-        rest="Monterra"
-        subhead="[REPLACE] Who we are and how we got here."
+        lede="Twelve"
+        rest="years of building"
+        subhead="We started with one duplex in East Austin and never changed how we work."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
 
@@ -30,9 +30,15 @@ export default function AboutPage() {
 
       <Section>
         <Container>
+          {/*
+            The attribution has to stay in step with content/team.json — the same
+            person appears there as "Elena Marsh, Founder and Principal". A quote
+            attributed to someone the team page does not list reads as invented,
+            which on a concept project is the one impression worth avoiding.
+          */}
           <PullQuote
-            quote="[REPLACE] We are not in the business of selling houses. We are in the business of finishing streets that people want to live on."
-            attribution="[REPLACE] Elena Marsh, Founder"
+            quote="The question is never whether we can build it. It is whether the street will be better with it than without it."
+            attribution="Elena Marsh, Founder"
             className="max-w-[68ch]"
           />
         </Container>

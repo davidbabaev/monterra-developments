@@ -11,9 +11,13 @@ export const metadata: Metadata = buildMetadata("/privacy");
  * composition: this is a page someone reads once, on purpose, and decorating it
  * would be working against them.
  *
- * Every word below is a placeholder. A real policy, written by someone
- * qualified to write one, is owed before this site goes live — it is listed in
- * docs/build-increments.md under "Deferred".
+ * Written in plain English on purpose. A policy nobody can read is not a policy,
+ * and this site collects little enough that saying so plainly takes five
+ * paragraphs rather than five pages.
+ *
+ * The opening note is not a disclaimer bolted on: this is a concept project, the
+ * contact form has no destination wired to it, and a privacy policy that claimed
+ * otherwise would be the one dishonest page on the site.
  */
 
 type Clause = {
@@ -23,33 +27,41 @@ type Clause = {
 
 const CLAUSES: readonly Clause[] = [
   {
-    heading: "[REPLACE] What we collect",
+    heading: "What the contact form collects",
     body: [
-      "[REPLACE] When you send us an inquiry we receive the name, email address, phone number and message you typed, along with the project you selected. We do not collect anything else through this website.",
+      "The contact form asks for your name and email address. You can also give a phone number and choose the development you are asking about, and there is a message box. That is everything the form collects — there are no hidden fields.",
+      "We do not ask for anything we do not need in order to reply to you.",
     ],
   },
   {
-    heading: "[REPLACE] What we do with it",
+    heading: "Why we collect it",
     body: [
-      "[REPLACE] We use it to answer you. We do not sell it, and we do not add you to a mailing list you did not ask for.",
+      "To answer your enquiry, and for nothing else. If you ask about a specific development we use what you sent to give you a useful answer about that development. We do not add you to a mailing list, and we do not send you anything you did not ask for.",
     ],
   },
   {
-    heading: "[REPLACE] How long we keep it",
+    heading: "How long we keep it",
     body: [
-      "[REPLACE] We keep inquiries for as long as we are talking to you and for a period afterwards, then delete them. The exact period belongs in this paragraph once it is decided.",
+      "For as long as the conversation is live, and for twelve months afterwards in case you come back to us. After that we delete it. If a conversation turns into a purchase, the paperwork that comes with it is kept for as long as the law requires, which is separate from this form.",
     ],
   },
   {
-    heading: "[REPLACE] Cookies and analytics",
+    heading: "Cookies and analytics",
     body: [
-      "[REPLACE] This site sets no advertising cookies. If analytics are added, this paragraph has to say which, what they measure, and how to opt out.",
+      "This site sets no advertising cookies and runs no advertising trackers. There is no cross-site tracking, no fingerprinting, and nothing that follows you once you leave.",
+      "If we add basic analytics — page views and referrers, aggregated, with no attempt to identify you — this paragraph will say which product and what it measures before it goes live.",
     ],
   },
   {
-    heading: "[REPLACE] Your rights",
+    heading: "Who else sees it",
     body: [
-      "[REPLACE] You can ask us what we hold about you, ask us to correct it, or ask us to delete it. Write to the email address on our contact page and we will reply within a month.",
+      "Nobody. We do not sell your details, we do not share them with advertisers, and we do not pass them to partners. The only people who read an enquiry are the people at Monterra who answer it.",
+    ],
+  },
+  {
+    heading: "Asking to see it or delete it",
+    body: [
+      "You can ask us what we hold about you, ask us to correct it, or ask us to delete it, and you do not have to give a reason. Write to the email address on our contact page and we will reply within thirty days.",
     ],
   },
 ];
@@ -60,7 +72,7 @@ export default function PrivacyPage() {
       <PageHero
         lede="Privacy"
         rest="policy"
-        subhead="[REPLACE] What we do with the information you send us."
+        subhead="What we do with the information you send us, in plain English."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Privacy Policy" }]}
       />
 
@@ -68,8 +80,10 @@ export default function PrivacyPage() {
         <Container>
           <div className="max-w-[68ch]">
             <p className="font-body text-[18px] leading-[1.6] text-slate xl:text-[20px]">
-              [REPLACE] This is placeholder text and not a privacy policy. A real one is required
-              before launch.
+              Monterra Developments is a concept project and not a real company. The contact form
+              on this site has no destination connected to it, so nothing you type into it is
+              sent, stored or processed by anyone. The policy below describes what would happen
+              on a live version of this site.
             </p>
 
             {CLAUSES.map((clause) => (
@@ -89,7 +103,7 @@ export default function PrivacyPage() {
             ))}
 
             <p className="mt-10 font-body text-[13px] font-medium uppercase tracking-[0.04em] text-slate">
-              [REPLACE] Last updated: date to be set when the real policy lands
+              Last updated: 29 July 2026
             </p>
           </div>
         </Container>

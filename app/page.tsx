@@ -32,9 +32,7 @@ export default function HomePage() {
       <CtaBand
         lede="Let's"
         rest="talk about what you're planning"
-        // [REPLACE] No approved copy for this line yet — the heading above it is
-        // approved, the body is not.
-        body="[REPLACE] Whether you are buying, investing or bringing us a site, we reply within two business days."
+        body="If you are planning a site, or looking at one, we are happy to walk it with you before anyone talks numbers."
       />
     </>
   );

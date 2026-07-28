@@ -19,6 +19,12 @@ import { cx } from "@/lib/cx";
 type SplitHeadingProps = {
   /** One or two words, always real words from the heading. */
   readonly lede: string;
+  /**
+   * The remainder, in Manrope. Empty only for a heading that is a single word
+   * and cannot be split — "Build", the fourth stage of Our Process. Such a
+   * heading is all lede, and the trailing space is dropped so it does not leave
+   * a stray text node after the span.
+   */
   readonly rest: string;
   readonly as?: "h1" | "h2";
   /** `dark` is for navy scrims: the lede stays bronze, the remainder goes ivory. */
@@ -53,8 +59,8 @@ export function SplitHeading({
         className,
       )}
     >
-      <span className="font-editorial text-[1.18em] font-light text-bronze">{lede}</span>{" "}
-      {rest}
+      <span className="font-editorial text-[1.18em] font-light text-bronze">{lede}</span>
+      {rest === "" ? null : <> {rest}</>}
     </Heading>
   );
 }

@@ -70,9 +70,18 @@ describe("getTeam", () => {
     }
   });
 
-  it("seeds one member with no linkedin, so the absent case is always covered", () => {
-    const withoutLinkedin = getTeam().filter((person) => person.linkedin === undefined);
-    expect(withoutLinkedin).toHaveLength(1);
+  /**
+   * Both card paths, not an exact count. What matters is that production renders
+   * a card with the icon and a card without it — pinning the split to one made
+   * the test fail when the seed moved to two and two, which told us nothing.
+   */
+  it("seeds members both with and without linkedin, so both card paths render", () => {
+    const team = getTeam();
+    const withLinkedin = team.filter((person) => person.linkedin !== undefined);
+    const withoutLinkedin = team.filter((person) => person.linkedin === undefined);
+
+    expect(withLinkedin.length).toBeGreaterThan(0);
+    expect(withoutLinkedin.length).toBeGreaterThan(0);
   });
 });
 

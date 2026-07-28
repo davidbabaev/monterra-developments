@@ -35,7 +35,8 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
   return (
     <Section>
       <Container>
-        <Eyebrow>Selected work</Eyebrow>
+        {/* Two labels, one hierarchy — the eyebrow categorises, the heading names. */}
+        <Eyebrow>Recent work</Eyebrow>
         <SplitHeading as="h2" lede="Selected" rest="work" className="mt-3" />
 
         {/* No `priority` on these: the hero image is the LCP element and this

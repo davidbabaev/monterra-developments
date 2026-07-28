@@ -7,10 +7,17 @@ import { SplitHeading } from "@/components/ui/SplitHeading";
  * two pages read as the same hand.
  */
 
-/** [REPLACE] Placeholder copy throughout. */
+/**
+ * Approved copy.
+ *
+ * The dates and figures here are load-bearing: 2014 and "twelve years" match the
+ * statistics band, and "340 homes" is the same figure it counts. The page hero
+ * says twelve years too. Changing one means changing all of them.
+ */
 const PARAGRAPHS: readonly string[] = [
-  "[REPLACE] Monterra started in 2008 with one duplex in East Austin and a crew of four. We had no investors and no land bank, so we learned to buy carefully and build only what we could finish.",
-  "[REPLACE] Eighteen years later the crews are larger and the sites are bigger, but the order is the same: buy the land, draw the plan, build it ourselves, hand over the keys.",
+  "Monterra began in 2014 with a single duplex on a corner lot nobody wanted. We did the drawings ourselves, hired the framer ourselves, and sold both sides before the drywall went up.",
+  "Twelve years and 340 homes later, the method has not changed much. We buy sites we have walked. We design for the street before the spreadsheet. We keep the same team from permit to closing, because the person who signs off on a foundation should still be there when a buyer gets their keys.",
+  "We are not the largest developer in any of our three markets, and we have turned down more sites than we have bought. That is the point.",
 ];
 
 export function CompanyStory() {
