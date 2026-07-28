@@ -295,15 +295,17 @@ Eleven increments. Each ends in a **testable state and a commit**. Run them in o
 - Project pages use `seo.*` when present, otherwise derive from `title` and `summary`
 - `app/opengraph-image.tsx` and `app/projects/[slug]/opengraph-image.tsx` via `ImageResponse` — navy, monogram, title, `city, ST`
 - `sitemap.ts` (all routes + all slugs, excluding `/styleguide`), `robots.ts`, canonical URLs
-- JSON-LD: `Organization` in root, `Place` per project when `coords` exist
-- `axe` scans on Home, Projects, a detail page, and Contact
+- JSON-LD: `Organization` in root, `Residence` per project when `coords` exist —
+  `Residence` rather than `Place` because it is the more specific schema.org type
+  for a development. A project without `coords` emits nothing at all.
+- `axe` scans on all ten indexable routes, plus the open lightbox and open mobile nav
 - Lighthouse on the production build
 
 **Done-when**
 - View-source confirms a unique title and description on every page
 - OG cards render correctly in a link-preview validator
 - `/sitemap.xml` lists all static routes plus all three slugs, and omits `/styleguide`
-- Zero critical `axe` violations on all four scanned pages
+- Zero critical and zero serious `axe` violations on all ten scanned routes
 - Lighthouse: Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO 100
 - Reduced-motion disables every animation site-wide
 - Production build passes with zero TS and zero ESLint errors
@@ -323,3 +325,8 @@ Not blockers for a working site, but required before the client sees it:
 5. **A contact form destination** — one file to change
 6. **A real privacy policy**
 7. **Analytics** — Vercel Analytics plus a conversion event on form success
+8. **Coordinates for The Larkin and Monterra Bay** — without them neither emits a
+   `Residence` block, so one project of three carries structured data
+
+All of the above are itemised file by file, with who can supply each one, in
+[`docs/content-checklist.md`](./content-checklist.md) — the handover document.

@@ -11,7 +11,9 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lighthouse": "npm run build && node scripts/lighthouse.mjs",
+    "lighthouse:desktop": "npm run build && node scripts/lighthouse.mjs --desktop"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.5.7",
@@ -39,6 +41,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "jsdom": "^29.1.1",
+    "lighthouse": "^13.4.1",
     "sharp": "^0.35.3",
     "svgo": "^4.0.2",
     "tailwindcss": "^4",

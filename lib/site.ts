@@ -4,13 +4,19 @@
  * Every contact value is a placeholder. The visible `label` carries `[REPLACE]`
  * so it is obvious in the browser and greppable in the source; `href` stays
  * clean so `tel:` and `mailto:` links actually work in the meantime.
+ *
+ * `description` is the exception and is deliberately unmarked. It is the footnote
+ * on the default Open Graph card and the `description` in the Organization
+ * schema, so it is the one string here that reaches the public the moment anyone
+ * shares a link. A `[REPLACE]` in it is published, not staged.
+ * tests/unit/seo.test.ts holds it clean.
  */
 
 export const siteConfig = {
   name: "Monterra Developments",
   tagline: "Building Communities. Creating Value.",
   description:
-    "[REPLACE] Monterra Developments builds and sells townhomes, condominiums and duplexes across the United States.",
+    "Monterra Developments builds and sells townhomes, condominiums and duplexes across the United States.",
 
   nav: [
     { label: "Projects", href: "/projects" },

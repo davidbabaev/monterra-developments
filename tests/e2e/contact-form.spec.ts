@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { contrastRatio } from "./support/colors";
 
 /**
  * The states a form has to be watched in, plus the two things a unit test
@@ -155,24 +156,38 @@ test("input borders clear the 3:1 required of a control boundary", async ({ page
   await page.goto("/contact");
 
   const measured = await nameField(page).evaluate((element) => {
-    const luminance = (rgb: string) => {
-      const [r, g, b] = rgb.match(/\d+/g)!.map(Number);
-      const channel = (value: number) => {
-        const s = value / 255;
-        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-      };
-      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+    /**
+     * The nearest ancestor that actually paints, which is what the border has to
+     * separate the field from.
+     *
+     * Reading `document.body` directly is what this used to do, and it is not
+     * safe: a background that is not painted computes to `rgba(0, 0, 0, 0)` or,
+     * intermittently, to the keyword `transparent`. Neither is the colour behind
+     * the control, and the keyword is not a colour at all — under a full parallel
+     * run it reached the parser about one time in twenty and threw. The walk is
+     * the same one tests/e2e/contrast-rules.spec.ts uses.
+     */
+    const backgroundBehind = (start: Element): string => {
+      let node: Element | null = start.parentElement;
+      while (node !== null) {
+        const background = getComputedStyle(node).backgroundColor;
+        if (background !== "rgba(0, 0, 0, 0)" && background !== "transparent") return background;
+        node = node.parentElement;
+      }
+      // Nothing in the chain paints, so what shows through is the canvas.
+      return "rgb(255, 255, 255)";
     };
 
-    const border = getComputedStyle(element).borderTopColor;
-    // The page behind the field, which is what the border has to separate it from.
-    const page_ = getComputedStyle(document.body).backgroundColor;
-    const [hi, lo] = [luminance(border), luminance(page_)].sort((a, b) => b - a);
-
-    return { border, page: page_, ratio: Number(((hi + 0.05) / (lo + 0.05)).toFixed(2)) };
+    return {
+      border: getComputedStyle(element).borderTopColor,
+      background: backgroundBehind(element),
+    };
   });
 
-  expect(measured.ratio).toBeGreaterThanOrEqual(3);
+  // Computed here rather than in the browser so a failure names both colours.
+  const ratio = contrastRatio(measured.border, measured.background);
+
+  expect(ratio, `border ${measured.border} on ${measured.background}`).toBeGreaterThanOrEqual(3);
   // Navy, not stone: stone would measure 1.76 and fail.
   expect(measured.border).toBe("rgb(20, 38, 61)");
 });

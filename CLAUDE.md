@@ -29,6 +29,7 @@ Versions below are the ones actually installed — read from `package.json` / `p
 | Unit tests | `@testing-library/user-event` | 14.6.1 |
 | E2E tests | `@playwright/test` (mobile 390x844, desktop 1280x800) | 1.62.0 |
 | A11y tests | `@axe-core/playwright` (axe scans in the e2e suite) | 4.12.1 |
+| Perf audit | `lighthouse` (measurement only, via `npm run lighthouse`) | 13.4.1 |
 | Content | `gray-matter` (frontmatter parsing at build time) | 4.0.3 |
 | Content | `next-mdx-remote` (MDX body rendering; not yet used) | 6.0.0 |
 | Validation | `zod` (v4 — content schemas and the contact form) | 4.4.3 |
@@ -145,6 +146,8 @@ Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` wh
 | `npm test` | Vitest, single run. |
 | `npm run test:e2e` | Playwright at 390x844 and 1280x800. Builds and serves first. |
 | `npm run lint` | ESLint. Separate from `build` — both must be clean. |
+| `npm run lighthouse` | Builds, serves, audits `/`, `/projects`, `/projects/monterra-ridge`. Mobile preset. Prints all four categories and names the audits behind any miss. |
+| `npm run lighthouse:desktop` | The same three routes on the desktop preset. |
 
 ## 5 · Conventions
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getAllProjects } from "@/lib/projects";
 import { PAGE_SEO, SITE_URL, buildMetadata, projectDescription, type SeoPath } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
 import { organizationSchema, projectSchema } from "@/lib/structured-data";
 
 /**
@@ -60,6 +61,62 @@ describe("page metadata", () => {
   });
 });
 
+/**
+ * Placeholder copy is fine in a page body — someone reads it, sees the marker and
+ * replaces it. It is not fine in metadata. A description, a share-card footnote or
+ * a schema.org field is published to a crawler and a social preview without anyone
+ * looking at it first, so `[REPLACE]` there is shipped, not staged.
+ */
+describe("no placeholder marker reaches a published string", () => {
+  const MARKER = "[REPLACE]";
+
+  it("keeps every page title and description clean", () => {
+    for (const path of PATHS) {
+      expect(PAGE_SEO[path].title, `${path} title`).not.toContain(MARKER);
+      expect(PAGE_SEO[path].description, `${path} description`).not.toContain(MARKER);
+    }
+  });
+
+  it("keeps the strings both Open Graph cards render clean", () => {
+    // The default card: site name, tagline, description.
+    expect(siteConfig.name).not.toContain(MARKER);
+    expect(siteConfig.tagline).not.toContain(MARKER);
+    expect(siteConfig.description).not.toContain(MARKER);
+
+    // The project cards: status label, title, "City, ST".
+    for (const project of getAllProjects()) {
+      expect(project.title, `${project.slug} title`).not.toContain(MARKER);
+      expect(project.location.city, `${project.slug} city`).not.toContain(MARKER);
+      expect(project.location.state, `${project.slug} state`).not.toContain(MARKER);
+    }
+  });
+
+  it("keeps every project description clean", () => {
+    for (const project of getAllProjects()) {
+      expect(projectDescription(project), `${project.slug}`).not.toContain(MARKER);
+      if (project.seo?.title !== undefined) {
+        expect(project.seo.title, `${project.slug} seo title`).not.toContain(MARKER);
+      }
+    }
+  });
+
+  it("keeps the Organization schema clean", () => {
+    // The whole object, so a marker in any field is caught rather than the two
+    // that happened to be checked when this was written.
+    expect(JSON.stringify(organizationSchema())).not.toContain(MARKER);
+  });
+
+  it("keeps every project's schema clean", () => {
+    // Monterra Ridge's frontmatter address is still marked, so this is the test
+    // that stops it reaching a crawler.
+    for (const project of getAllProjects()) {
+      const schema = projectSchema(project);
+      if (schema === null) continue;
+      expect(JSON.stringify(schema), `${project.slug}`).not.toContain(MARKER);
+    }
+  });
+});
+
 describe("project metadata", () => {
   const projects = getAllProjects();
 
@@ -96,7 +153,20 @@ describe("structured data", () => {
 
     expect(schema["@type"]).toBe("Organization");
     expect(schema.url).toBe(SITE_URL);
-    expect(schema.address).toMatchObject({ "@type": "PostalAddress", addressCountry: "US" });
+    expect(schema.name).toBe("Monterra Developments");
+  });
+
+  /**
+   * The address and the social profiles are still placeholders, so they are left
+   * out rather than published. When the real ones land the marker goes with them
+   * and both fields appear on their own — this test then flips to asserting the
+   * PostalAddress, which is the point at which someone has to look at it.
+   */
+  it("omits the address and sameAs while they are placeholders", () => {
+    const schema = organizationSchema();
+
+    expect(schema.address).toBeUndefined();
+    expect(schema.sameAs).toBeUndefined();
   });
 
   it("emits a Residence only for a project that has coordinates", () => {
