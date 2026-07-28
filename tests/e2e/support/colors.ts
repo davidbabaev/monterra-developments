@@ -3,13 +3,14 @@
  *
  * lib/contrast.ts does this over hex strings and is the source of truth for the
  * token audit. It cannot be used here: `getComputedStyle` hands back
- * `rgb(r, g, b)`, and a browser will also hand back the keyword `transparent`,
- * which is not a colour at all. Parsing that is this file's job.
+ * `rgb(r, g, b)`, and also hands back `""` for every property of a detached
+ * element and the keyword `transparent` for an unpainted background. Neither is
+ * a colour. Parsing that is this file's job.
  *
- * The parse throws with the offending string rather than returning null. A
- * measurement that cannot be taken has to say what it received — the previous
+ * The parse throws naming the offending string rather than returning null. A
+ * measurement that cannot be taken has to say what it received — an earlier
  * version asserted non-null and failed as `Cannot read properties of null`,
- * which named neither the colour nor the element.
+ * which named neither the value nor the element and cost a diagnosis.
  */
 
 export function parseRgb(value: string): readonly [number, number, number] {
@@ -17,9 +18,9 @@ export function parseRgb(value: string): readonly [number, number, number] {
 
   if (channels === null || channels.length < 3) {
     throw new Error(
-      `Not a measurable colour: "${value}". A computed style returns the keyword ` +
-        `"transparent" for an unpainted background — resolve it against what is ` +
-        `actually painted behind before measuring.`,
+      `Not a measurable colour: "${value}". An empty string means the element was ` +
+        `detached when it was measured; "transparent" means nothing was painted. ` +
+        `Resolve both before calling this.`,
     );
   }
 

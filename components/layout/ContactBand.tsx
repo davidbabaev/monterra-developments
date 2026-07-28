@@ -16,6 +16,13 @@ import { siteConfig } from "@/lib/site";
  *
  * All text here is navy or ink: this is a stone surface, where ivory measures
  * 1.9:1 and slate 2.62:1.
+ *
+ * The band is an `aside` — a complementary landmark — with an accessible name.
+ * It sits between `main` and `footer`, so without one its three items belong to
+ * no landmark at all and a screen reader moving by landmark skips straight past
+ * the address, phone and email. axe reports this as `region` on every route the
+ * band appears on. The name is what makes the landmark worth having: an unnamed
+ * complementary is announced only as "complementary", which locates nothing.
  */
 
 type BandItem = {
@@ -49,7 +56,7 @@ const ITEMS: readonly BandItem[] = [
 
 export function ContactBand() {
   return (
-    <div className="relative z-10 xl:translate-y-1/3">
+    <aside aria-label="Contact details" className="relative z-10 xl:translate-y-1/3">
       <Container>
         <StoneSlab padding="lg">
           <ul className="grid grid-cols-1 gap-8 xl:grid-cols-3">
@@ -82,6 +89,6 @@ export function ContactBand() {
           </ul>
         </StoneSlab>
       </Container>
-    </div>
+    </aside>
   );
 }

@@ -216,12 +216,26 @@ test.describe("the footer deep links", () => {
 test.describe("layout", () => {
   test("uses the right column count for the viewport", async ({ page }) => {
     await page.goto("/projects");
-    const columns = await page
-      .locator("ul.grid")
-      .first()
-      .evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
 
-    expect(columns).toBe(isMobile(page) ? 1 : 3);
+    const grid = page.locator("ul.grid").first();
+    await expect(grid).toBeVisible();
+
+    /**
+     * Retried, and the raw value is asserted before it is counted.
+     *
+     * `gridTemplateColumns` is the string "none" until the stylesheet has
+     * applied. Splitting that on a space gives one token, which counts as one
+     * column and reads exactly like a correct mobile result — so on desktop it
+     * failed as "expected 3, received 1" and on mobile it would have passed for
+     * entirely the wrong reason.
+     */
+    await expect(async () => {
+      const columns = await grid.evaluate(
+        (element) => getComputedStyle(element).gridTemplateColumns,
+      );
+      expect(columns, "the grid had not been laid out").not.toBe("none");
+      expect(columns.split(" ").length).toBe(isMobile(page) ? 1 : 3);
+    }).toPass({ timeout: 5_000 });
   });
 
   test("no horizontal scroll at any width", async ({ page }) => {
