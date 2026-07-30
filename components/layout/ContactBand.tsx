@@ -49,7 +49,8 @@ const ITEMS: readonly BandItem[] = [
   {
     icon: Mail,
     heading: "Email",
-    lines: [contact.email.label, "[REPLACE] We reply within two business days"],
+    // Approved 2026-07-29. A service promise, signed off as written.
+    lines: [contact.email.label, "We reply within two business days"],
     href: contact.email.href,
   },
 ];

@@ -46,7 +46,7 @@ describe("resolved media — shape handed to next/image", () => {
     const hero = getProjectBySlug("monterra-ridge")?.media.hero;
     expect(hero).toEqual({
       src: "/projects/monterra-ridge/hero.png",
-      alt: expect.stringContaining("[REPLACE]"),
+      alt: "Monterra Ridge townhomes at dusk, seen across the central green",
       width: 1920,
       height: 1080,
     });

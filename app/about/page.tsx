@@ -31,14 +31,15 @@ export default function AboutPage() {
       <Section>
         <Container>
           {/*
-            The attribution has to stay in step with content/team.json — the same
-            person appears there as "Elena Marsh, Founder and Principal". A quote
-            attributed to someone the team page does not list reads as invented,
-            which on a concept project is the one impression worth avoiding.
+            The attribution has to stay in step with content/team.json, where the
+            same person is listed as "Elena Marsh, Founder and Principal" — the
+            role has to be spelled the same way in both places. A quote attributed
+            to someone the team page does not list reads as invented, which on a
+            concept project is the one impression worth avoiding.
           */}
           <PullQuote
             quote="The question is never whether we can build it. It is whether the street will be better with it than without it."
-            attribution="Elena Marsh, Founder"
+            attribution="Elena Marsh, Founder and Principal"
             className="max-w-[68ch]"
           />
         </Container>
@@ -49,7 +50,7 @@ export default function AboutPage() {
       <CtaBand
         lede="Come and"
         rest="see one"
-        body="[REPLACE] We will walk you round a site under construction and show you what a finished one looks like."
+        body="We are always looking at sites in our three markets, and always happy to look at one more."
       />
     </>
   );

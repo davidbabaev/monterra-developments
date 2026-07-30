@@ -15,21 +15,24 @@ import type { ProjectStatus } from "@/lib/schema";
 
 type StatusTrackerProps = {
   readonly status: ProjectStatus;
-  readonly title: string;
 };
 
-const CONTEXT: Record<ProjectStatus, (title: string) => string> = {
-  upcoming: (title) =>
-    `[REPLACE] ${title} is in planning. We publish unit counts and dates once the design is approved.`,
-  current: (title) =>
-    `[REPLACE] ${title} is under construction, with homes handed over as each phase completes.`,
-  completed: (title) => `[REPLACE] ${title} is finished, handed over and fully sold.`,
+/**
+ * Approved copy. Three short lines, one per stage — the chips above already name
+ * the stage, so this says what the stage means and stops. It no longer takes the
+ * project title: the heading and the page around it have said which development
+ * this is twice over by the time a reader reaches the line.
+ */
+const CONTEXT: Record<ProjectStatus, string> = {
+  upcoming: "In design. Details to follow.",
+  current: "Under construction.",
+  completed: "Delivered and sold.",
 };
 
 const CHIP_BASE =
   "inline-flex items-center gap-2 rounded-sm px-2.5 py-1.5 font-body text-[13px] uppercase tracking-[0.04em] md:px-3";
 
-export function StatusTracker({ status, title }: StatusTrackerProps) {
+export function StatusTracker({ status }: StatusTrackerProps) {
   return (
     <section>
       <SplitHeading as="h2" lede="Development" rest="status" />
@@ -71,7 +74,7 @@ export function StatusTracker({ status, title }: StatusTrackerProps) {
         })}
       </ol>
 
-      <p className="mt-4 font-body text-[15px] text-slate">{CONTEXT[status](title)}</p>
+      <p className="mt-4 font-body text-[15px] text-slate">{CONTEXT[status]}</p>
     </section>
   );
 }

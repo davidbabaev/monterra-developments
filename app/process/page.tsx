@@ -12,7 +12,7 @@ export default function ProcessPage() {
       <PageHero
         lede="How"
         rest="we build"
-        subhead="[REPLACE] Five stages, in the order they actually happen."
+        subhead="Forty sites a year. We buy three."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Our Process" }]}
       />
 
@@ -21,7 +21,7 @@ export default function ProcessPage() {
       <CtaBand
         lede="Bring us"
         rest="a site"
-        body="[REPLACE] If you have land you think we should look at, we will walk it with you."
+        body="If you have a site in mind, we will walk it with you before anyone talks numbers."
       />
     </>
   );

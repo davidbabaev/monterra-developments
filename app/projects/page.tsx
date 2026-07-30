@@ -19,14 +19,13 @@ export default function ProjectsPage() {
       <PageHero
         lede="Our"
         rest="projects"
-        subhead="[REPLACE] Completed, current and upcoming developments, in the order we built them."
+        subhead="Nine completed, one under construction, one on the way."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Projects" }]}
       />
       <Section>
         <Container className="flex flex-col gap-10">
           <p className="max-w-[68ch] font-body text-[18px] leading-[1.6] text-slate xl:text-[20px]">
-            [REPLACE] Every development we have delivered, have under construction, or have
-            announced. Filter by stage to narrow the list.
+            We build in Austin, Tampa and Denver. These are the ones worth showing.
           </p>
 
           {/*

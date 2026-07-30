@@ -26,7 +26,8 @@ export function CompanyStory() {
       <OffsetFeature
         image={{
           src: "/about/story-placeholder.png",
-          alt: "[REPLACE] The Monterra site team walking a street under construction",
+          // Written against the placeholder. Rewrite it when the real photograph lands.
+          alt: "The first Monterra duplex in East Austin, completed 2014",
           width: 1200,
           height: 900,
         }}

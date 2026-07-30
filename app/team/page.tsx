@@ -17,12 +17,18 @@ export default function TeamPage() {
       <PageHero
         lede="The"
         rest="team"
-        subhead="[REPLACE] The people who buy the land, draw the plans and build the homes."
+        subhead="Twelve people. Four of them have been here since the first duplex."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Team" }]}
       />
 
       <Section>
-        <Container>
+        <Container className="flex flex-col gap-10">
+          {/* The same intro treatment /projects uses, at the same measure and
+              scale, so the two listing pages open the same way. */}
+          <p className="max-w-[68ch] font-body text-[18px] leading-[1.6] text-slate xl:text-[20px]">
+            The same team takes a project from permit to closing.
+          </p>
+
           {/* Each member's name is an h3, so the outline needs this level to
               step through. Hidden because the page title already says it. */}
           <h2 className="sr-only">Our people</h2>

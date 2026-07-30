@@ -13,7 +13,8 @@ export function Positioning() {
       <OffsetFeature
         image={{
           src: "/home/positioning-placeholder.png",
-          alt: "[REPLACE] A completed Monterra terrace seen from the shared green",
+          // Written against the placeholder. Rewrite it when the real photograph lands.
+          alt: "A completed Monterra street on a clear afternoon",
           width: 1200,
           height: 900,
         }}

@@ -113,11 +113,11 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          <LocationBlock title={title} location={location} />
+          <LocationBlock location={location} />
           <AmenityList amenities={amenities} />
           <Gallery images={media.gallery} />
           <FloorPlanList plans={media.floorPlans} />
-          <StatusTracker status={status} title={title} />
+          <StatusTracker status={status} />
         </Container>
       </Section>
 

@@ -27,7 +27,7 @@ export default function ContactPage() {
       <PageHero
         lede="Start a"
         rest="conversation"
-        subhead="[REPLACE] Tell us what you are looking for and we will come back to you."
+        subhead="Tell us what you are planning."
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Contact" }]}
       />
       <Section>
