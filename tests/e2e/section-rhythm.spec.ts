@@ -97,16 +97,16 @@ test.describe("section rhythm", () => {
       const found = await sections(page);
       const full = paddingFor(width);
 
-      // Story, values, quote, stats, then the navy band.
-      expect(found).toHaveLength(5);
+      // Story, values, quote, team photo, stats, then the navy band.
+      expect(found).toHaveLength(6);
 
       // The first follows the hero, which declares no surface, so it keeps its
-      // interval; the three ivory sections after it collapse; the band does not.
+      // interval; the four ivory sections after it collapse; the band does not.
       expect(found[0]).toEqual({ surface: "page", paddingTop: full, paddingBottom: full });
-      for (const section of found.slice(1, 4)) {
+      for (const section of found.slice(1, 5)) {
         expect(section).toEqual({ surface: "page", paddingTop: 0, paddingBottom: full });
       }
-      expect(found[4]).toEqual({ surface: "navy", paddingTop: full, paddingBottom: full });
+      expect(found[5]).toEqual({ surface: "navy", paddingTop: full, paddingBottom: full });
     });
 
     test(`no page scrolls horizontally after the change at ${width}px`, async ({ page }) => {

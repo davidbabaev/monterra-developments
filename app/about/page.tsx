@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { CompanyStory } from "@/components/about/CompanyStory";
+import { TeamPhoto } from "@/components/about/TeamPhoto";
 import { ValuesGrid } from "@/components/about/ValuesGrid";
 import { Container } from "@/components/layout/Container";
 import { CtaBand } from "@/components/layout/CtaBand";
@@ -12,8 +13,9 @@ import { StatsBand } from "@/components/ui/StatsBand";
 export const metadata: Metadata = buildMetadata("/about");
 
 /**
- * Story, values, one quote, the statistics the homepage already shows, and the
- * closing band. Every part of it is a component that existed before this page.
+ * Story, values, one quote, the group photograph, the statistics the homepage
+ * already shows, and the closing band. Everything but the photograph is a
+ * component that existed before this page.
  */
 export default function AboutPage() {
   return (
@@ -44,6 +46,8 @@ export default function AboutPage() {
           />
         </Container>
       </Section>
+
+      <TeamPhoto />
 
       <StatsBand />
 
