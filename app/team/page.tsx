@@ -39,7 +39,7 @@ export default function TeamPage() {
       <CtaBand
         lede="Work"
         rest="with us"
-        body="[REPLACE] We hire site managers and carpenters directly. Tell us what you have built."
+        body="We are usually hiring for one role at a time. If you build things properly and want to do it here, the contact form reaches us directly."
       />
     </>
   );

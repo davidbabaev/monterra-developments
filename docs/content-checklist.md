@@ -5,18 +5,20 @@ who can supply it. Written 2026-07-29 at the close of increment 11; the homepage
 was signed off on 2026-07-29, the remaining copy on 2026-07-30, and the entries
 those covered are struck through below.
 
-**All prose on the site is written and approved.** Every page hero, every body
-paragraph, every project narrative, every CTA body but one. The site reads as
-finished copy end to end.
+**Every line of prose on the site is written and approved.** Every page hero,
+every body paragraph, every project narrative, every CTA body. The `/team` CTA
+was the last one and landed 2026-07-30. Nothing a reader reads is a placeholder
+any more.
 
-**The one line of copy still outstanding** is the `/team` CTA body. No wording was
-supplied for it in the 2026-07-30 batch, so it still carries the placeholder about
-hiring site managers. It is the only `[REPLACE]` a reader meets on a public page.
+**What is still marked is artwork, contact details or internal.** Three groups,
+and none of them is prose: the logo and every image placeholder, including the
+five ProcessStages stage alts; the contact details and production domain in
+`lib/site.ts` and `lib/seo.ts`; and the styleguide, which is `noindex`.
 
-**Everything else marked is artwork, contact details or internal.** Three groups,
-and none of them is prose: the logo and every image placeholder; the contact
-details and production domain in `lib/site.ts` and `lib/seo.ts`; and the
-styleguide, which is `noindex`.
+**The one marker a reader can still meet is a contact detail, not copy.** The
+office address, phone number and email in `lib/site.ts` render marked in the
+contact band and the footer on every route. They are the top of the blocking
+list below.
 
 **The dates and figures are a single interlocking set.** 2014, twelve years, 340
 homes, three markets, nine completed. They appear in the statistics band, the
@@ -74,8 +76,9 @@ These are wrong in public, not merely unfinished.
 
 ## Copy — pages and sections
 
-All of it is now approved copy. One row is still outstanding, and it is the only
-one on this page that a reader can see.
+All of it is now approved copy. The one row still open is an image alt, not a
+line of prose — it is here rather than under Artwork because the string lives in
+a component next to copy that is done.
 
 | File | What it needs | Who |
 | --- | --- | --- |
@@ -89,7 +92,7 @@ one on this page that a reader can see.
 | ~~`components/about/ValuesGrid.tsx`~~ | **Done 2026-07-29.** Site first / Built to last / One team / Straight answers. **Not numbered**, though the brief listed them 01–04: this is a set, not a sequence, and Our Process is the only page where order carries information. Say so if you want the numerals. | — |
 | `components/process/ProcessStages.tsx` (1 alt) | **Stage copy done 2026-07-29.** Five stages with their outcome lines. Stage 04's title is the single word "Build", which the two-tone lockup cannot split, so it renders as the bronze lede alone — the only heading on the site that does not split. **The stage image alts are the one thing here still marked**, and no wording was supplied for them on 2026-07-30. They are generated from the stage title, so one string covers all five. The two-year structural warranty in stage 05 is signed off — see the flagged-claims note at the foot of this document. | Client → you |
 | ~~`app/process/page.tsx`~~ | **Done 2026-07-30.** Subhead "Forty sites a year. We buy three." and the CTA body. The subhead is a claim about deal flow, not a description of the page — it sets up the five stages rather than summarising them. | — |
-| `app/team/page.tsx` (1) | **Subhead and intro done 2026-07-30.** The subhead says twelve people where the grid shows four, which is correct — the grid is the leadership, not the payroll — but it is the kind of pair that reads as a bug if either side moves. An intro paragraph was added to match the one on `/projects`. **The CTA body is the last unwritten line of copy on the site**: no wording was supplied for it, so it still carries the placeholder about hiring site managers and carpenters. | Client → you |
+| ~~`app/team/page.tsx`~~ | **Done 2026-07-30.** Subhead, intro and CTA body. The subhead says twelve people where the grid shows four, which is correct — the grid is the leadership, not the payroll — but it is the kind of pair that reads as a bug if either side moves. An intro paragraph was added to match the one on `/projects`. The CTA body was the last unwritten line of copy on the site; it says the company is usually hiring for one role at a time, **which is a recruiting claim that goes stale on its own** and points at the contact form as the way in. | — |
 | ~~`app/projects/page.tsx`~~ | **Done 2026-07-30.** Subhead "Nine completed, one under construction, one on the way." and the intro. The subhead counts nine completed against the statistics band, and one-and-one against the two non-completed projects seeded on disk — it is pinned to both, so a fourth project means editing this line. | — |
 | ~~`app/contact/page.tsx`~~ | **Done 2026-07-30.** Subhead "Tell us what you are planning." | — |
 | ~~`components/project/StatusTracker.tsx`~~ | **Done 2026-07-30.** Three lines: "In design. Details to follow." / "Under construction." / "Delivered and sold." They no longer interpolate the project title, so the component **no longer takes a `title` prop** — the heading and breadcrumb above have already named the development twice by the time a reader reaches the line. | — |
@@ -119,7 +122,7 @@ Worth finishing, but nothing here is indexed or shipped to a visitor.
 | File | What it needs | Who |
 | --- | --- | --- |
 | `app/styleguide/page.tsx` (1) | The note on the logo section, which will be obsolete once the mark is redrawn. | You |
-| `app/styleguide/_components/PrimitiveGallery.tsx` (3) | Sample strings demonstrating the primitives. Fine to leave marked. | You |
+| `app/styleguide/_components/PrimitiveGallery.tsx` (3) | Sample strings demonstrating the primitives. Fine to leave marked — they are `noindex` and they carry the marker, which is what makes them obviously samples. Worth knowing that one of them attributes a quote to "Elena Marsh, Managing Partner", a third spelling of a role that is "Founder and Principal" everywhere real. It is marked, so it is not drift; **do not unmark it without fixing the title.** | You |
 
 ---
 
