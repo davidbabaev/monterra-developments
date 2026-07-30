@@ -130,7 +130,7 @@ test("the spec panel sits above the prose in a single column", async ({ page }) 
     .getByRole("heading", { name: "Specifications" })
     .evaluate((element) => element.getBoundingClientRect().top);
   const proseTop = await page
-    .locator("p", { hasText: /waterfront condominium development/ })
+    .locator("p", { hasText: /trying to buy since 2021/ })
     .first()
     .evaluate((element) => element.getBoundingClientRect().top);
 
@@ -143,5 +143,7 @@ test("the status tracker names its active stage rather than only colouring it", 
   const active = page.locator('[aria-current="step"]');
   await expect(active).toHaveCount(1);
   await expect(active).toContainText("Current");
-  await expect(page.getByText(/Monterra Ridge is under construction/)).toBeVisible();
+  // The line beneath is keyed to the status alone — it no longer repeats the
+  // project title, which the heading and breadcrumb have already given.
+  await expect(page.getByText("Under construction.", { exact: true })).toBeVisible();
 });

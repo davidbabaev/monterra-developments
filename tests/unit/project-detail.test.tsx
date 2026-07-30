@@ -152,32 +152,22 @@ describe("LocationBlock", () => {
   const location = { city: "Austin", state: "TX" };
 
   it("renders the address above the city when one exists", () => {
-    render(
-      <LocationBlock
-        title="Monterra Ridge"
-        location={{ ...location, address: "4200 E Riverside Dr" }}
-      />,
-    );
-    expect(screen.getByText("4200 E Riverside Dr")).toBeInTheDocument();
+    render(<LocationBlock location={{ ...location, address: "4200 E Riverside Drive" }} />);
+    expect(screen.getByText("4200 E Riverside Drive")).toBeInTheDocument();
     expect(screen.getByText("Austin, TX")).toBeInTheDocument();
   });
 
   it("renders the city alone when the project has no address", () => {
-    const { container } = render(<LocationBlock title="Monterra Bay" location={location} />);
+    const { container } = render(<LocationBlock location={location} />);
 
     expect(screen.getByText("Austin, TX")).toBeInTheDocument();
     expect(container.querySelectorAll("address span")).toHaveLength(1);
   });
 
   it("renders a static map and a directions link when coords exist", () => {
-    render(
-      <LocationBlock
-        title="Monterra Ridge"
-        location={{ ...location, coords: { lat: 30.2411, lng: -97.7178 } }}
-      />,
-    );
+    render(<LocationBlock location={{ ...location, coords: { lat: 30.2411, lng: -97.7178 } }} />);
 
-    expect(screen.getByRole("img")).toHaveAttribute("alt", expect.stringContaining("Monterra Ridge"));
+    expect(screen.getByRole("img")).toHaveAttribute("alt", "Map showing the project location");
     expect(screen.getByRole("link", { name: /directions/i })).toHaveAttribute(
       "href",
       "https://www.google.com/maps/dir/?api=1&destination=30.2411,-97.7178",
@@ -185,7 +175,7 @@ describe("LocationBlock", () => {
   });
 
   it("renders no map frame and no dead directions link without coords", () => {
-    render(<LocationBlock title="The Larkin" location={location} />);
+    render(<LocationBlock location={location} />);
 
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /directions/i })).not.toBeInTheDocument();
@@ -193,10 +183,7 @@ describe("LocationBlock", () => {
 
   it("never embeds an interactive map", () => {
     const { container } = render(
-      <LocationBlock
-        title="Monterra Ridge"
-        location={{ ...location, coords: { lat: 30.2411, lng: -97.7178 } }}
-      />,
+      <LocationBlock location={{ ...location, coords: { lat: 30.2411, lng: -97.7178 } }} />,
     );
     expect(container.querySelector("iframe")).toBeNull();
   });
@@ -212,7 +199,7 @@ describe("directionsUrl", () => {
 
 describe("StatusTracker", () => {
   it("renders the three lifecycle stages in order", () => {
-    render(<StatusTracker status="current" title="Monterra Ridge" />);
+    render(<StatusTracker status="current" />);
     const stages = screen.getAllByRole("listitem").map((item) => item.textContent);
 
     expect(stages[0]).toContain("Upcoming");
@@ -221,7 +208,7 @@ describe("StatusTracker", () => {
   });
 
   it("marks the active stage without relying on colour", () => {
-    const { container } = render(<StatusTracker status="current" title="Monterra Ridge" />);
+    const { container } = render(<StatusTracker status="current" />);
     const active = container.querySelector('[aria-current="step"]');
 
     // Cue 1: exposed to assistive tech. Cue 2: named in words, not just hue.
@@ -234,7 +221,7 @@ describe("StatusTracker", () => {
 
   it("moves the active stage with the status", () => {
     for (const status of ["upcoming", "current", "completed"] as const) {
-      const { container, unmount } = render(<StatusTracker status={status} title="X" />);
+      const { container, unmount } = render(<StatusTracker status={status} />);
       expect(container.querySelector('[aria-current="step"]')?.textContent).toMatch(
         new RegExp(status, "i"),
       );
@@ -242,9 +229,20 @@ describe("StatusTracker", () => {
     }
   });
 
-  it("names the project in the one line of context beneath", () => {
-    render(<StatusTracker status="upcoming" title="Monterra Bay" />);
-    expect(screen.getByText(/Monterra Bay is in planning/)).toBeInTheDocument();
+  // The line is keyed to the status alone. The project title is not repeated:
+  // the page heading and the breadcrumb above have already said it twice.
+  it("moves the line of context beneath with the status", () => {
+    const LINES = {
+      upcoming: "In design. Details to follow.",
+      current: "Under construction.",
+      completed: "Delivered and sold.",
+    } as const;
+
+    for (const [status, line] of Object.entries(LINES)) {
+      const { unmount } = render(<StatusTracker status={status as keyof typeof LINES} />);
+      expect(screen.getByText(line)).toBeInTheDocument();
+      unmount();
+    }
   });
 });
 

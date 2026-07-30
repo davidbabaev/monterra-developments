@@ -17,8 +17,8 @@ export function ProjectsEmptyState({ onClear }: ProjectsEmptyStateProps) {
         No projects in this stage yet
       </h2>
       <p className="mx-auto mt-3 max-w-[52ch] font-body text-[16px] text-ink">
-        [REPLACE] Nothing is at this stage right now. Our completed, current and upcoming
-        developments are all listed together.
+        Nothing here yet. We only have three projects on the site, so some filters come up
+        empty.
       </p>
       <div className="mt-6 flex justify-center">
         <Button variant="primary" onClick={onClear}>

@@ -15,13 +15,13 @@ import type { Project } from "@/lib/project-loader";
  */
 
 type LocationBlockProps = {
-  readonly title: string;
   readonly location: Project["location"];
 };
 
 /**
- * [REPLACE] A solid placeholder at a map's aspect ratio, standing in for a
- * rendered static map exactly as the hero images stand in for photography.
+ * A solid placeholder at a map's aspect ratio, standing in for a rendered static
+ * map exactly as the hero images stand in for photography. The image is still a
+ * placeholder; its alt text is approved and describes what the real map shows.
  */
 const MAP_PLACEHOLDER = {
   src: "/map/static-map-placeholder.png",
@@ -29,7 +29,7 @@ const MAP_PLACEHOLDER = {
   height: 675,
 } as const;
 
-export function LocationBlock({ title, location }: LocationBlockProps) {
+export function LocationBlock({ location }: LocationBlockProps) {
   const { city, state, address, coords } = location;
   const hasMap = coords !== undefined;
 
@@ -49,7 +49,7 @@ export function LocationBlock({ title, location }: LocationBlockProps) {
           <div className="flex flex-col items-start gap-4">
             <Image
               src={MAP_PLACEHOLDER.src}
-              alt={`[REPLACE] Map showing where ${title} sits in ${city}, ${state}`}
+              alt="Map showing the project location"
               width={MAP_PLACEHOLDER.width}
               height={MAP_PLACEHOLDER.height}
               sizes="(min-width: 1024px) 50vw, 100vw"
