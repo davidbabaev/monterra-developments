@@ -55,3 +55,4 @@ __pycache__/
 
 # Generated: content assets mirrored into public/ by scripts/sync-content-assets.mjs
 /public/projects
+assets-inbox/
