@@ -28,6 +28,13 @@ type OffsetFeatureProps = {
   readonly image: OffsetImage;
   /** Puts the image on the right and mirrors the offset with it. */
   readonly reverse?: boolean;
+  /**
+   * For the one instance that lands in the first viewport. Everything below the
+   * fold stays lazy — this exists because on Our Process the first stage sits
+   * just under a 320px hero on a phone and was being discovered late enough to
+   * become the LCP.
+   */
+  readonly priority?: boolean;
   readonly children: React.ReactNode;
 };
 
@@ -44,7 +51,12 @@ const SLAB_ROOM = {
   reversed: "md:pb-10 md:pl-10",
 } as const;
 
-export function OffsetFeature({ image, reverse = false, children }: OffsetFeatureProps) {
+export function OffsetFeature({
+  image,
+  reverse = false,
+  priority = false,
+  children,
+}: OffsetFeatureProps) {
   const direction = reverse ? "reversed" : "forward";
 
   return (
@@ -57,6 +69,7 @@ export function OffsetFeature({ image, reverse = false, children }: OffsetFeatur
           alt={image.alt}
           width={image.width}
           height={image.height}
+          priority={priority}
           sizes="(min-width: 768px) 45vw, 100vw"
           className={cx("relative w-full object-cover", OFFSET[direction])}
         />

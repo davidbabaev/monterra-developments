@@ -11,9 +11,13 @@ was the last one and landed 2026-07-30. Nothing a reader reads is a placeholder
 any more.
 
 **What is still marked is artwork, contact details or internal.** Three groups,
-and none of them is prose: the logo and every image placeholder, including the
-five ProcessStages stage alts; the contact details and production domain in
-`lib/site.ts` and `lib/seo.ts`; and the styleguide, which is `noindex`.
+and none of them is prose: the logo and the image placeholders listed under
+Artwork; the contact details and production domain in `lib/site.ts` and
+`lib/seo.ts`; and the styleguide, which is `noindex`.
+
+**Real photography landed on 2026-07-30 for Our Process and the team.** Nine
+images — five process stages and four portraits. Every other image slot on the site is still a solid-colour
+placeholder, and the Artwork section below lists each one.
 
 **The one marker a reader can still meet is a contact detail, not copy.** The
 office address, phone number and email in `lib/site.ts` render marked in the
@@ -58,7 +62,9 @@ These are wrong in public, not merely unfinished.
 | `lib/site.ts` — `contact.email`, `contact.phone` | The real inbox and number. These are where every inquiry lands; the current ones are invented and go nowhere. | Client |
 | `lib/site.ts` — `contact.address` | The real street and locality. Until they land, the `PostalAddress` is omitted from the Organization JSON-LD rather than published with a marker in it. | Client |
 | ~~`app/privacy/page.tsx` — 13 markers~~ | **Written 2026-07-29.** Six clauses in plain English covering what the form collects, why, retention, cookies and analytics, who else sees it, and how to ask for deletion. It opens by saying the site is a concept project and that the form has no destination, so nothing is processed — which is true today. **If this ever becomes a live site, a qualified person must review it**, and the opening paragraph has to be replaced rather than deleted. | You → a lawyer, if it goes live |
-| ~~`content/team.json` — 16 markers~~ | **Written 2026-07-29.** Four invented people with names, roles and bios: Elena Marsh, Priya Raman, Daniel Okonjo, Marcus Bell. Two carry a LinkedIn URL and two do not, so both card paths render. **They are not real people**, the LinkedIn URLs are `example-*` and resolve to nothing, and the portraits are still placeholders. Elena Marsh is also the attribution on the About pull-quote — the two must not drift apart, **and they had, until 2026-07-30**: the quote said "Founder" where this file says "Founder and Principal". Both now read "Founder and Principal". The four portrait alts were written on 2026-07-30 as "Portrait of {name}, {role}", so each alt is a third place the role string appears. | Client, if it goes live |
+| ~~`content/team.json` — 16 markers~~ | **Written 2026-07-29.** Four invented people with names, roles and bios: Elena Marsh, Priya Raman, Daniel Okonjo, Marcus Bell. Two carry a LinkedIn URL and two do not, so both card paths render. **They are not real people**, the LinkedIn URLs are `example-*` and resolve to nothing, and the portraits are **real photographs as of 2026-07-30**, which makes the
+invented names a sharper problem rather than a softer one: there are now faces
+attached to them. Elena Marsh is also the attribution on the About pull-quote — the two must not drift apart, **and they had, until 2026-07-30**: the quote said "Founder" where this file says "Founder and Principal". Both now read "Founder and Principal". The four portrait alts were written on 2026-07-30 as "Portrait of {name}, {role}", so each alt is a third place the role string appears. | Client, if it goes live |
 | ~~`components/ui/StatsBand.tsx` — 4 figures~~ | **Done 2026-07-29.** 340 homes delivered, 12 years building, 3 markets, 9 projects completed. They are a set, not four independent numbers: three markets is the three cities named in the hero, and nine completed is what the three selected projects are a selection from. Changing one without the others makes the page contradict itself, and a unit test now pins the two that tie to other copy. **This band also renders on `/about`,** so these are the figures on both pages. | — |
 
 ---
@@ -90,7 +96,7 @@ a component next to copy that is done.
 | ~~`app/about/page.tsx`~~ | **Done.** Hero, pull-quote and attribution 2026-07-29; CTA band body 2026-07-30. The pull-quote attribution was corrected on 2026-07-30 from "Elena Marsh, Founder" to "Elena Marsh, Founder and Principal" — it had drifted from `content/team.json`, and the comment above it wrongly claimed the two already matched. Both now say the same thing, and the comment says which file is the other half. | — |
 | ~~`components/about/CompanyStory.tsx`~~ | **Done.** Three paragraphs 2026-07-29, image alt 2026-07-30 — "The first Monterra duplex in East Austin, completed 2014". States the company began in 2014 and has delivered 340 homes; both are load-bearing against the statistics band, and the alt now repeats the 2014 date, so that is a third place it has to move from. **Rewrite the alt when the real photograph lands.** | — |
 | ~~`components/about/ValuesGrid.tsx`~~ | **Done 2026-07-29.** Site first / Built to last / One team / Straight answers. **Not numbered**, though the brief listed them 01–04: this is a set, not a sequence, and Our Process is the only page where order carries information. Say so if you want the numerals. | — |
-| `components/process/ProcessStages.tsx` (1 alt) | **Stage copy done 2026-07-29.** Five stages with their outcome lines. Stage 04's title is the single word "Build", which the two-tone lockup cannot split, so it renders as the bronze lede alone — the only heading on the site that does not split. **The stage image alts are the one thing here still marked**, and no wording was supplied for them on 2026-07-30. They are generated from the stage title, so one string covers all five. The two-year structural warranty in stage 05 is signed off — see the flagged-claims note at the foot of this document. | Client → you |
+| ~~`components/process/ProcessStages.tsx`~~ | **Done.** Stage copy 2026-07-29, image alts 2026-07-30. Stage 04's title is the single word "Build", which the two-tone lockup cannot split, so it renders as the bronze lede alone — the only heading on the site that does not split. The five image alts are **written against the real photographs**, one per stage, and no longer generated from the stage title — so they describe what is in the frame rather than what the heading says. The two-year structural warranty in stage 05 is signed off — see the flagged-claims note at the foot of this document. | — |
 | ~~`app/process/page.tsx`~~ | **Done 2026-07-30.** Subhead "Forty sites a year. We buy three." and the CTA body. The subhead is a claim about deal flow, not a description of the page — it sets up the five stages rather than summarising them. | — |
 | ~~`app/team/page.tsx`~~ | **Done 2026-07-30.** Subhead, intro and CTA body. The subhead says twelve people where the grid shows four, which is correct — the grid is the leadership, not the payroll — but it is the kind of pair that reads as a bug if either side moves. An intro paragraph was added to match the one on `/projects`. The CTA body was the last unwritten line of copy on the site; it says the company is usually hiring for one role at a time, **which is a recruiting claim that goes stale on its own** and points at the contact form as the way in. | — |
 | ~~`app/projects/page.tsx`~~ | **Done 2026-07-30.** Subhead "Nine completed, one under construction, one on the way." and the intro. The subhead counts nine completed against the statistics band, and one-and-one against the two non-completed projects seeded on disk — it is pinned to both, so a fourth project means editing this line. | — |
@@ -104,14 +110,34 @@ a component next to copy that is done.
 
 ## Artwork
 
-| File | What it needs | Who |
+Real photography landed for two slots on 2026-07-30. **Every image slot below is
+still a solid-colour placeholder**, and that is the complete list — nothing else
+is outstanding.
+
+| Slot | State | Who |
 | --- | --- | --- |
+| ~~`public/process/stage-0*`~~ | **Real, 2026-07-30.** Five photographs, WebP, 1920x1072. `OffsetFeature` sets no `aspect-*`, so intrinsic dimensions drive the box and nothing is cropped. | — |
+| ~~`public/team/*.webp`~~ | **Real, 2026-07-30.** Four portraits. See the note below on the crop. | — |
 | `components/ui/Logo.tsx`, `components/ui/logoPaths.ts` | A redrawn logo. The current mark is auto-traced from the supplied artwork and still carries tracer artefacts. Already on the deferred list in `docs/build-increments.md`. | You (commission) |
 | Favicon set | Derived from the redrawn monogram, once it exists. | You |
-| `components/layout/PageHero.tsx` | Solid-colour placeholders stand in for architectural photography on every page hero. | Client |
-| `components/project/LocationBlock.tsx` | The image is still a placeholder at a map's aspect ratio. **Its alt text is done 2026-07-30** — "Map showing the project location". The alt no longer names the project, so the component **no longer takes a `title` prop**. Still needs either a real map or a decision to drop the block. | You |
-| `content/projects/*/hero.png`, `gallery/`, `plans/` | Every project image is a solid-colour placeholder at the right aspect ratio. **The alt text for all of them is now written**, so the images have to match the words rather than the other way round: Monterra Ridge's gallery is described as sidewalk view, rooftop terrace, kitchen, green after rain, in that order, and Monterra Bay's hero is described as a rendering. | Client |
-| `public/team/portrait-0*-placeholder.png` | Four real portraits, 4:5. Alt text done 2026-07-30 — "Portrait of {name}, {role}" for each. | Client |
+| `components/layout/PageHero.tsx` | A flat navy band with a scrim, on `/about`, `/process`, `/team`, `/projects`, `/contact` and `/privacy`. **It has no image slot at all** — there is no `<Image>` to swap, so this is a component change, not an asset drop. A group photograph was offered for `/team` on 2026-07-30 and declined: the band is 3.37:1 at 1280x380 and a 16:9 source centre-cropped cuts the heads off, and one photographed hero among six flat ones costs more in consistency than it buys. | Client + you |
+| `components/project/LocationBlock.tsx` | Still a placeholder at a map's aspect ratio. Alt text done 2026-07-30 — "Map showing the project location". Needs either a real map or a decision to drop the block. | You |
+| `content/projects/monterra-ridge/hero.png` + `gallery/01-04` + `plans/plan-a,b` | Solid colour. A seven-image set was offered on 2026-07-30 and **rejected on content, not ratio**: it shows a single seventeen-storey tower with subtropical planting, where the approved body copy on the same page says forty-eight townhomes and duplexes on six acres in East Austin. The hero would have contradicted the prose beneath it. | Client |
+| `content/projects/the-larkin/hero.png` + `gallery/01-04` | Solid colour. Nothing supplied. | Client |
+| `content/projects/monterra-bay/hero.png` | Solid colour. Nothing supplied. The alt says "architectural rendering", so what lands here has to be a rendering. | Client |
+| `public/home/positioning-placeholder.png` | Solid colour. Alt written against it — rewrite the alt when the photograph lands. | Client |
+| `public/about/story-placeholder.png` | Solid colour. Alt says "The first Monterra duplex in East Austin, completed 2014", which is a specific building, not a mood shot. | Client |
+| `public/home/home-hero.webp` | **Not a placeholder** — real photography since increment 8, 2560x1429, `priority`. Listed here only so nobody replaces it by accident. A skyline alternative was offered on 2026-07-30 and declined. | — |
+
+**The portrait crop.** The four supplied portraits are 9:16 full-length standing
+shots and the card is 4:5, so cover shows 70% of the frame. `TeamGrid` pins that
+to `object-top`, which gives head and torso and cuts the shoes — approved as the
+intended framing on 2026-07-30. Two consequences worth knowing: the subject sits
+small in frame because these are wide environmental shots, so the illuminated
+Monterra sign behind reads larger than the person; and **if a portrait is ever
+resupplied already cropped to 4:5, `object-top` stops mattering rather than
+starting to fight it.** The name-to-face mapping came from the supplied
+filenames, not from anyone identifying the people.
 
 ---
 
@@ -141,7 +167,7 @@ them before launch. Check this list by hand.
 | `app/privacy/page.tsx` — the policy | Unmarked and readable, but it describes what *would* happen rather than what does, because nothing is wired up. Its first paragraph is what makes that honest. |
 | `lib/seo.ts` — the eight page descriptions | Clean of markers by design, because a marker would be published into search results and eat 10 of the 160 characters. **They are still unapproved copy.** The `/about` one was corrected from 2008 to 2014 on 2026-07-29 — it had begun contradicting the company story on the same page. The `/` one says "across Texas, Florida and Colorado" where the hero says "Austin, Tampa and Denver": the same three places at different granularity, consistent today, but they move together. |
 | `content/projects/*/index.mdx` — `seo.description` | Same as above: clean, deliberately unmarked, unapproved, and each states unit counts and dates as fact. Monterra Bay's said the site was "bought in 2026" where the body approved on 2026-07-30 says only that we have been trying to buy it since 2021. **The clause was cut on 2026-07-30** rather than rewritten — removing a claim the approved copy contradicts is a correction; writing a new one would have been inventing. Monterra Ridge's still says the first homes are handed over "in late 2027" where the body and the frontmatter both say Q3 — soft, but the same kind of drift. |
-| `content/projects/*/index.mdx` — every alt string | Written and unmarked as of 2026-07-30, but written against solid-colour placeholders. They describe images that do not exist yet. Every one has to be checked against the real photograph when it lands, and the same goes for the `Positioning` and `CompanyStory` alts. |
+| `content/projects/*/index.mdx` — every alt string | Written and unmarked as of 2026-07-30, but written against solid-colour placeholders. They describe images that do not exist yet. Every one has to be checked against the real photograph when it lands, and the same goes for the `Positioning` and `CompanyStory` alts. **The process and team alts are no longer in this category** — they were rewritten on 2026-07-30 against the photographs that actually shipped. |
 | `lib/site.ts` — `description` | Fixed in this increment and now real copy, not a placeholder. Listed only so nobody re-marks it. |
 
 ---

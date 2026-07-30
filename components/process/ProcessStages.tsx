@@ -19,6 +19,8 @@ type Stage = {
   readonly title: { readonly lede: string; readonly rest: string };
   readonly body: string;
   readonly outcome: string;
+  /** Written against the real photograph, not the stage title. */
+  readonly imageAlt: string;
 };
 
 /**
@@ -39,36 +41,42 @@ const STAGES: readonly Stage[] = [
     title: { lede: "Find", rest: "the site" },
     body: "We look at roughly forty sites a year and buy three. We walk each one at different hours, talk to the neighbours, and pull the zoning and drainage history before we make an offer. Most of what we learn is a reason not to proceed.",
     outcome: "Outcome: A site we understand, or a pass.",
+    imageAlt:
+      "Three people standing on a cleared plot marked with survey stakes, one pointing across the ground while the others hold an unrolled site plan and a tablet",
   },
   {
     numeral: "02",
     title: { lede: "Design", rest: "for the block" },
     body: "The building answers to its street first. We start with how it meets the sidewalk, where the light falls, and what it does to the house next door — then we work inward to the floor plans.",
     outcome: "Outcome: Drawings that fit the block, not just the lot.",
+    imageAlt:
+      "Three people around a studio table spread with floor plans and stone and tile samples, a large white model of the scheme on a table in the foreground",
   },
   {
     numeral: "03",
     title: { lede: "Entitle", rest: "and permit" },
     body: "Zoning, variances, neighbourhood review. This is the slowest stage and the one most developers rush. We budget a year and are occasionally wrong about that.",
     outcome: "Outcome: Approvals in hand, with no promises we cannot keep.",
+    imageAlt:
+      "Four people at a meeting-room table with rolled drawings and paperwork in front of them, a colour-coded site plan on the screen behind",
   },
   {
     numeral: "04",
     title: { lede: "Build", rest: "" },
     body: "Same superintendent from foundation to final. We self-perform framing and manage every other trade directly, because the alternative is finding out about a problem after it is covered up.",
     outcome: "Outcome: A building we would put our own name on the mailbox of.",
+    imageAlt:
+      "A four-storey building under construction with its frame still exposed, a tower crane lifting a steel beam and workers in high-visibility vests on the deck and at the kerb",
   },
   {
     numeral: "05",
     title: { lede: "Deliver", rest: "and stand behind it" },
     body: "Walkthrough, punch list, and a two-year structural warranty we have actually honoured. The team that built it takes the call.",
     outcome: "Outcome: Keys, and a number that still works in year three.",
+    imageAlt:
+      "A woman handing keys to a couple on the forecourt of a finished apartment building, with moving boxes stacked by the entrance and residents on the path behind",
   },
 ];
-
-/** Joins the two halves without leaving a double space when `rest` is empty. */
-const titleText = (title: Stage["title"]) =>
-  title.rest === "" ? title.lede : `${title.lede} ${title.rest}`;
 
 export function ProcessStages() {
   return (
@@ -80,11 +88,12 @@ export function ProcessStages() {
           <li key={stage.numeral}>
             <OffsetFeature
               reverse={index % 2 === 1}
+              priority={index === 0}
               image={{
-                src: `/process/stage-${stage.numeral}-placeholder.png`,
-                alt: `[REPLACE] ${titleText(stage.title)}, on a Monterra site`,
-                width: 1200,
-                height: 900,
+                src: `/process/stage-${stage.numeral}.webp`,
+                alt: stage.imageAlt,
+                width: 1920,
+                height: 1072,
               }}
             >
               <SectionNumeral value={stage.numeral} />

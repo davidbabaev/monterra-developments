@@ -13,7 +13,7 @@ const member = (overrides: Partial<TeamMember> = {}): TeamMember => ({
   name: "Elena Marsh",
   role: "Founder",
   bio: "Started the company.",
-  photo: { src: "/team/portrait-01-placeholder.png", alt: "Portrait", width: 800, height: 1000 },
+  photo: { src: "/team/elena-marsh.webp", alt: "Portrait", width: 941, height: 1672 },
   ...overrides,
 });
 
@@ -63,11 +63,27 @@ describe("teamSchema", () => {
 });
 
 describe("getTeam", () => {
+  /**
+   * The portraits are real photography now and they are not all one size, so
+   * this pins the property that matters — every portrait is measured off disk
+   * and is taller than it is wide — rather than one pair of numbers that only
+   * held while every file was the same generated placeholder.
+   */
   it("measures each portrait so next/image reserves the right box", () => {
     for (const person of getTeam()) {
-      expect(person.photo.width).toBe(800);
-      expect(person.photo.height).toBe(1000);
+      expect(person.photo.width).toBeGreaterThan(0);
+      expect(person.photo.height).toBeGreaterThan(person.photo.width);
     }
+  });
+
+  /**
+   * The cards are 4:5 and the portraits are taller than that, so the crop is
+   * pinned to the top of the frame. Centred it would take as much off the head
+   * as off the feet — see the note in TeamGrid.
+   */
+  it("crops the portrait from the top rather than the centre", () => {
+    render(<TeamGrid members={[member()]} />);
+    expect(screen.getByAltText("Portrait").className).toContain("object-top");
   });
 
   /**

@@ -4,8 +4,8 @@
     "role": "Founder and Principal",
     "bio": "Bought the first duplex in 2014 and sold both sides before the drywall went up. Still walks every site before we bid on it.",
     "photo": {
-      "src": "/team/portrait-01-placeholder.png",
-      "alt": "Portrait of Elena Marsh, Founder and Principal"
+      "src": "/team/elena-marsh.webp",
+      "alt": "Elena Marsh in a cream blouse, arms folded, in front of the illuminated Monterra Developments sign"
     },
     "linkedin": "https://www.linkedin.com/in/example-elena-marsh"
   },
@@ -14,8 +14,8 @@
     "role": "Director of Development",
     "bio": "Runs feasibility and entitlement, and sits through the neighbourhood meetings that decide them. Trained as a landscape architect.",
     "photo": {
-      "src": "/team/portrait-02-placeholder.png",
-      "alt": "Portrait of Priya Raman, Director of Development"
+      "src": "/team/priya-raman.webp",
+      "alt": "Priya Raman in a navy blazer worn over a cream blouse, arms folded, in front of the illuminated Monterra Developments sign"
     },
     "linkedin": "https://www.linkedin.com/in/example-priya-raman"
   },
@@ -24,8 +24,8 @@
     "role": "Head of Construction",
     "bio": "Twenty years on site, the last nine running our own framing crews. Holds the schedule, and the punch list nobody else wants.",
     "photo": {
-      "src": "/team/portrait-03-placeholder.png",
-      "alt": "Portrait of Daniel Okonjo, Head of Construction"
+      "src": "/team/daniel-okonjo.webp",
+      "alt": "Daniel Okonjo in a navy blazer and open-collared shirt, arms folded, in front of the illuminated Monterra Developments sign"
     }
   },
   {
@@ -33,8 +33,8 @@
     "role": "Director of Sales and Marketing",
     "bio": "Sells from drawings, which means he has to believe them first. Takes every buyer from the first walkthrough through to closing.",
     "photo": {
-      "src": "/team/portrait-04-placeholder.png",
-      "alt": "Portrait of Marcus Bell, Director of Sales and Marketing"
+      "src": "/team/marcus-bell.webp",
+      "alt": "Marcus Bell in a navy jacket and open-collared shirt, standing in front of the illuminated Monterra Developments sign"
     }
   }
 ]
