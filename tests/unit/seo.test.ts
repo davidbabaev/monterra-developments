@@ -77,6 +77,15 @@ describe("no placeholder marker reaches a published string", () => {
     }
   });
 
+  /**
+   * The contact block was the last marked copy in this file and stopped being
+   * marked on 2026-08-02. Asserting the whole object rather than the three
+   * strings above means a marker reintroduced anywhere in it fails here.
+   */
+  it("keeps every value in siteConfig clean", () => {
+    expect(JSON.stringify(siteConfig)).not.toContain(MARKER);
+  });
+
   it("keeps the strings both Open Graph cards render clean", () => {
     // The default card: site name, tagline, description.
     expect(siteConfig.name).not.toContain(MARKER);
@@ -157,16 +166,33 @@ describe("structured data", () => {
   });
 
   /**
-   * The address and the social profiles are still placeholders, so they are left
-   * out rather than published. When the real ones land the marker goes with them
-   * and both fields appear on their own — this test then flips to asserting the
-   * PostalAddress, which is the point at which someone has to look at it.
+   * The flip this test's previous version predicted: the address stopped being a
+   * placeholder on 2026-08-02, so it is published now rather than dropped. This
+   * is the point at which someone has to have looked at what it says.
    */
-  it("omits the address and sameAs while they are placeholders", () => {
+  it("publishes the address as a PostalAddress now that it is real", () => {
     const schema = organizationSchema();
 
-    expect(schema.address).toBeUndefined();
-    expect(schema.sameAs).toBeUndefined();
+    expect(schema.address).toEqual({
+      "@type": "PostalAddress",
+      streetAddress: "1100 Congress Avenue, Suite 400",
+      addressLocality: "Austin, TX 78701",
+      addressCountry: "US",
+    });
+  });
+
+  /** No social accounts exist, so nothing points at one. */
+  it("emits no sameAs", () => {
+    expect(organizationSchema().sameAs).toBeUndefined();
+    expect("socials" in siteConfig).toBe(false);
+  });
+
+  it("publishes the contact details without a marker", () => {
+    const schema = organizationSchema();
+
+    expect(schema.email).toBe("hello@monterradevelopments.com");
+    expect(schema.telephone).toBe("+15125550142");
+    expect(JSON.stringify(schema)).not.toContain("[REPLACE]");
   });
 
   it("emits a Residence only for a project that has coordinates", () => {

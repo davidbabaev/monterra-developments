@@ -19,11 +19,10 @@ import { siteConfig } from "./site";
 export function organizationSchema(): Record<string, unknown> {
   const { contact } = siteConfig;
 
+  // Both are real since 2026-08-02. The guard stays because the rule above is
+  // the file's contract, not because either value is expected to fail it.
   const street = realOrUndefined(contact.address.street);
   const locality = realOrUndefined(contact.address.locality);
-  const sameAs = siteConfig.socials
-    .map((social) => realOrUndefined(social.href))
-    .filter((href): href is string => href !== undefined);
 
   return {
     "@context": "https://schema.org",
@@ -32,12 +31,10 @@ export function organizationSchema(): Record<string, unknown> {
     url: SITE_URL,
     slogan: siteConfig.tagline,
     description: siteConfig.description,
-    // The hrefs are unmarked so the links work; the values behind them are still
-    // placeholders, tracked in docs/content-checklist.md.
     email: contact.email.href.replace("mailto:", ""),
     telephone: contact.phone.href.replace("tel:", ""),
-    // Omitted entirely while the address is a placeholder — a PostalAddress with
-    // only a country is not an address.
+    // Omitted entirely if the address ever goes back to a placeholder — a
+    // PostalAddress with only a country is not an address.
     ...(street === undefined || locality === undefined
       ? {}
       : {
@@ -48,7 +45,7 @@ export function organizationSchema(): Record<string, unknown> {
             addressCountry: "US",
           },
         }),
-    ...(sameAs.length === 0 ? {} : { sameAs }),
+    // No `sameAs`. The site has no social accounts to point one at.
   };
 }
 

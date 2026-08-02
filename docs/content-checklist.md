@@ -10,19 +10,22 @@ every body paragraph, every project narrative, every CTA body. The `/team` CTA
 was the last one and landed 2026-07-30. Nothing a reader reads is a placeholder
 any more.
 
-**What is still marked is artwork, contact details or internal.** Three groups,
-and none of them is prose: the logo and the image placeholders listed under
-Artwork; the contact details and production domain in `lib/site.ts` and
-`lib/seo.ts`; and the styleguide, which is `noindex`.
+**What is still marked is artwork, the production domain, or internal.** Three
+groups, and none of them is prose: the logo and the image placeholders listed
+under Artwork; the `SITE_URL` origin and the page descriptions in `lib/seo.ts`;
+and the styleguide, which is `noindex`.
 
 **Real photography landed on 2026-07-30 for Our Process and the team.** Nine
 images — five process stages and four portraits. Every other image slot on the site is still a solid-colour
 placeholder, and the Artwork section below lists each one.
 
-**The one marker a reader can still meet is a contact detail, not copy.** The
-office address, phone number and email in `lib/site.ts` render marked in the
-contact band and the footer on every route. They are the top of the blocking
-list below.
+**No marker reaches a reader any more.** The office address, phone number, email
+and hours in `lib/site.ts` were the last ones — they rendered marked in the
+contact band and the footer on every route until 2026-08-02, and now carry the
+approved details. `tests/unit/seo.test.ts` asserts the whole of `siteConfig`
+serialises without the marker, so one cannot come back unnoticed. The details are
+invented, like the rest of this project; the footer disclaimer covers that and no
+field repeats it.
 
 **The dates and figures are a single interlocking set.** 2014, twelve years, 340
 homes, three markets, nine completed. They appear in the statistics band, the
@@ -59,8 +62,8 @@ These are wrong in public, not merely unfinished.
 | File | What it needs | Who |
 | --- | --- | --- |
 | `lib/seo.ts` — `SITE_URL` | The production domain. Every canonical URL, every OG image URL and the sitemap resolve against it, so a wrong value here mislabels the whole site. Currently `https://www.monterradevelopments.com`. | Client |
-| `lib/site.ts` — `contact.email`, `contact.phone` | The real inbox and number. These are where every inquiry lands; the current ones are invented and go nowhere. | Client |
-| `lib/site.ts` — `contact.address` | The real street and locality. Until they land, the `PostalAddress` is omitted from the Organization JSON-LD rather than published with a marker in it. | Client |
+| ~~`lib/site.ts` — `contact.*`~~ | **Set 2026-08-02**, markers removed: 1100 Congress Avenue, Suite 400 / Austin, TX 78701 / (512) 555-0142 / hello@monterradevelopments.com / Monday to Friday, 9am to 5pm CT. **They are invented and go nowhere** — the inbox does not exist and the number does not ring, so every inquiry the form collects still has no destination. The Organization JSON-LD now publishes the `PostalAddress` instead of dropping it, which means these values are readable by a crawler. If this becomes a live site the real ones replace them here, in one file. | Client |
+| ~~`lib/site.ts` — `socials`~~ | **Removed 2026-08-02.** Two links to a LinkedIn and an Instagram account that do not exist. Pointing them at `#` was rejected: both render with `target="_blank"`, so `#` opens a duplicate tab of the current page, and an unmarked `#` would be published in the schema's `sameAs`. The key is gone, with the footer list and the contact page's "Follow" block. Restoring it means adding the key back and re-adding both blocks. | Client, if accounts ever exist |
 | ~~`app/privacy/page.tsx` — 13 markers~~ | **Written 2026-07-29.** Six clauses in plain English covering what the form collects, why, retention, cookies and analytics, who else sees it, and how to ask for deletion. It opens by saying the site is a concept project and that the form has no destination, so nothing is processed — which is true today. **If this ever becomes a live site, a qualified person must review it**, and the opening paragraph has to be replaced rather than deleted. | You → a lawyer, if it goes live |
 | ~~`content/team.json` — 16 markers~~ | **Written 2026-07-29.** Four invented people with names, roles and bios: Elena Marsh, Priya Raman, Daniel Okonjo, Marcus Bell. Two carry a LinkedIn URL and two do not, so both card paths render. **They are not real people**, the LinkedIn URLs are `example-*` and resolve to nothing, and the portraits are **real photographs as of 2026-07-30**, which makes the
 invented names a sharper problem rather than a softer one: there are now faces
@@ -171,8 +174,7 @@ them before launch. Check this list by hand.
 
 | Where | What is actually placeholder |
 | --- | --- |
-| `lib/site.ts` — `contact.email.href`, `contact.phone.href` | The `mailto:` and `tel:` targets are clean so the links function, but the address and number behind them are invented. |
-| `lib/site.ts` — `socials[].href` | LinkedIn and Instagram URLs are marked, but confirm the accounts exist before the marker comes off. Omitted from JSON-LD while marked. |
+| `lib/site.ts` — the whole `contact` block | Unmarked since 2026-08-02 and rendering as real on every route: address, phone, email and hours. **Every one of them is invented.** The `mailto:` and `tel:` targets are well-formed so the links function, which means a reader can dial a number that does not ring and mail an inbox nobody reads. This is now the most convincing untrue thing on the site, and the footer disclaimer is the only thing qualifying it. |
 | `content/team.json` — `linkedin` | Two of the four are `example-<name>` URLs and resolve to nothing. Unmarked, and they are live external links on a public page. |
 | `content/team.json` — the four people | Names, roles and bios are written and unmarked, but **these are invented people**. On a concept project that is fine and the footer says so; on a live site every one of them has to be replaced with someone real. |
 | `app/privacy/page.tsx` — the policy | Unmarked and readable, but it describes what *would* happen rather than what does, because nothing is wired up. Its first paragraph is what makes that honest. |

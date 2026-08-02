@@ -100,20 +100,6 @@ export function Footer() {
                 {contact.email.label}
               </a>
             </address>
-            <ul className="mt-2 flex flex-wrap gap-x-6">
-              {siteConfig.socials.map((social) => (
-                <li key={social.label}>
-                  <a
-                    href={social.href}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    className={LINK_CLASS}
-                  >
-                    {social.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 

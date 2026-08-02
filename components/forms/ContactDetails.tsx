@@ -5,11 +5,14 @@ import { siteConfig } from "@/lib/site";
 
 /**
  * The column beside the form: the ways to reach the office that are not the
- * form. Every value comes from lib/site.ts, so the placeholders are replaced in
- * one file rather than in each page that shows them.
+ * form. Every value comes from lib/site.ts, so a detail changes in one file
+ * rather than in each page that shows it.
  *
  * Phone and email are real tel: and mailto: links, so a phone dials and a mail
  * client opens rather than the reader copying a string by hand.
+ *
+ * There is no "Follow" block. The site has no social accounts, and a heading
+ * over two dead links is worse than the absence of the heading.
  */
 
 type Detail = {
@@ -19,7 +22,7 @@ type Detail = {
   readonly href?: string;
 };
 
-const { contact, socials } = siteConfig;
+const { contact } = siteConfig;
 
 const DETAILS: readonly Detail[] = [
   {
@@ -67,24 +70,6 @@ export function ContactDetails() {
           </li>
         ))}
       </ul>
-
-      <div>
-        <h3 className="font-display text-[15px] font-semibold text-navy">Follow</h3>
-        <ul className="mt-1 flex flex-wrap gap-x-6">
-          {socials.map((social) => (
-            <li key={social.label}>
-              <a
-                href={social.href}
-                className={`font-body text-[15px] text-ink ${LINK}`}
-                target="_blank"
-                rel="noopener"
-              >
-                {social.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
