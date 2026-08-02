@@ -4,10 +4,21 @@ import { ContentValidationError } from "@/lib/content-error";
 import { resolveProjectMedia } from "@/lib/project-media";
 import { getAllProjects, getProjectBySlug } from "@/lib/projects";
 
-/** The real placeholder assets, as written by scripts/generate-placeholders.mjs. */
-const HERO = { width: 1920, height: 1080 };
-const GALLERY = { width: 1200, height: 800 };
+/**
+ * The real files on disk. Photography landed for Monterra Ridge and The Larkin
+ * on 2026-08-02 at 1920x1072 and 1600x1067; Monterra Bay's hero and both floor
+ * plans are still placeholders from scripts/generate-placeholders.mjs, which is
+ * why two hero shapes exist rather than one.
+ */
+const PHOTO_HERO = { width: 1920, height: 1072 };
+const PLACEHOLDER_HERO = { width: 1920, height: 1080 };
+const GALLERY = { width: 1600, height: 1067 };
 const FLOOR_PLAN = { width: 1600, height: 1200 };
+
+/** The real asset filenames, so a rename has to be made deliberately here too. */
+const HERO_FILE = "hero.webp";
+const GALLERY_FILE = "gallery/01.webp";
+const PLAN_FILE = "plans/plan-a.png";
 
 const contextFor = (slug: string) => ({
   projectDirectory: path.join(process.cwd(), "content", "projects", slug),
@@ -20,7 +31,13 @@ describe("resolved media — dimensions are read from the files on disk", () => 
     for (const project of getAllProjects()) {
       expect(project.media.hero.width).toBeTypeOf("number");
       expect(project.media.hero.height).toBeTypeOf("number");
-      expect(project.media.hero).toMatchObject(HERO);
+    }
+  });
+
+  /** The two photographed heroes, measured off the files rather than authored. */
+  it("measures the photographed heroes at their own size", () => {
+    for (const slug of ["monterra-ridge", "the-larkin"]) {
+      expect(getProjectBySlug(slug)?.media.hero).toMatchObject(PHOTO_HERO);
     }
   });
 
@@ -45,11 +62,25 @@ describe("resolved media — shape handed to next/image", () => {
   it("carries src, alt, width and height on the hero", () => {
     const hero = getProjectBySlug("monterra-ridge")?.media.hero;
     expect(hero).toEqual({
-      src: "/projects/monterra-ridge/hero.png",
-      alt: "Monterra Ridge townhomes at dusk, seen across the central green",
+      src: "/projects/monterra-ridge/hero.webp",
+      alt: "Four townhomes at dusk, brick and dark cladding over three storeys, windows lit and a stone path curving across the lawn in front",
       width: 1920,
-      height: 1080,
+      height: 1072,
     });
+  });
+
+  /**
+   * The dimensions above and here are read off the file by image-size at load,
+   * not authored anywhere. Pinning the gallery box too is what catches a
+   * re-export at a different size silently changing every declared box.
+   */
+  it("reads the gallery's intrinsic box off the file at 3:2", () => {
+    const gallery = getProjectBySlug("monterra-ridge")?.media.gallery ?? [];
+    expect(gallery).toHaveLength(4);
+    for (const image of gallery) {
+      expect(image).toMatchObject(GALLERY);
+      expect(image.width / image.height).toBeCloseTo(3 / 2, 2);
+    }
   });
 
   it("keeps an authored caption and omits it where there is none", () => {
@@ -60,7 +91,7 @@ describe("resolved media — shape handed to next/image", () => {
 
   it("resolves nested folder paths to public URLs", () => {
     const gallery = getProjectBySlug("monterra-ridge")?.media.gallery;
-    expect(gallery?.[0].src).toBe("/projects/monterra-ridge/gallery/01.png");
+    expect(gallery?.[0].src).toBe("/projects/monterra-ridge/gallery/01.webp");
   });
 
   it("leaves the floor plan pdf as a link with no dimensions", () => {
@@ -76,7 +107,7 @@ describe("resolved media — optional blocks", () => {
     const bay = getProjectBySlug("monterra-bay");
     expect(bay?.media.gallery).toBeUndefined();
     expect(bay?.media.floorPlans).toBeUndefined();
-    expect(bay?.media.hero).toMatchObject(HERO);
+    expect(bay?.media.hero).toMatchObject(PLACEHOLDER_HERO);
   });
 });
 
@@ -94,8 +125,8 @@ describe("resolved media — missing files fail the build", () => {
     try {
       resolveProjectMedia(
         {
-          hero: { src: "hero.png", alt: "Hero" },
-          gallery: [{ src: "gallery/01.png", alt: "Present" }, missingImage],
+          hero: { src: HERO_FILE, alt: "Hero" },
+          gallery: [{ src: GALLERY_FILE, alt: "Present" }, missingImage],
         },
         contextFor("monterra-ridge"),
       );
@@ -112,9 +143,9 @@ describe("resolved media — missing files fail the build", () => {
     try {
       resolveProjectMedia(
         {
-          hero: { src: "hero.png", alt: "Hero" },
+          hero: { src: HERO_FILE, alt: "Hero" },
           floorPlans: [
-            { label: "Plan A", image: "plans/plan-a.png", alt: "Plan A", pdf: "plans/gone.pdf" },
+            { label: "Plan A", image: PLAN_FILE, alt: "Plan A", pdf: "plans/gone.pdf" },
           ],
         },
         contextFor("monterra-ridge"),
@@ -142,9 +173,9 @@ describe("resolved media — missing files fail the build", () => {
 describe("dimension caching", () => {
   it("returns the same measurements when a file is resolved repeatedly", () => {
     const context = contextFor("monterra-ridge");
-    const first = resolveProjectMedia({ hero: { src: "hero.png", alt: "Hero" } }, context);
-    const second = resolveProjectMedia({ hero: { src: "hero.png", alt: "Hero" } }, context);
+    const first = resolveProjectMedia({ hero: { src: HERO_FILE, alt: "Hero" } }, context);
+    const second = resolveProjectMedia({ hero: { src: HERO_FILE, alt: "Hero" } }, context);
     expect(first.hero).toEqual(second.hero);
-    expect(first.hero).toMatchObject(HERO);
+    expect(first.hero).toMatchObject(PHOTO_HERO);
   });
 });

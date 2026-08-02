@@ -24,8 +24,17 @@ const DEBUG_PORT = Number(process.env.LIGHTHOUSE_CDP_PORT ?? 9222);
 const PORT = Number(process.env.LIGHTHOUSE_PORT ?? 3210);
 const ORIGIN = `http://127.0.0.1:${PORT}`;
 
-/** The three routes named in the increment: home, the listing, a detail page. */
-const ROUTES = ["/", "/projects", "/projects/monterra-ridge"];
+/**
+ * The three routes named in the increment: home, the listing, a detail page.
+ *
+ * LIGHTHOUSE_ROUTES overrides the set with a comma-separated list, for auditing
+ * a route the default three do not cover — the other two project pages, say,
+ * after new photography lands on them.
+ */
+const ROUTES = (process.env.LIGHTHOUSE_ROUTES ?? "/,/projects,/projects/monterra-ridge")
+  .split(",")
+  .map((route) => route.trim())
+  .filter(Boolean);
 
 /** Lighthouse's own category ids, with the target each one has to clear. */
 const TARGETS = {
