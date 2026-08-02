@@ -20,16 +20,26 @@ const PARAGRAPHS: readonly string[] = [
   "We are not the largest developer in any of our three markets, and we have turned down more sites than we have bought. That is the point.",
 ];
 
+/**
+ * Written against the photograph. The lit sign carries a tagline that is not
+ * legible at the 456px the slot renders at, so the alt names the sign without
+ * quoting it.
+ */
+const STORY_IMAGE_ALT =
+  "Four Monterra staff in navy and cream business dress standing at a marble " +
+  "counter in front of a slatted wood wall with a lit Monterra Developments " +
+  "sign, scale models of apartment buildings and a blueprint on the table " +
+  "beside them and a city skyline through the windows behind";
+
 export function CompanyStory() {
   return (
     <Section>
       <OffsetFeature
         image={{
-          src: "/about/story-placeholder.png",
-          // Written against the placeholder. Rewrite it when the real photograph lands.
-          alt: "The first Monterra duplex in East Austin, completed 2014",
+          src: "/about/story.webp",
+          alt: STORY_IMAGE_ALT,
           width: 1200,
-          height: 900,
+          height: 675,
         }}
       >
         <SplitHeading as="h2" lede="How" rest="we got here" />
