@@ -1,15 +1,19 @@
 /**
  * Site-wide constants.
  *
- * Every contact value is a placeholder. The visible `label` carries `[REPLACE]`
- * so it is obvious in the browser and greppable in the source; `href` stays
- * clean so `tel:` and `mailto:` links actually work in the meantime.
+ * The contact block was placeholder copy marked `[REPLACE]` until 2026-08-02.
+ * It now carries the approved details and no markers, so `label` and `href` are
+ * two views of the same value rather than a staged one and a working one, and
+ * the Organization schema publishes the address instead of dropping it.
  *
- * `description` is the exception and is deliberately unmarked. It is the footnote
- * on the default Open Graph card and the `description` in the Organization
- * schema, so it is the one string here that reaches the public the moment anyone
- * shares a link. A `[REPLACE]` in it is published, not staged.
- * tests/unit/seo.test.ts holds it clean.
+ * The details are invented, like everything else on this concept project. The
+ * footer already says so on every page, which is where a caveat belongs — not
+ * repeated into each field, where it would ship as visible copy.
+ *
+ * No `socials` key. Two links to accounts that do not exist were removed rather
+ * than pointed at `#`: they render under a "Follow" heading with
+ * `target="_blank"`, so a `#` href opens a duplicate tab of the current page,
+ * and an unmarked `#` would have been published in the schema's `sameAs`.
  */
 
 export const siteConfig = {
@@ -38,24 +42,19 @@ export const siteConfig = {
 
   contact: {
     email: {
-      label: "[REPLACE] hello@monterradevelopments.com",
+      label: "hello@monterradevelopments.com",
       href: "mailto:hello@monterradevelopments.com",
     },
     phone: {
-      label: "[REPLACE] (512) 555-0142",
+      label: "(512) 555-0142",
       href: "tel:+15125550142",
     },
     address: {
-      street: "[REPLACE] 1100 Congress Ave, Suite 400",
-      locality: "[REPLACE] Austin, TX 78701",
+      street: "1100 Congress Avenue, Suite 400",
+      locality: "Austin, TX 78701",
     },
-    hours: "[REPLACE] Monday to Friday, 9am to 5pm CT",
+    hours: "Monday to Friday, 9am to 5pm CT",
   },
-
-  socials: [
-    { label: "LinkedIn", href: "[REPLACE] https://www.linkedin.com/company/monterra-developments" },
-    { label: "Instagram", href: "[REPLACE] https://www.instagram.com/monterradevelopments" },
-  ],
 
   legal: { label: "Privacy Policy", href: "/privacy" },
 } as const;
