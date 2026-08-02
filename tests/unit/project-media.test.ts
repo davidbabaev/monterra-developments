@@ -9,20 +9,24 @@ import { getAllProjects, getProjectBySlug } from "@/lib/projects";
  * on 2026-08-02 at 1920x1072 and 1600x1067, and Monterra Bay's hero followed the
  * same day at the same 1920x1072. All three heroes are now one shape.
  *
- * The two floor plan drawings are still on disk and still the placeholders
- * scripts/generate-placeholders.mjs wrote, but no project authors floorPlans
- * since 2026-08-02. Every floor plan case below therefore resolves media it
- * builds itself, which is what keeps the resolver covered once the content
- * stopped exercising it.
+ * The real floor plan drawings landed on 2026-08-02 and Monterra Ridge authors
+ * them again, so these cases read the plans off the content as they did before
+ * the block was briefly dropped. Both plates are 1024x687 — the drawings are
+ * the one image on the site that carries information, and the box they resolve
+ * to is what the lightbox opens them at.
+ *
+ * No PDF came with them, so the content exercises no pdf branch at all. The
+ * cases that need one build their own props and point at `plans/plan-a.pdf`,
+ * which stays on disk as a fixture and is linked from nowhere on the site.
  */
 const PHOTO_HERO = { width: 1920, height: 1072 };
 const GALLERY = { width: 1600, height: 1067 };
-const FLOOR_PLAN = { width: 1600, height: 1200 };
+const FLOOR_PLAN = { width: 1024, height: 687 };
 
 /** The real asset filenames, so a rename has to be made deliberately here too. */
 const HERO_FILE = "hero.webp";
 const GALLERY_FILE = "gallery/01.webp";
-const PLAN_FILE = "plans/plan-a.png";
+const PLAN_FILE = "plans/plan-a.webp";
 
 const contextFor = (slug: string) => ({
   projectDirectory: path.join(process.cwd(), "content", "projects", slug),
@@ -53,22 +57,8 @@ describe("resolved media — dimensions are read from the files on disk", () => 
     }
   });
 
-  /**
-   * Resolved directly rather than off a project: no project authors floorPlans
-   * any more, but the drawings are still on disk and the resolver still has to
-   * measure them, so this pins the resolver rather than the content.
-   */
   it("gives every floor plan image numeric width and height", () => {
-    const { floorPlans } = resolveProjectMedia(
-      {
-        hero: { src: HERO_FILE, alt: "Hero" },
-        floorPlans: [
-          { label: "Plan A", image: PLAN_FILE, alt: "Plan A" },
-          { label: "Plan B", image: "plans/plan-b.png", alt: "Plan B" },
-        ],
-      },
-      contextFor("monterra-ridge"),
-    );
+    const floorPlans = getProjectBySlug("monterra-ridge")?.media.floorPlans;
     expect(floorPlans).toHaveLength(2);
     for (const plan of floorPlans ?? []) {
       expect(plan.image).toMatchObject(FLOOR_PLAN);
@@ -112,20 +102,38 @@ describe("resolved media — shape handed to next/image", () => {
     expect(gallery?.[0].src).toBe("/projects/monterra-ridge/gallery/01.webp");
   });
 
-  it("leaves the floor plan pdf as a link with no dimensions", () => {
+  it("resolves both authored plans to public URLs, neither with a pdf", () => {
+    const floorPlans = getProjectBySlug("monterra-ridge")?.media.floorPlans ?? [];
+    expect(floorPlans.map((plan) => plan.image.src)).toEqual([
+      "/projects/monterra-ridge/plans/plan-a.webp",
+      "/projects/monterra-ridge/plans/plan-b.webp",
+    ]);
+    for (const plan of floorPlans) {
+      expect(plan.pdf).toBeUndefined();
+    }
+  });
+
+  /**
+   * No PDF was supplied with the drawings, so the content no longer exercises
+   * the resolver's pdf branch — this pins it against synthetic props instead.
+   * `plans/plan-a.pdf` is still on disk for exactly this and for the
+   * missing-pdf case below; nothing on the site links to it.
+   */
+  it("leaves an authored floor plan pdf as a link with no dimensions", () => {
     const { floorPlans } = resolveProjectMedia(
       {
         hero: { src: HERO_FILE, alt: "Hero" },
         floorPlans: [
           { label: "Plan A", image: PLAN_FILE, alt: "Plan A", pdf: "plans/plan-a.pdf" },
-          { label: "Plan B", image: "plans/plan-b.png", alt: "Plan B" },
+          { label: "Plan B", image: "plans/plan-b.webp", alt: "Plan B" },
         ],
       },
       contextFor("monterra-ridge"),
     );
     const [planA, planB] = floorPlans ?? [];
+
     expect(planA.pdf).toBe("/projects/monterra-ridge/plans/plan-a.pdf");
-    expect(planA.image.src).toBe("/projects/monterra-ridge/plans/plan-a.png");
+    expect(planA.image).toMatchObject(FLOOR_PLAN);
     expect(planB.pdf).toBeUndefined();
   });
 });

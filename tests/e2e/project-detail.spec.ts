@@ -65,26 +65,58 @@ test("Monterra Bay renders no empty optional section", async ({ page }) => {
 });
 
 /**
- * The floor plans were dropped from Monterra Ridge's frontmatter on 2026-08-02,
- * so no project on the site authors them. The section is the same optional
- * block as the gallery and the amenities: absent field, nothing rendered, no
- * heading and no empty row left behind.
+ * The real drawings landed on 2026-08-02, so Monterra Ridge authors floorPlans
+ * again. Monterra Bay still authors none, and the test above still proves the
+ * absent case renders nothing.
  *
- * FloorPlanList itself is unchanged and still covered — the populated path,
- * including the download button appearing only for a plan with a PDF, is
- * asserted against synthetic props in tests/unit/project-detail.test.tsx.
+ * No PDF was supplied with them, so no row offers a download — a plan with a
+ * PDF is covered against synthetic props in tests/unit/project-detail.test.tsx.
  */
-test("Monterra Ridge renders no floor plans section now the field is gone", async ({ page }) => {
+test("Monterra Ridge renders both plans and offers no download", async ({ page }) => {
   await page.goto("/projects/monterra-ridge");
 
-  await expect(page.getByRole("heading", { name: /floor plans/i })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Plan A" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Plan B" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: /floor plans/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Plan A" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Plan B" })).toBeVisible();
+
   await expect(page.getByRole("link", { name: /download pdf/i })).toHaveCount(0);
 
-  // The sections either side of the dropped one are untouched.
-  await expect(page.getByRole("heading", { name: /gallery/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /development status/i })).toBeVisible();
+  // The alt describes the drawing, not the label, so it must not just say "Plan A".
+  const drawing = page.getByRole("button", { name: /Plan A — view larger/i }).locator("img");
+  await expect(drawing).toHaveAttribute("alt", /ground floor.*second floor.*third floor/i);
+});
+
+/**
+ * The drawings are unreadable at the 200px the row gives them, so the thumbnail
+ * opens the same viewer the gallery uses. This asserts the reuse rather than the
+ * viewer: the dialog opens on the plan that was clicked, arrow keys move between
+ * plans and not into the gallery's images, and Escape returns focus to the
+ * thumbnail. The viewer's own behaviour is covered by gallery.spec.ts.
+ */
+test("a floor plan thumbnail opens the plan in the gallery viewer", async ({ page }) => {
+  await page.goto("/projects/monterra-ridge");
+
+  const thumbnail = page.getByRole("button", { name: /Plan A — view larger/i });
+  await thumbnail.click();
+
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  // Two plans in the viewer, not the four gallery images.
+  await expect(dialog.getByText("1 / 2")).toBeVisible();
+  /*
+    Exact: the viewer also carries the drawing's alt in an sr-only paragraph,
+    and that alt opens with the plan's name, so a substring match resolves to
+    two elements.
+  */
+  await expect(dialog.getByText("Plan A", { exact: true })).toBeVisible();
+
+  await page.keyboard.press("ArrowRight");
+  await expect(dialog.getByText("2 / 2")).toBeVisible();
+  await expect(dialog.getByText("Plan B", { exact: true })).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(thumbnail).toBeFocused();
 });
 
 test("prev/next wraps from the last project to the first", async ({ page }) => {
