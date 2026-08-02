@@ -113,9 +113,24 @@ export function Lightbox({ images, index, onIndexChange, onClose, triggerRef }: 
           width={image.width}
           height={image.height}
           sizes="(min-width: 768px) 85vw, 100vw"
-          /* h-auto w-auto against the intrinsic attributes: the image is
-             contained by the box and never scaled past its own pixels. */
-          className="h-auto max-h-full w-auto max-w-full object-contain"
+          /*
+            Fills the box and lets object-contain letterbox it, rather than
+            sizing from the intrinsic attributes.
+
+            `h-auto w-auto` was here to stop an image being scaled past its own
+            pixels, and it backfired on any screen denser than 1x. The browser
+            picks a srcset candidate for the device pixels it wants — 3840 for
+            an 85vw box on a 2x 1280 screen — and where the source is smaller
+            than that, the optimiser returns it unscaled. The candidate's `w`
+            descriptor still sets the density, so the image lays out at its own
+            pixels divided by that density: a 1600px gallery photo rendered
+            453px wide, and a 1024px floor plan 290px wide, inside a viewer
+            whose whole purpose is to show the thing large.
+
+            Contain never distorts, and the only images this can now scale up
+            are ones already smaller than the box.
+          */
+          className="min-h-0 w-full flex-1 object-contain"
         />
         {image.caption !== undefined && (
           <figcaption className="max-w-[68ch] text-center font-body text-[15px] text-stone">

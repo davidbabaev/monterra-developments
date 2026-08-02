@@ -112,10 +112,11 @@ describe("the fully populated current project", () => {
     const ridge = getProjectBySlug("monterra-ridge");
     expect(ridge?.media.gallery).toHaveLength(4);
     expect(ridge?.media.gallery?.[0].caption).toBeDefined();
-    // No project carries floor plans any more; the block was dropped from
-    // content on 2026-08-02. The schema and FloorPlanList still support it, and
-    // the populated path is covered by the component's own unit tests.
-    expect(ridge?.media.floorPlans).toBeUndefined();
+    expect(ridge?.media.floorPlans).toHaveLength(2);
+    // No PDF was supplied with the drawings, so neither plan authors one and
+    // no row renders a download. The resolver's pdf path is pinned against
+    // synthetic props in tests/unit/project-media.test.ts.
+    expect(ridge?.media.floorPlans?.every((plan) => plan.pdf === undefined)).toBe(true);
     expect(ridge?.location.coords).toEqual({ lat: 30.2411, lng: -97.7178 });
     expect(ridge?.amenities).toHaveLength(4);
   });

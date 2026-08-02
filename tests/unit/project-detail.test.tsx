@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { AmenityList } from "@/components/project/AmenityList";
 import { FloorPlanList } from "@/components/project/FloorPlanList";
@@ -125,7 +126,39 @@ describe("FloorPlanList", () => {
 
     expect(screen.getByAltText("Plan B drawing")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /download/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    /*
+      The row's one control is the thumbnail that opens the viewer. A plan with
+      no PDF must not grow a second control beside it, which is what this
+      counted before the thumbnail became a button.
+    */
+    expect(screen.getAllByRole("button")).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /plan b — view larger/i })).toBeInTheDocument();
+  });
+
+  it("opens the clicked plan in the gallery viewer, captioned with its label", async () => {
+    const user = userEvent.setup();
+    render(<FloorPlanList plans={[withPdf, withoutPdf]} />);
+
+    // The second plan, not the first — a bug that always opens index 0 passes otherwise.
+    await user.click(screen.getByRole("button", { name: /plan b — view larger/i }));
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    expect(within(dialog).getByText("2 / 2")).toBeInTheDocument();
+    // The drawings carry no title of their own, so the label is what names them.
+    expect(within(dialog).getByText("Plan B")).toBeInTheDocument();
+  });
+
+  it("returns focus to the thumbnail that opened the viewer", async () => {
+    const user = userEvent.setup();
+    render(<FloorPlanList plans={[withPdf, withoutPdf]} />);
+
+    const thumbnail = screen.getByRole("button", { name: /plan b — view larger/i });
+    await user.click(thumbnail);
+    await user.click(screen.getByRole("button", { name: /close gallery/i }));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(thumbnail).toHaveFocus();
   });
 
   it("renders exactly one download when only one of two plans has a PDF", () => {
