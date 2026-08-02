@@ -17,7 +17,7 @@ import type { ProjectCardData } from "./projectCardData";
 
 type ProjectCardProps = {
   readonly project: ProjectCardData;
-  /** Cards above the fold on the listing get priority. */
+  /** The first card in the listing grid gets priority — see ProjectGrid. */
   readonly priority?: boolean;
 };
 

@@ -187,6 +187,16 @@ Every directory that is still empty holds a `.gitkeep`. Delete the `.gitkeep` wh
 - Every foreground/background pair the system renders is declared in `lib/design-tokens.ts` and asserted in `tests/unit/contrast.test.ts`. Add the pair there when you introduce one, or the audit is lying.
 - Never mark work complete because tests pass. Verify in a browser.
 
+**`priority` on images — settled 2026-08-02, do not re-litigate.** Exactly one
+image per page carries it: the one that is measurably the LCP element on a 390px
+viewport. That is the project hero on a detail page, the hero on the homepage,
+and **the first card in `ProjectGrid` on `/projects`** — the listing has no hero
+image, so the first card is the LCP element. Everything else stays lazy,
+including the rest of the first card row. Three preloads on the listing measured
+worse than one, because they race the element that actually decides the score.
+Adding a second `priority` anywhere means measuring first and recording the
+number, not reasoning about what looks above the fold.
+
 ## 8 · Domain notes
 
 - A **project** is a real estate development, not a listing and not a unit for sale. Status is exactly one of: `completed`, `current`, `upcoming`.
