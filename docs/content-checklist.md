@@ -10,10 +10,10 @@ every body paragraph, every project narrative, every CTA body. The `/team` CTA
 was the last one and landed 2026-07-30. Nothing a reader reads is a placeholder
 any more.
 
-**What is still marked is artwork, the production domain, or internal.** Three
-groups, and none of them is prose: the logo and the image placeholders listed
-under Artwork; the `SITE_URL` origin and the page descriptions in `lib/seo.ts`;
-and the styleguide, which is `noindex`.
+**What is still marked is artwork, search copy, or internal.** Three groups, and
+none of them is prose: the logo and the image placeholders listed under Artwork;
+the page descriptions in `lib/seo.ts`; and the styleguide, which is `noindex`.
+The `SITE_URL` origin came off this list on 2026-08-02.
 
 **Real photography landed on 2026-07-30 for Our Process and the team.** Nine
 images — five process stages and four portraits. Every other image slot on the site is still a solid-colour
@@ -61,7 +61,7 @@ These are wrong in public, not merely unfinished.
 
 | File | What it needs | Who |
 | --- | --- | --- |
-| `lib/seo.ts` — `SITE_URL` | The production domain. Every canonical URL, every OG image URL and the sitemap resolve against it, so a wrong value here mislabels the whole site. Currently `https://www.monterradevelopments.com`. | Client |
+| ~~`lib/seo.ts` — `SITE_URL`~~ | **Set 2026-08-02** to `https://monterra.davidbabaev.dev`, the domain the site deploys to, and the `[REPLACE]` marker came off with it. Every canonical URL, every OG image URL, the sitemap and the sitemap pointer in `robots.txt` resolve against it. If Monterra ever takes a domain of its own, this is the one line that changes. | — |
 | ~~`lib/site.ts` — `contact.*`~~ | **Set 2026-08-02**, markers removed: 1100 Congress Avenue, Suite 400 / Austin, TX 78701 / (512) 555-0142 / hello@monterradevelopments.com / Monday to Friday, 9am to 5pm CT. **They are invented and go nowhere** — the inbox does not exist and the number does not ring, so every inquiry the form collects still has no destination. The Organization JSON-LD now publishes the `PostalAddress` instead of dropping it, which means these values are readable by a crawler. If this becomes a live site the real ones replace them here, in one file. | Client |
 | ~~`lib/site.ts` — `socials`~~ | **Removed 2026-08-02.** Two links to a LinkedIn and an Instagram account that do not exist. Pointing them at `#` was rejected: both render with `target="_blank"`, so `#` opens a duplicate tab of the current page, and an unmarked `#` would be published in the schema's `sameAs`. The key is gone, with the footer list and the contact page's "Follow" block. Restoring it means adding the key back and re-adding both blocks. | Client, if accounts ever exist |
 | ~~`app/privacy/page.tsx` — 13 markers~~ | **Written 2026-07-29.** Six clauses in plain English covering what the form collects, why, retention, cookies and analytics, who else sees it, and how to ask for deletion. It opens by saying the site is a concept project and that the form has no destination, so nothing is processed — which is true today. **If this ever becomes a live site, a qualified person must review it**, and the opening paragraph has to be replaced rather than deleted. | You → a lawyer, if it goes live |
