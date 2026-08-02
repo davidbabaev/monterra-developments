@@ -112,7 +112,6 @@ monterra-developments/
 │   ├── vercel.svg
 │   └── window.svg
 ├── scripts/
-│   ├── generate-placeholders.mjs        # sharp: solid-color placeholder assets, run by hand
 │   └── sync-content-assets.mjs          # mirrors content assets -> public/projects (predev/prebuild)
 ├── styles/                              # additional token/layer CSS if globals.css outgrows itself
 ├── tests/
