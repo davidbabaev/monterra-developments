@@ -64,17 +64,27 @@ test("Monterra Bay renders no empty optional section", async ({ page }) => {
   await expect(page.getByRole("heading", { name: /development status/i })).toBeVisible();
 });
 
-test("Monterra Ridge shows a download only for the plan that has a PDF", async ({ page }) => {
+/**
+ * The floor plans were dropped from Monterra Ridge's frontmatter on 2026-08-02,
+ * so no project on the site authors them. The section is the same optional
+ * block as the gallery and the amenities: absent field, nothing rendered, no
+ * heading and no empty row left behind.
+ *
+ * FloorPlanList itself is unchanged and still covered — the populated path,
+ * including the download button appearing only for a plan with a PDF, is
+ * asserted against synthetic props in tests/unit/project-detail.test.tsx.
+ */
+test("Monterra Ridge renders no floor plans section now the field is gone", async ({ page }) => {
   await page.goto("/projects/monterra-ridge");
 
-  await expect(page.getByRole("heading", { name: /floor plans/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Plan A" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Plan B" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /floor plans/i })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Plan A" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Plan B" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /download pdf/i })).toHaveCount(0);
 
-  const downloads = page.getByRole("link", { name: /download pdf/i });
-  await expect(downloads).toHaveCount(1);
-  await expect(downloads.first()).toHaveAttribute("href", /plan-a\.pdf$/);
-  await expect(downloads.first()).toHaveAttribute("rel", /noopener/);
+  // The sections either side of the dropped one are untouched.
+  await expect(page.getByRole("heading", { name: /gallery/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /development status/i })).toBeVisible();
 });
 
 test("prev/next wraps from the last project to the first", async ({ page }) => {

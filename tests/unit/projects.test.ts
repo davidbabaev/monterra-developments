@@ -112,9 +112,10 @@ describe("the fully populated current project", () => {
     const ridge = getProjectBySlug("monterra-ridge");
     expect(ridge?.media.gallery).toHaveLength(4);
     expect(ridge?.media.gallery?.[0].caption).toBeDefined();
-    expect(ridge?.media.floorPlans).toHaveLength(2);
-    expect(ridge?.media.floorPlans?.[0].pdf).toBeDefined();
-    expect(ridge?.media.floorPlans?.[1].pdf).toBeUndefined();
+    // No project carries floor plans any more; the block was dropped from
+    // content on 2026-08-02. The schema and FloorPlanList still support it, and
+    // the populated path is covered by the component's own unit tests.
+    expect(ridge?.media.floorPlans).toBeUndefined();
     expect(ridge?.location.coords).toEqual({ lat: 30.2411, lng: -97.7178 });
     expect(ridge?.amenities).toHaveLength(4);
   });

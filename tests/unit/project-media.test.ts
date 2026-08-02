@@ -7,9 +7,13 @@ import { getAllProjects, getProjectBySlug } from "@/lib/projects";
 /**
  * The real files on disk. Photography landed for Monterra Ridge and The Larkin
  * on 2026-08-02 at 1920x1072 and 1600x1067, and Monterra Bay's hero followed the
- * same day at the same 1920x1072. All three heroes are now one shape; Monterra
- * Ridge's two floor plans are the only placeholders left from
- * scripts/generate-placeholders.mjs.
+ * same day at the same 1920x1072. All three heroes are now one shape.
+ *
+ * The two floor plan drawings are still on disk and still the placeholders
+ * scripts/generate-placeholders.mjs wrote, but no project authors floorPlans
+ * since 2026-08-02. Every floor plan case below therefore resolves media it
+ * builds itself, which is what keeps the resolver covered once the content
+ * stopped exercising it.
  */
 const PHOTO_HERO = { width: 1920, height: 1072 };
 const GALLERY = { width: 1600, height: 1067 };
@@ -49,8 +53,22 @@ describe("resolved media — dimensions are read from the files on disk", () => 
     }
   });
 
+  /**
+   * Resolved directly rather than off a project: no project authors floorPlans
+   * any more, but the drawings are still on disk and the resolver still has to
+   * measure them, so this pins the resolver rather than the content.
+   */
   it("gives every floor plan image numeric width and height", () => {
-    const floorPlans = getProjectBySlug("monterra-ridge")?.media.floorPlans;
+    const { floorPlans } = resolveProjectMedia(
+      {
+        hero: { src: HERO_FILE, alt: "Hero" },
+        floorPlans: [
+          { label: "Plan A", image: PLAN_FILE, alt: "Plan A" },
+          { label: "Plan B", image: "plans/plan-b.png", alt: "Plan B" },
+        ],
+      },
+      contextFor("monterra-ridge"),
+    );
     expect(floorPlans).toHaveLength(2);
     for (const plan of floorPlans ?? []) {
       expect(plan.image).toMatchObject(FLOOR_PLAN);
@@ -95,7 +113,17 @@ describe("resolved media — shape handed to next/image", () => {
   });
 
   it("leaves the floor plan pdf as a link with no dimensions", () => {
-    const [planA, planB] = getProjectBySlug("monterra-ridge")?.media.floorPlans ?? [];
+    const { floorPlans } = resolveProjectMedia(
+      {
+        hero: { src: HERO_FILE, alt: "Hero" },
+        floorPlans: [
+          { label: "Plan A", image: PLAN_FILE, alt: "Plan A", pdf: "plans/plan-a.pdf" },
+          { label: "Plan B", image: "plans/plan-b.png", alt: "Plan B" },
+        ],
+      },
+      contextFor("monterra-ridge"),
+    );
+    const [planA, planB] = floorPlans ?? [];
     expect(planA.pdf).toBe("/projects/monterra-ridge/plans/plan-a.pdf");
     expect(planA.image.src).toBe("/projects/monterra-ridge/plans/plan-a.png");
     expect(planB.pdf).toBeUndefined();
