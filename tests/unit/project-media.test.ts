@@ -6,12 +6,12 @@ import { getAllProjects, getProjectBySlug } from "@/lib/projects";
 
 /**
  * The real files on disk. Photography landed for Monterra Ridge and The Larkin
- * on 2026-08-02 at 1920x1072 and 1600x1067; Monterra Bay's hero and both floor
- * plans are still placeholders from scripts/generate-placeholders.mjs, which is
- * why two hero shapes exist rather than one.
+ * on 2026-08-02 at 1920x1072 and 1600x1067, and Monterra Bay's hero followed the
+ * same day at the same 1920x1072. All three heroes are now one shape; Monterra
+ * Ridge's two floor plans are the only placeholders left from
+ * scripts/generate-placeholders.mjs.
  */
 const PHOTO_HERO = { width: 1920, height: 1072 };
-const PLACEHOLDER_HERO = { width: 1920, height: 1080 };
 const GALLERY = { width: 1600, height: 1067 };
 const FLOOR_PLAN = { width: 1600, height: 1200 };
 
@@ -34,9 +34,9 @@ describe("resolved media — dimensions are read from the files on disk", () => 
     }
   });
 
-  /** The two photographed heroes, measured off the files rather than authored. */
+  /** Every hero is photographed, measured off the file rather than authored. */
   it("measures the photographed heroes at their own size", () => {
-    for (const slug of ["monterra-ridge", "the-larkin"]) {
+    for (const slug of ["monterra-ridge", "monterra-bay", "the-larkin"]) {
       expect(getProjectBySlug(slug)?.media.hero).toMatchObject(PHOTO_HERO);
     }
   });
@@ -107,7 +107,7 @@ describe("resolved media — optional blocks", () => {
     const bay = getProjectBySlug("monterra-bay");
     expect(bay?.media.gallery).toBeUndefined();
     expect(bay?.media.floorPlans).toBeUndefined();
-    expect(bay?.media.hero).toMatchObject(PLACEHOLDER_HERO);
+    expect(bay?.media.hero).toMatchObject(PHOTO_HERO);
   });
 });
 
