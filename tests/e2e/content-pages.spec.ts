@@ -66,38 +66,16 @@ test("about reuses the quote, the stats band and the closing band", async ({ pag
 });
 
 /**
- * The group photograph. It runs the container measure rather than the half
- * column the offset composition uses, so what a browser has to settle is the
- * width it actually resolves to and the fact that the 16:9 box survives the
- * gutter stepping at every viewport.
+ * The story image is the only photograph on /about. A second, full-measure group
+ * photograph was removed on 2026-08-02 for being the same frame, and this pins
+ * the page against it coming back by accident.
  */
-test("the team photo runs the container measure at 16:9, between the quote and the stats", async ({
-  page,
-}) => {
+test("about carries exactly one photograph, the story image", async ({ page }) => {
   await page.goto("/about");
 
-  const figure = page.locator("figure").filter({ has: page.locator("img[src*='team-photo']") });
-  await figure.scrollIntoViewIfNeeded();
-  await expect(figure).toBeVisible();
-
-  const image = figure.locator("img");
-  await expect(image).toHaveJSProperty("complete", true);
-
-  const width = page.viewportSize()?.width ?? 0;
-  // The container is 1200px with the gutter stepping 20 / 40 / 64px.
-  const expected = Math.min(width, 1200) - (width >= 1280 ? 128 : width >= 768 ? 80 : 40);
-
-  const box = (await image.boundingBox())!;
-  expect(Math.round(box.width)).toBe(expected);
-  expect(box.width / box.height).toBeCloseTo(16 / 9, 2);
-
-  const quote = (await page.getByRole("blockquote").boundingBox())!;
-  const stats = (await page.getByText("Homes delivered").boundingBox())!;
-  expect(box.y).toBeGreaterThan(quote.y + quote.height);
-  expect(box.y + box.height).toBeLessThan(stats.y);
-
-  await expect(image).toHaveAttribute("alt", /.{80,}/);
-  await expect(figure.locator("figcaption")).toBeVisible();
+  const images = page.locator("main img");
+  await expect(images).toHaveCount(1);
+  await expect(images.first()).toHaveAttribute("src", /story\.webp/);
 });
 
 test("the process stages are numbered 01 to 05 and alternate sides", async ({ page }) => {

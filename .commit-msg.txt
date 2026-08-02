@@ -1,0 +1,17 @@
+chore: remove the duplicate group photograph section from /about
+
+TeamPhoto rendered the same frame as the story image directly above it, so
+/about showed one photograph twice. The section goes, with its component,
+its asset, its unit test and its e2e assertion.
+
+The section rhythm test asserted six sections on /about and now asserts
+five: story, values, quote, stats, then the navy band. The collapse rule is
+unchanged — the first keeps its interval, the ivory run collapses, the
+band does not.
+
+The unit coverage the deleted test carried — the 400KB budget, the 16:9
+ratio, the declared intrinsic box, the lazy load, an alt that describes the
+photograph — moves to about-story-image.test.tsx against the story image,
+which is now the only photograph on the page.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
