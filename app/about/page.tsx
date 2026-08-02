@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { CompanyStory } from "@/components/about/CompanyStory";
-import { TeamPhoto } from "@/components/about/TeamPhoto";
 import { ValuesGrid } from "@/components/about/ValuesGrid";
 import { Container } from "@/components/layout/Container";
 import { CtaBand } from "@/components/layout/CtaBand";
@@ -13,9 +12,13 @@ import { StatsBand } from "@/components/ui/StatsBand";
 export const metadata: Metadata = buildMetadata("/about");
 
 /**
- * Story, values, one quote, the group photograph, the statistics the homepage
- * already shows, and the closing band. Everything but the photograph is a
- * component that existed before this page.
+ * Story, values, one quote, the statistics the homepage already shows, and the
+ * closing band. Every one of them is a component that existed before this page.
+ *
+ * The story photograph is the only one on /about. A second, full-measure group
+ * photograph sat between the quote and the statistics until 2026-08-02 and was
+ * removed: it was the same frame as the story image, so the page showed one
+ * photograph twice.
  */
 export default function AboutPage() {
   return (
@@ -46,8 +49,6 @@ export default function AboutPage() {
           />
         </Container>
       </Section>
-
-      <TeamPhoto />
 
       <StatsBand />
 
