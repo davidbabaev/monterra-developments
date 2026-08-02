@@ -1,4 +1,7 @@
+import { readFileSync, statSync } from "node:fs";
+import path from "node:path";
 import { render, screen, within } from "@testing-library/react";
+import { imageSize } from "image-size";
 import { describe, expect, it } from "vitest";
 import { CtaBand } from "@/components/layout/CtaBand";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
@@ -34,6 +37,35 @@ describe("Hero", () => {
     expect(image).not.toHaveAttribute("loading", "lazy");
     expect(image).toHaveAttribute("width", "2560");
     expect(image).toHaveAttribute("height", "1429");
+  });
+
+  /**
+   * The photograph was swapped on 2026-08-02, from a street-level avenue to an
+   * elevated view of a tower cluster. The alt has to describe the frame that is
+   * actually there, so this pins what changed rather than the whole string.
+   */
+  it("describes the photograph that is actually in the slot", () => {
+    render(<Hero />);
+    const alt = screen.getByRole("img").getAttribute("alt") ?? "";
+
+    expect(alt).toMatch(/balconies/i);
+    expect(alt).toMatch(/skyline/i);
+    expect(alt).not.toMatch(/clear morning|either side/i);
+    expect(alt.length).toBeGreaterThan(80);
+  });
+
+  /**
+   * The file itself. 2560 is what a 100vw slot is given here and the weight is
+   * what holds the LCP down — the budget is tighter than the 1MB build guard
+   * because this is the one image every first-time visitor waits for.
+   */
+  it("ships the hero at 2560 wide and under the weight budget", () => {
+    const file = path.join(process.cwd(), "public", "home", "home-hero.webp");
+    const { width, height } = imageSize(readFileSync(file));
+
+    expect(width).toBe(2560);
+    expect(height).toBe(1429);
+    expect(statSync(file).size).toBeLessThan(400 * 1024);
   });
 
   it("offers exactly two calls to action, both readable on a dark scrim", () => {

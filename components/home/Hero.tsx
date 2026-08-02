@@ -22,12 +22,28 @@ import { SplitHeading } from "@/components/ui/SplitHeading";
  */
 const HEADLINE = { lede: "We build", rest: "streets that still work in fifty years" };
 
+/**
+ * Written against the photograph that shipped 2026-08-02.
+ *
+ * The shopfronts carry three signs whose lettering is garbled — one of them
+ * large and near the front of frame. They are not quoted here: naming a sign a
+ * reader cannot read is worth less than the words spent on it, and the same
+ * rule already applies to the sign in the About story image. Accepted rather
+ * than cropped, on instruction.
+ */
+const ALT =
+  "An elevated view at golden hour of a cluster of mid- and high-rise " +
+  "residential buildings with glass balconies and planted roof terraces, " +
+  "ground-floor shops and cafe tables along the street below, a landscaped " +
+  "plaza with a water channel and ornamental grasses, and a downtown skyline " +
+  "in the distance";
+
 export function Hero() {
   return (
     <section className="relative flex h-[78vh] items-center xl:h-[88vh]">
       <Image
         src="/home/home-hero.webp"
-        alt="A city avenue on a clear morning, mid-rise apartment buildings with ground-floor shops either side and people on the sidewalk"
+        alt={ALT}
         width={2560}
         height={1429}
         priority
