@@ -110,9 +110,11 @@ a component next to copy that is done.
 
 ## Artwork
 
-Real photography landed for two slots on 2026-07-30. **Every image slot below is
-still a solid-colour placeholder**, and that is the complete list — nothing else
-is outstanding.
+Real photography landed for two slots on 2026-07-30 and for ten more on
+2026-08-02. **Four image slots are still solid-colour placeholders** — the
+Monterra Bay hero, both Monterra Ridge floor plans, and the location map — and
+that is the complete list. Struck-through rows are done and are kept as a record
+of what was supplied and what is still wrong with it.
 
 | Slot | State | Who |
 | --- | --- | --- |
@@ -123,12 +125,20 @@ is outstanding.
 | Favicon set | Derived from the redrawn monogram, once it exists. | You |
 | `components/layout/PageHero.tsx` | A flat navy band with a scrim, on `/about`, `/process`, `/team`, `/projects`, `/contact` and `/privacy`. **It has no image slot at all** — there is no `<Image>` to swap, so this is a component change, not an asset drop. A group photograph was offered for `/team` on 2026-07-30 and declined: the band is 3.37:1 at 1280x380 and a 16:9 source centre-cropped cuts the heads off, and one photographed hero among six flat ones costs more in consistency than it buys. | Client + you |
 | `components/project/LocationBlock.tsx` | Still a placeholder at a map's aspect ratio. Alt text done 2026-07-30 — "Map showing the project location". Needs either a real map or a decision to drop the block. | You |
-| `content/projects/monterra-ridge/hero.png` + `gallery/01-04` + `plans/plan-a,b` | Solid colour. A seven-image set was offered on 2026-07-30 and **rejected on content, not ratio**: it shows a single seventeen-storey tower with subtropical planting, where the approved body copy on the same page says forty-eight townhomes and duplexes on six acres in East Austin. The hero would have contradicted the prose beneath it. | Client |
-| `content/projects/the-larkin/hero.png` + `gallery/01-04` | Solid colour. Nothing supplied. | Client |
-| `content/projects/monterra-bay/hero.png` | Solid colour. Nothing supplied. The alt says "architectural rendering", so what lands here has to be a rendering. | Client |
+| ~~`content/projects/monterra-ridge/hero.webp` + `gallery/01-04`~~ | **Real, 2026-08-02.** Hero 1920x1072 (source frame kept whole — the band is 100vw at a fixed height with `object-cover`, so no ratio is imposed); gallery 1600x1067, cropped to exactly the 3:2 the thumbnail's `aspect-[3/2]` asks for. Sized for the lightbox at 85vw, not the 336px thumbnail. All five alts rewritten against the photographs. **Two defects in the supplied files:** two adjacent front doors in the hero both carry the number 108, and the wall oven in the kitchen shot has a garbled badge on its trim (illegible at any rendered size). Neither is worth a re-export on its own. | Client (re-export, low priority) |
+| `content/projects/monterra-ridge/plans/plan-a,b.png` | **Still solid colour.** Real floor plan drawings, or a decision to drop the block. The seven-image set offered on 2026-07-30 was rejected on content — a seventeen-storey tower against copy that says forty-eight townhomes — and the 2026-08-02 set contains no plans. | Client |
+| ~~`content/projects/the-larkin/hero.webp` + `gallery/01-04`~~ | **Real, 2026-08-02.** Same sizing rule as Monterra Ridge. Five storeys, brick corner, Denver mountains on the horizon — all matching the copy. The gallery 02 alt no longer describes a roof deck: that slot is now the lobby. **Two things to know:** the building's own name is legible signage in three of the five frames (retail sign, lobby desk plaque), approved on 2026-08-02 as the project's own name rather than foreign branding; and `gallery/01` carries a reversed, half-cropped sign at its extreme right edge, which is a rendering defect worth a re-export. | Client (re-export of gallery/01) |
+| `content/projects/monterra-bay/hero.png` | **Still solid colour.** `building1-5.png` was offered on 2026-08-02 and **rejected on content**: it is an inland tower ringed by villas and a road, with no water anywhere in the frame, and the page says "waterfront" four times — summary, body copy, SEO description and the hero alt. The alt also says "architectural rendering", so what lands here has to be a rendering, and it has to show water. | Client |
 | `public/home/positioning-placeholder.png` | Solid colour. Alt written against it — rewrite the alt when the photograph lands. | Client |
 | ~~`public/about/story.webp`~~ | **Real, 2026-08-02.** Replaces `story-placeholder.png`, which is deleted. 1200x675 WebP q90, 121KB, resized from the same 1672x941 source as `team-photo.webp` — 1200 is the widest the offset slot can request, since the container caps at 1200px and the column renders at most 527 CSS px. Not `priority`: it sits below the hero. It is now the only photograph on `/about`. **One defect in the supplied file:** the sign behind the group reads "BULLDNG COMMUNITIES", not "BUILDING" — not legible at the 456px this slot renders at, but a corrected export would replace this file at the same path and dimensions with no code change. | Client (re-export) |
 | `public/home/home-hero.webp` | **Not a placeholder** — real photography since increment 8, 2560x1429, `priority`. Listed here only so nobody replaces it by accident. A skyline alternative was offered on 2026-07-30 and declined. | — |
+
+**The Larkin's roof deck has no photograph.** The 2026-08-02 set supplied two
+exteriors and three interiors — lobby, living room, bike store — and no roof
+deck. The body copy still ends its second paragraph with "The shared roof deck
+faces the mountains.", and "Shared roof deck" is still an amenity. Both are now
+unevidenced by any image on the page. Nothing is broken and no copy was changed;
+either a roof deck frame is supplied, or that sentence is rewritten.
 
 **The portrait crop.** The four supplied portraits are 9:16 full-length standing
 shots and the card is 4:5, so cover shows 70% of the frame. `TeamGrid` pins that
