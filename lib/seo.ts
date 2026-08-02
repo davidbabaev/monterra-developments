@@ -19,10 +19,14 @@ import { siteConfig } from "./site";
  */
 
 /**
- * [REPLACE] The production origin. Everything canonical and every OG image URL
- * is resolved against it, so it has to be the real domain before launch.
+ * The deployment origin. Everything canonical, every OG image URL, the sitemap
+ * and the robots.txt sitemap pointer resolve against it, so a wrong value here
+ * mislabels the whole site.
+ *
+ * This is the domain the site actually deploys to. If Monterra ever takes its
+ * own domain, this is the one line that changes.
  */
-export const SITE_URL = "https://www.monterradevelopments.com";
+export const SITE_URL = "https://monterra.davidbabaev.dev";
 
 export type PageSeo = {
   /** Rendered through the "%s | Monterra Developments" template. */
