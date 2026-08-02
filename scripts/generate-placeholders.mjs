@@ -33,14 +33,13 @@ const STATIC_MAP = { width: 1200, height: 675 };
 const STATIC_MAP_PATH = path.join(REPO_ROOT, "public", "map", "static-map-placeholder.png");
 
 /**
- * The homepage's own photography, which belongs to no project and so has no
- * folder under content/.
- *
- * The hero is no longer here: it is a real photograph now, at
- * public/home/home-hero.webp, and regenerating a placeholder over it would be a
- * regression rather than a reset.
+ * The homepage's own photography — the hero and the positioning image — belongs
+ * to no project and so has no folder under content/. Neither is generated here
+ * any more: both are real photographs now, at public/home/home-hero.webp and
+ * public/home/positioning.webp, and regenerating a placeholder over either
+ * would be a regression rather than a reset. Nothing under public/home/ is a
+ * placeholder, which is why there is no home step in main().
  */
-const HOME_IMAGES = [{ file: "positioning-placeholder.png", size: { width: 1200, height: 900 } }];
 
 /**
  * Photography for the pages that belong to no project: the About story, the five
@@ -160,11 +159,6 @@ async function main() {
   }
 
   written.push(await writeSolidPng(STATIC_MAP_PATH, STATIC_MAP, STONE));
-
-  for (const image of HOME_IMAGES) {
-    const target = path.join(REPO_ROOT, "public", "home", image.file);
-    written.push(await writeSolidPng(target, image.size, NAVY));
-  }
 
   for (const image of PAGE_IMAGES) {
     const target = path.join(REPO_ROOT, "public", image.dir, image.file);

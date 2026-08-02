@@ -88,7 +88,7 @@ test("the offset composition overlaps on desktop and collapses on mobile", async
 
     const slabBox = await slab.boundingBox();
     const imageBox = await page
-      .locator("img[src*='positioning-placeholder']")
+      .locator("img[src*='positioning.webp']")
       .boundingBox();
 
     expect(imageBox!.x - slabBox!.x).toBeGreaterThan(30);
@@ -100,7 +100,7 @@ test("the offset composition overlaps on desktop and collapses on mobile", async
 
     const ruleBox = await rule.boundingBox();
     const imageBox = await page
-      .locator("img[src*='positioning-placeholder']")
+      .locator("img[src*='positioning.webp']")
       .boundingBox();
 
     expect(Math.round(ruleBox!.height)).toBe(6);
