@@ -21,8 +21,22 @@ const STONE = { r: 0xc8, g: 0xb9, b: 0xa3 };
 
 const HERO = { width: 1920, height: 1080 };
 const GALLERY = { width: 1200, height: 800 };
-const FLOOR_PLAN = { width: 1600, height: 1200 };
 const STATIC_MAP = { width: 1200, height: 675 };
+
+/**
+ * There is no floor plan size here any more, and no floor plan step in main().
+ * Monterra Ridge was the only project that ever carried plans, and both of its
+ * drawings are real since 2026-08-02 — plan-a.webp and plan-b.webp, with the
+ * solid-colour plan-a,b.png they replaced deleted. Regenerating a placeholder
+ * over a real drawing would be a regression rather than a reset, and this
+ * script writing plan-a,b.png back would resurrect two files the content no
+ * longer references at all.
+ *
+ * The PDF step below stays. plan-a.pdf is still generated and still on disk,
+ * not because anything renders it — no project authors a `pdf` key now — but
+ * because tests/unit/project-media.test.ts resolves it to cover the resolver's
+ * pdf branch.
+ */
 
 /**
  * The static map on a project's location block. One shared asset rather than one
@@ -126,9 +140,9 @@ async function writePdf(absolutePath, label) {
 
 /** Mirrors the `media` block of each seed project's frontmatter. */
 const PLAN = [
-  { slug: "monterra-ridge", galleryCount: 4, floorPlans: ["plan-a", "plan-b"], pdfPlans: ["plan-a"] },
-  { slug: "monterra-bay", galleryCount: 0, floorPlans: [], pdfPlans: [] },
-  { slug: "the-larkin", galleryCount: 4, floorPlans: [], pdfPlans: [] },
+  { slug: "monterra-ridge", galleryCount: 4, pdfPlans: ["plan-a"] },
+  { slug: "monterra-bay", galleryCount: 0, pdfPlans: [] },
+  { slug: "the-larkin", galleryCount: 4, pdfPlans: [] },
 ];
 
 async function main() {
@@ -143,12 +157,6 @@ async function main() {
       const name = `${String(index + 1).padStart(2, "0")}.png`;
       written.push(
         await writeSolidPng(path.join(root, "gallery", name), GALLERY, galleryColor(index)),
-      );
-    }
-
-    for (const plan of project.floorPlans) {
-      written.push(
-        await writeSolidPng(path.join(root, "plans", `${plan}.png`), FLOOR_PLAN, STONE),
       );
     }
 
