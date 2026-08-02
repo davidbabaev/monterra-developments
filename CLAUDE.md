@@ -36,7 +36,7 @@ Versions below are the ones actually installed — read from `package.json` / `p
 | Forms | `react-hook-form` (contact form state and validation) | 7.83.0 |
 | Forms | `@hookform/resolvers` (the Zod resolver) | 5.5.7 |
 | Content | `image-size` (intrinsic dimensions read at build time) | 2.0.2 |
-| Image encoding | `sharp` (dev only, placeholder generation; scripts approved via `allowScripts`) | 0.35.3 |
+| Image encoding | `sharp` (backs `next/image` optimisation, build-time and request-time; install scripts approved via `allowScripts`) | 0.35.3 |
 | Runtime | Node.js | v24.18.0 (WSL2 Ubuntu) |
 | Bundler | Turbopack | bundled with Next 16.2.12 — the default, not a flag |
 | Hosting | Vercel | — |
