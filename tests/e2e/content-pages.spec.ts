@@ -32,11 +32,11 @@ test("about collapses its offset composition below 768px, like home", async ({ p
   // Scoped to the composition: the breadcrumb slab under the hero is also stone.
   const composition = page
     .locator("section")
-    .filter({ has: page.locator("img[src*='story-placeholder']") })
+    .filter({ has: page.locator("img[src*='story.webp']") })
     .last();
   const slab = composition.locator(".bg-stone").first();
   const rule = composition.locator(".bg-bronze").first();
-  const image = page.locator("img[src*='story-placeholder']");
+  const image = page.locator("img[src*='story.webp']");
   const isWide = (page.viewportSize()?.width ?? 0) >= 768;
 
   if (isWide) {

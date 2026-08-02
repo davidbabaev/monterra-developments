@@ -127,7 +127,7 @@ is outstanding.
 | `content/projects/the-larkin/hero.png` + `gallery/01-04` | Solid colour. Nothing supplied. | Client |
 | `content/projects/monterra-bay/hero.png` | Solid colour. Nothing supplied. The alt says "architectural rendering", so what lands here has to be a rendering. | Client |
 | `public/home/positioning-placeholder.png` | Solid colour. Alt written against it — rewrite the alt when the photograph lands. | Client |
-| `public/about/story-placeholder.png` | Solid colour. Alt says "The first Monterra duplex in East Austin, completed 2014", which is a specific building, not a mood shot. | Client |
+| ~~`public/about/story.webp`~~ | **Real, 2026-08-02.** Replaces `story-placeholder.png`, which is deleted. 1200x675 WebP q90, 121KB, resized from the same 1672x941 source as `team-photo.webp` — 1200 is the widest the offset slot can request, since the container caps at 1200px and the column renders at most 527 CSS px. Not `priority`: it sits below the hero. **It is the same photograph as `team-photo.webp`, so `/about` now shows one image twice** — a second, distinct story shot would replace this file at the same path and dimensions with no code change. | Client (second shot) |
 | `public/home/home-hero.webp` | **Not a placeholder** — real photography since increment 8, 2560x1429, `priority`. Listed here only so nobody replaces it by accident. A skyline alternative was offered on 2026-07-30 and declined. | — |
 
 **The portrait crop.** The four supplied portraits are 9:16 full-length standing
